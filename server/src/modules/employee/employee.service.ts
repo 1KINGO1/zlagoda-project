@@ -1,0 +1,163 @@
+import {BadRequestException, ConflictException, Injectable, NotFoundException} from '@nestjs/common';
+import {DatabaseService} from "../../core/database/database.service";
+import {Employee} from "../../core/entities/Employee";
+import {CreateEmployeeDto} from "./dto/CreateEmployee.dto";
+import * as argon2 from "argon2";
+import {UpdateEmployeeDto} from "./dto/UpdateEmployee.dto";
+import {SortOrder} from "../../core/types/SortOrder";
+
+@Injectable()
+export class EmployeeService {
+  constructor(private readonly databaseService: DatabaseService) {
+  }
+
+  async getEmployees(): Promise<Employee[]> {
+    const result = await this.databaseService.query<Employee>(
+      'SELECT * FROM employee'
+    );
+
+    return result.rows;
+  }
+  async getEmployeeByLogin(login: string): Promise<Employee | null> {
+    const result = await this.databaseService.query<Employee>(
+      'SELECT * FROM employee WHERE login = $1', [login]
+    );
+    return result.rows.length ? result.rows[0] : null;
+  }
+  async getEmployeesSorted(sortOptions : {
+    order?: SortOrder,
+    surname?: string
+  }): Promise<Employee[]> {
+    let query = `SELECT * FROM employee`;
+    const values = [];
+
+    if (sortOptions.surname) {
+      query += ` WHERE empl_surname ILIKE $1`;
+      values.push(`${sortOptions.surname}%`);
+    }
+
+    if (sortOptions.order) {
+      query += ` ORDER BY empl_surname ${sortOptions.order}`;
+    }
+
+    const result = await this.databaseService.query<Employee>(query, values);
+    return result.rows;
+  }
+  async getEmployeeById(id_employee: string, forUpdate: boolean = false): Promise<Employee | null> {
+    const result = await this.databaseService.query<Employee>(
+      `SELECT * FROM employee WHERE id_employee = $1 ${forUpdate ? 'FOR UPDATE' : ''}`, [id_employee]
+    );
+
+    return result.rows.length ? result.rows[0] : null;
+  }
+  async findEmployeeBySurname(surname: string): Promise<Employee[]> {
+    const result = await this.databaseService.query<Employee>(
+      `SELECT * FROM employee WHERE empl_surname ILIKE $1`, [`${surname}%`]
+    );
+
+    return result.rows;
+  }
+  async createEmployee(employee: CreateEmployeeDto): Promise<Employee> {
+    const existingEmployee = await this.getEmployeeByLogin(employee.login);
+    if (existingEmployee) {
+      throw new ConflictException('Employee with this login already exists');
+    }
+
+    const result = await this.databaseService.query<Employee>
+    (
+      `
+          INSERT INTO employee
+          (login,
+           password_hash,
+           empl_surname,
+           empl_name,
+           empl_patronymic,
+           empl_role,
+           salary,
+           date_of_birth,
+           date_of_start,
+           phone_number,
+           city,
+           street,
+           zip_code)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8::timestamp, $9::timestamp, $10, $11, $12, $13) RETURNING *;
+      `,
+      [
+        employee.login,
+        await this.createPasswordHash(employee.password),
+        employee.empl_surname,
+        employee.empl_name,
+        employee.empl_patronymic,
+        employee.empl_role,
+        employee.salary,
+        new Date(employee.date_of_birth),
+        new Date(employee.date_of_start),
+        employee.phone_number,
+        employee.city,
+        employee.street,
+        employee.zip_code
+      ]
+    );
+
+    return result.rows[0];
+  }
+  async deleteEmployee(authorEmployee: Employee, id_employee: string): Promise<void> {
+    if (authorEmployee.id_employee === id_employee)
+      throw new BadRequestException('You cannot delete your own profile');
+
+    const employee = await this.getEmployeeById(id_employee);
+    if (!employee) throw new NotFoundException('Employee with this id not found');
+
+    await this.databaseService.query<Employee>(
+      `
+          DELETE FROM employee
+          WHERE id_employee = $1
+      `,
+      [id_employee]
+    );
+  }
+  async updateEmployee(id_employee: string, body: UpdateEmployeeDto): Promise<void> {
+    const employee = await this.getEmployeeById(id_employee);
+    if (!employee)
+      throw new NotFoundException('Employee with this id not found');
+
+    await this.databaseService.query(
+      `
+        UPDATE employee
+        SET password_hash = $2,
+            empl_surname = $3,
+            empl_name = $4,
+            empl_patronymic = $5,
+            empl_role = $6,
+            salary = $7,
+            date_of_birth = $8::timestamp,
+            date_of_start = $9::timestamp,
+            phone_number = $10,
+            city = $11,
+            street = $12,
+            zip_code = $13
+        WHERE id_employee = $1
+      `,
+      [
+        id_employee,
+        body.password ? await this.createPasswordHash(body.password) : employee.password_hash,
+        body.empl_surname ?? employee.empl_surname,
+        body.empl_name ?? employee.empl_name,
+        body.empl_patronymic ?? employee.empl_patronymic,
+        body.empl_role ?? employee.empl_role,
+        body.salary ?? employee.salary,
+        new Date(body.date_of_birth ?? employee.date_of_birth),
+        new Date(body.date_of_start ?? employee.date_of_start),
+        body.phone_number ?? employee.phone_number,
+        body.city ?? employee.city,
+        body.street ?? employee.street,
+        body.zip_code ?? employee.zip_code
+      ]
+    );
+  }
+
+  private createPasswordHash(password: string): Promise<string> {
+    return argon2.hash(password);
+  }
+}
+
