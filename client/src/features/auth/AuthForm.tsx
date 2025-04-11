@@ -7,7 +7,9 @@ import {useForm} from 'react-hook-form';
 import {Button} from '@/components/ui/button';
 import {LoginFormSchema, LoginFormSchemaType} from '@/shared/schemas/LoginForm.schema';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {useLogin} from '@/features/auth/hooks/useLogin';
+import {useLogin} from '@/shared/hooks/useLogin';
+import {ApiError} from '@/shared/types/ApiError';
+import {useRouter} from 'next/navigation';
 
 export function AuthForm() {
 	const form = useForm<LoginFormSchemaType>({
@@ -17,22 +19,27 @@ export function AuthForm() {
 		},
 		resolver: zodResolver(LoginFormSchema),
 	});
-	const { mutateAsync: login } = useLogin({
-		onSuccess: () => {
-			// Handle successful login, e.g., redirect or show a success message
-		},
-		onError: (error) => {
-			if (error.statusCode === 404) {
-				form.setError('login', { type: 'manual', message: 'Invalid login' });
-			}
-			if (error.statusCode === 400) {
-				form.setError('password', { type: 'manual', message: 'Invalid password' });
-			}
-		},
-	})
+	const { mutateAsync: login } = useLogin()
+	const router = useRouter()
 
-	const submitHandler = (data: LoginFormSchemaType) => {
-		return login(data);
+	const submitHandler = async (data: LoginFormSchemaType) => {
+		try {
+			await login(data);
+			router.push('/dashboard');
+		} catch (e) {
+			const error = e as ApiError;
+
+			console.log(error);
+
+			switch (error.statusCode) {
+				case 404:
+					form.setError('login', { type: 'manual', message: 'Invalid login' });
+					break;
+				case 400:
+					form.setError('password', { type: 'manual', message: 'Invalid password' });
+					break;
+			}
+		}
 	}
 
 	return (
@@ -65,7 +72,12 @@ export function AuthForm() {
 							</FormItem>
 						)}
 					/>
-					<Button type="submit" color="primary" disabled={!form.formState.isValid || form.formState.isSubmitting}>Login</Button>
+					<Button
+						type="submit"
+						color="primary"
+						disabled={!form.formState.isValid || form.formState.isSubmitting}>
+						{form.formState.isSubmitting ? "Loading..." : "Login"}
+					</Button>
 				</form>
 			</Form>
 		</Card>

@@ -8,7 +8,25 @@ class AuthService {
 			headers: {
 				'Content-Type': 'application/json',
 			},
+			credentials: "include",
 			body: JSON.stringify(loginSchema),
+		});
+		const data = await res.json();
+
+		if (!res.ok) {
+			throw data;
+		}
+
+		return data;
+	}
+
+	async logout() {
+		const res = await fetch(API_BASE_URL + "auth/logout", {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			credentials: "include",
 		});
 		const data = await res.json();
 
