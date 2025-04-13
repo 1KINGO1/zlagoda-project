@@ -4,6 +4,7 @@ import {EmployeeService} from "../employee/employee.service";
 import {JwtService} from "@nestjs/jwt";
 import * as argon2 from 'argon2';
 import {ConfigService} from "@nestjs/config";
+import {Response} from 'express';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,7 @@ export class AuthService {
   ) {}
 
 
-  async login(loginDto: LoginDto) {
+  async login(loginDto: LoginDto, res: Response) {
     const employee = await this.employeeService.getEmployeeByLogin(loginDto.login);
     if (!employee) {
       throw new NotFoundException("Employee Not Found");
@@ -38,8 +39,19 @@ export class AuthService {
       }
     );
 
+    res.cookie('access_token', jwt, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 30
+    });
+
     return {
-      token: jwt
+      access_token: jwt
     }
+  }
+
+  async logout(res: Response) {
+    res.cookie('access_token', '', {
+      maxAge: 0
+    });
   }
 }

@@ -92,23 +92,24 @@ export class ProductService {
       if (!category) {
         throw new NotFoundException("Category not found");
       }
-
-      await this.databaseService.query(
-        `
+    }
+    await this.databaseService.query(
+      `
             UPDATE product
             SET category_number = $2,
                 product_name    = $3,
                 characteristics = $4
             WHERE id_product = $1
         `,
-        [
-          id_product,
-          updateProductDto.category_number ?? product.category_number,
-          updateProductDto.product_name ?? product.product_name,
-          updateProductDto.characteristics ?? product.characteristics
-        ]
-      );
-    }
+      [
+        id_product,
+        updateProductDto.category_number ?? product.category_number,
+        updateProductDto.product_name ?? product.product_name,
+        updateProductDto.characteristics ?? product.characteristics
+      ]
+    );
+
+    return product;
   }
 
   async remove(id_product: number) {
@@ -124,8 +125,9 @@ export class ProductService {
       );
     }catch (e) {
       if (e.code === '23503') { // Foreign key violation
-        throw new ConflictException('There are Store Products associated with this category. Delete them first');
+        throw new ConflictException('There are Store Customers associated with this category. Delete them first');
       }
     }
+    return product;
   }
 }

@@ -1,8 +1,8 @@
 'use client'
 
 import {Card} from '@/components/ui/card';
-import {useProducts} from '@/shared/hooks/useProducts';
-import {useCategories} from '@/shared/hooks/useCategories';
+import {useProducts} from '@/shared/hooks/product/useProducts';
+import {useCategories} from '@/shared/hooks/category/useCategories';
 import {ReactElement, useMemo} from 'react';
 import {TableCell, TableRow} from '@/components/ui/table';
 import {Button} from '@/components/ui/button';

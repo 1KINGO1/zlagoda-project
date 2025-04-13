@@ -9,8 +9,9 @@ export const useUpdateCategory = () => {
 	return useMutation({
 		mutationFn: categoryService.update,
 		onSuccess(data) {
-			queryClient.setQueryData([QueryKeys.CATEGORIES], (old: Category[] = []) => {
-				return old.map(category => category.category_number === data.category_number ? {...category, ...data} : category);
+			queryClient.invalidateQueries({
+				queryKey: [QueryKeys.CATEGORIES],
+				exact: false
 			});
 		}
 	})

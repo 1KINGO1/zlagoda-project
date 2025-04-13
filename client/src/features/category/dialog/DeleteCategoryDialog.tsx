@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/dialog';
 import {Button} from '@/components/ui/button';
 import {Category as CategoryType} from '@/shared/entities/Category';
-import {useDeleteCategory} from '@/shared/hooks/useDeleteCategory';
+import {useDeleteCategory} from '@/shared/hooks/category/useDeleteCategory';
 import {toast} from 'sonner';
 import {ApiError} from '@/shared/types/ApiError';
 

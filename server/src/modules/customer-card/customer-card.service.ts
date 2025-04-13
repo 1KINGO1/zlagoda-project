@@ -109,6 +109,8 @@ export class CustomerCardService {
         updateCustomerCardDto.percent ?? customerCard.percent,
       ]
     );
+
+    return await this.getCustomerCardByCardNumber(card_number);
   }
   async remove(card_number: string) {
     const customerCard = await this.getCustomerCardByCardNumber(card_number);
@@ -120,5 +122,7 @@ export class CustomerCardService {
       'DELETE FROM customer_card WHERE card_number = $1',
       [card_number]
     );
+
+    return customerCard;
   }
 }

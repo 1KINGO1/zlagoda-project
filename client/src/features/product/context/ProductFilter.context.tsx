@@ -6,7 +6,7 @@ import {GetProductsFilters} from '@/shared/services/product.service';
 interface ProductFilterContextType extends GetProductsFilters {
 	setCategoryNumber(categoryNumber: number): void;
 	setSearchName(name: string): void;
-	setSortOrder(order: "ASC" | "DESC"): void;
+	setSortOrder(order: "ASC" | "DESC" | undefined): void;
 	clear(): void
 }
 export const ProductFilterContext = createContext<ProductFilterContextType>({

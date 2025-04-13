@@ -15,7 +15,7 @@ import {Textarea} from '@/components/ui/textarea';
 import {useEffect} from 'react';
 import {SelectCategory} from '@/components/SelectCategory';
 import * as React from 'react';
-import { useUpdateProduct } from '@/shared/hooks/useUpdateProduct';
+import { useUpdateProduct } from '@/shared/hooks/product/useUpdateProduct';
 import {toast} from 'sonner';
 import {ApiError} from '@/shared/types/ApiError';
 

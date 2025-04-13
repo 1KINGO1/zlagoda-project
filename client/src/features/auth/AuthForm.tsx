@@ -7,7 +7,7 @@ import {useForm} from 'react-hook-form';
 import {Button} from '@/components/ui/button';
 import {LoginFormSchema, LoginFormSchemaType} from '@/shared/schemas/LoginForm.schema';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {useLogin} from '@/shared/hooks/useLogin';
+import {useLogin} from '@/shared/hooks/auth/useLogin';
 import {ApiError} from '@/shared/types/ApiError';
 import {useRouter} from 'next/navigation';
 

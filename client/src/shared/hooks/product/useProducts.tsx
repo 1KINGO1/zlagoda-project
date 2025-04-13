@@ -5,6 +5,7 @@ import {GetProductsFilters, productService} from '@/shared/services/product.serv
 export const useProducts = (filters?: GetProductsFilters) => {
 	return useQuery({
 		queryKey: [QueryKeys.PRODUCTS, filters],
+		staleTime: 1000 * 60,
 		queryFn: () => productService.getProducts(filters ?? {}),
 		placeholderData: keepPreviousData
 	});

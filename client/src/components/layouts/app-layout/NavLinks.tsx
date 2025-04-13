@@ -1,6 +1,6 @@
 'use client'
 
-import {useCurrentEmployee} from '@/shared/hooks/useCurrentEmployee';
+import {useCurrentEmployee} from '@/shared/hooks/auth/useCurrentEmployee';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import {cx} from 'class-variance-authority';
@@ -20,6 +20,9 @@ export const NavLinks = () => {
 			</li>
 			<li>
 				<NavLink href="/dashboard/categories">Categories</NavLink>
+			</li>
+			<li>
+				<NavLink href="/dashboard/customers">Customers</NavLink>
 			</li>
 		</ul>
 	) : <span>Loading...</span>;

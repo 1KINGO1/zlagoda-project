@@ -14,7 +14,7 @@ import {Input} from '@/components/ui/input';
 import {Textarea} from '@/components/ui/textarea';
 import {SelectCategory} from '@/components/SelectCategory';
 import * as React from 'react';
-import {useCreateProduct} from '@/shared/hooks/useCreateProduct';
+import {useCreateProduct} from '@/shared/hooks/product/useCreateProduct';
 import {toast} from 'sonner';
 import {ApiError} from '@/shared/types/ApiError';
 

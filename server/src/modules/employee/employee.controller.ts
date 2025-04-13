@@ -43,6 +43,6 @@ export class EmployeeController {
   @Get('me')
   @Auth()
   async getMe(@Req() req: Request) {
-    return this.employeeService.getEmployeeById(req.employee);
+    return this.employeeService.getEmployeeById(req.id_employee);
   }
 }

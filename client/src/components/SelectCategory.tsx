@@ -1,7 +1,7 @@
 'use client';
 
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
-import {useCategories} from '@/shared/hooks/useCategories';
+import {useCategories} from '@/shared/hooks/category/useCategories';
 import * as React from 'react';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import {useMemo} from 'react';

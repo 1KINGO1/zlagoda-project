@@ -1,6 +1,7 @@
 import {API_BASE_URL} from '@/shared/constants/apiBaseUrl';
 import {Product} from '@/shared/entities/Product';
 import {ProductSchemaType} from '@/shared/schemas/Product.schema';
+import {setURLSearchParams} from '@/shared/utils/setURLSearchParams';
 
 export interface GetProductsFilters {
 	category_number?: number;
@@ -11,12 +12,7 @@ export interface GetProductsFilters {
 class ProductService {
 	async getProducts(filters: GetProductsFilters): Promise<Product[]> {
 		const url = new URL(`${API_BASE_URL}product`);
-
-		for (const [key, value] of Object.entries(filters)) {
-			if (value !== undefined) {
-				url.searchParams.set(key, value.toString());
-			}
-		}
+		setURLSearchParams(url, filters);
 
 		const response = await fetch(url.toString(), {
 			method: 'GET',

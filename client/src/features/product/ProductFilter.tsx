@@ -9,7 +9,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select"
-import { useCategories } from '@/shared/hooks/useCategories';
+import { useCategories } from '@/shared/hooks/category/useCategories';
 import {useProductFilter} from '@/features/product/context/ProductFilter.context';
 import {debounce} from '@/shared/utils/debounce';
 import {SelectCategory} from '@/components/SelectCategory';

@@ -1,6 +1,6 @@
 'use client'
 
-import {useCurrentEmployee} from '@/shared/hooks/useCurrentEmployee';
+import {useCurrentEmployee} from '@/shared/hooks/auth/useCurrentEmployee';
 
 export const UserInfo = () => {
 	const {data, isSuccess} = useCurrentEmployee();

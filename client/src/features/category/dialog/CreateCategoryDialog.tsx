@@ -12,7 +12,7 @@ import {CategorySchema, CategorySchemaType} from '@/shared/schemas/Category.sche
 import {Input} from '@/components/ui/input';
 import {toast} from 'sonner';
 import {ApiError} from '@/shared/types/ApiError';
-import {useCreateCategory} from '@/shared/hooks/useCreateCategory';
+import {useCreateCategory} from '@/shared/hooks/category/useCreateCategory';
 
 interface CreateCategoryDialogProps {
 	open: boolean,

@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/dialog';
 import {Button} from '@/components/ui/button';
 import {useProductModal} from '@/features/product/context/ProductModals.context';
-import {useDeleteProduct} from '@/shared/hooks/useDeleteProduct';
+import {useDeleteProduct} from '@/shared/hooks/product/useDeleteProduct';
 import {toast} from 'sonner';
 import {ApiError} from '@/shared/types/ApiError';
 import {useEffect, useState} from 'react';

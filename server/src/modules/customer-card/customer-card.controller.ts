@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Patch, Post, Query} from '@nestjs/common';
 import {CustomerCardService} from './customer-card.service';
 import {CreateCustomerCardDto} from './dto/CreateCustomerCard.dto';
 import {UpdateCustomerCardDto} from './dto/UpdateCustomerCard.dto';

@@ -1,6 +1,6 @@
 'use client'
 
-import {DeleteProductDialog} from './dialog/DeleteCategoryDialog';
+import {DeleteProductDialog} from './dialog/DeleteProductDialog';
 import {EditProductDialog} from './dialog/EditProductDialog';
 import {useProductModal} from '@/features/product/context/ProductModals.context';
 import {Button} from '@/components/ui/button';

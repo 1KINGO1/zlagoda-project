@@ -66,6 +66,8 @@ export class CategoryService {
         updateCategoryDto.category_name ?? category.category_name,
       ]
     );
+
+    return Object.assign(category, updateCategoryDto);
   }
   async remove(category_number: number) {
     const category = await this.getCategoryById(category_number);
@@ -83,5 +85,7 @@ export class CategoryService {
         throw new ConflictException('There are products associated with this category. Delete them first');
       }
     }
+
+    return category;
   }
 }

@@ -1,37 +1,54 @@
 'use client';
 
-import {useCategories} from '@/shared/hooks/useCategories';
+import {useCategories} from '@/shared/hooks/category/useCategories';
 import {Category} from '@/features/category/Category';
 import {Category as CategoryType} from '@/shared/entities/Category';
 import {useState} from 'react';
 import {EditCategoryDialog} from '@/features/category/dialog/EditCategoryDialog';
 import {DeleteCategoryDialog} from '@/features/category/dialog/DeleteCategoryDialog';
 import {Button} from '@/components/ui/button';
-import {CirclePlus} from 'lucide-react';
+import {ChevronDown, ChevronUp, CirclePlus} from 'lucide-react';
 import {CreateCategoryDialog} from '@/features/category/dialog/CreateCategoryDialog';
 
 export const Categories = () => {
-	const {data: categories, isLoading} = useCategories();
 	const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(null);
-	const [openDialog, setOpenDialog] = useState<"update" | "create" | "delete" | null>(null);
-	const closeDialog = () => setOpenDialog(null);
+	const [openedDialog, setOpenedDialog] = useState<"update" | "create" | "delete" | null>(null);
+	const closeDialog = () => setOpenedDialog(null);
+	const [sortOrder, setSortOrder] = useState<"ASC" | "DESC" | undefined>(undefined);
+	const {data: categories, isLoading} = useCategories(sortOrder);
 
 	const handleOpenEditDialog = (category: CategoryType) => {
 		setSelectedCategory(category);
-		setOpenDialog("update");
+		setOpenedDialog("update");
 	}
 
 	const handleOpenDeleteDialog = (category: CategoryType) => {
 		setSelectedCategory(category);
-		setOpenDialog("delete");
+		setOpenedDialog("delete");
 	}
 
-	const handleOpenCreateDialog = () => {
-		setOpenDialog("create");
+	const handleSortOrderChange = () => {
+		setSortOrder((prev) => {
+			if (prev === undefined || prev === "DESC") {
+				return "ASC";
+			} else if (prev === "ASC") {
+				return "DESC";
+			}
+			return undefined;
+		})
 	}
 
 	return isLoading ? (<div>Loading...</div>) : (
 		<div>
+			<div>
+				<Button
+					onClick={handleSortOrderChange}
+					className="flex items-center"
+				>
+					Sort by name {sortOrder !== undefined && (sortOrder === "ASC" ? <ChevronUp /> : <ChevronDown />)}
+				</Button>
+			</div>
+
 			<div className="flex flex-col gap-4 mt-4 h-auto">
 				{categories?.map((category) => (
 					<Category
@@ -44,11 +61,17 @@ export const Categories = () => {
 			</div>
 
 			{selectedCategory !== null && (<>
-				<EditCategoryDialog category={selectedCategory} open={openDialog === "update"} setOpen={closeDialog}/>
-				<DeleteCategoryDialog category={selectedCategory} open={openDialog === "delete"} setOpen={closeDialog}/>
+				<EditCategoryDialog category={selectedCategory} open={openedDialog === "update"} setOpen={closeDialog}/>
+				<DeleteCategoryDialog category={selectedCategory} open={openedDialog === "delete"} setOpen={closeDialog}/>
 			</>)}
 
-			<CreateCategoryDialog open={openDialog === "create"} setOpen={closeDialog}/>
+			<CreateCategoryDialog open={openedDialog === "create"} setOpen={closeDialog}/>
+
+			<div className="fixed bottom-8 right-8">
+				<Button className="w-12 h-12" onClick={() => setOpenedDialog("create")}>
+					<CirclePlus/>
+				</Button>
+			</div>
 		</div>
 	)
 }

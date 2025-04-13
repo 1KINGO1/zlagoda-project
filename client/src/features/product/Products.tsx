@@ -8,12 +8,25 @@ import {
 	TableRow,
 } from "@/components/ui/table"
 import {ProductFilter} from '@/features/product/ProductFilter';
-import {useState} from 'react';
-import {Product} from '@/shared/entities/Product';
 import {ProductList} from '@/features/product/ProductList';
 import {ProductDialogs} from '@/features/product/ProductDialogs';
+import {useProductFilter} from '@/features/product/context/ProductFilter.context';
+import {ChevronDown, ChevronUp} from 'lucide-react';
 
 export const Products = () => {
+	const {sort, setSortOrder} = useProductFilter();
+
+	const nameColumnClickHandler = () => {
+		if (sort === undefined) {
+			setSortOrder("ASC");
+		}
+		else if (sort === "ASC") {
+			setSortOrder("DESC");
+		} else if (sort === "DESC") {
+			setSortOrder(undefined);
+		}
+	}
+
 	return (
 		<div>
 			<ProductFilter />
@@ -21,7 +34,10 @@ export const Products = () => {
 				<TableHeader>
 					<TableRow>
 						<TableHead className="w-[100px]">Product ID</TableHead>
-						<TableHead>Name</TableHead>
+						<TableHead onClick={nameColumnClickHandler} className="flex justify-between items-center">
+							Name
+							<span>{sort !== undefined && (sort === "ASC" ? <ChevronUp /> : <ChevronDown />)}</span>
+						</TableHead>
 						<TableHead>Category</TableHead>
 						<TableHead className="text-right">Description</TableHead>
 						<TableHead className="text-right">Actions</TableHead>

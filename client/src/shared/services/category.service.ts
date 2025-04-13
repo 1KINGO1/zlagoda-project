@@ -3,8 +3,13 @@ import {Category} from '@/shared/entities/Category';
 import {CategorySchemaType} from '@/shared/schemas/Category.schema';
 
 class CategoryService {
-	async getAllCategories(): Promise<Category[]> {
-		const res = await fetch(API_BASE_URL + "category", {
+	async getAllCategories(sort?: "ASC" | "DESC"): Promise<Category[]> {
+		const url = new URL(API_BASE_URL + "category");
+		if (sort) {
+			url.searchParams.append("sort", sort);
+		}
+
+		const res = await fetch(url.toString(), {
 			method: 'GET',
 			credentials: "include",
 		});

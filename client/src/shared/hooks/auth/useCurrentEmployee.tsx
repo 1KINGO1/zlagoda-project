@@ -3,7 +3,7 @@ import {employeeService} from '@/shared/services/exployee.service';
 import {QueryKeys} from '@/shared/constants/QueryKeys';
 import {useEffect} from 'react';
 import {useRouter} from 'next/navigation';
-import {useLogout} from '@/shared/hooks/useLogout';
+import {useLogout} from '@/shared/hooks/auth/useLogout';
 
 export const useCurrentEmployee = () => {
 	const query = useQuery({

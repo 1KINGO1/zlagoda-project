@@ -11,7 +11,7 @@ import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {CategorySchema, CategorySchemaType} from '@/shared/schemas/Category.schema';
 import {Input} from '@/components/ui/input';
-import {useUpdateCategory} from '@/shared/hooks/useUpdateCategory';
+import {useUpdateCategory} from '@/shared/hooks/category/useUpdateCategory';
 import {toast} from 'sonner';
 import {ApiError} from '@/shared/types/ApiError';
 import {useEffect} from 'react';

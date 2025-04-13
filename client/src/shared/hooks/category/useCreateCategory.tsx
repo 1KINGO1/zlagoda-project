@@ -3,14 +3,15 @@ import {categoryService} from '@/shared/services/category.service';
 import {QueryKeys} from '@/shared/constants/QueryKeys';
 import {Category} from '@/shared/entities/Category';
 
-export const useDeleteCategory = () => {
+export const useCreateCategory = () => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: categoryService.delete,
-		onSuccess(data) {
-			queryClient.setQueryData([QueryKeys.CATEGORIES], (old: Category[] = []) => {
-				return old.filter(category => category.category_number !== data.category_number);
+		mutationFn: categoryService.create,
+		onSuccess() {
+			queryClient.invalidateQueries({
+				queryKey: [QueryKeys.CATEGORIES],
+				exact: false
 			});
 		}
 	})
