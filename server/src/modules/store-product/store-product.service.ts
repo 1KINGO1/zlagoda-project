@@ -9,31 +9,31 @@ import {Product} from '../../core/entities/Product';
 
 @Injectable()
 export class StoreProductService {
-  constructor(
-    private readonly databaseService: DatabaseService,
-  ) {
-  }
+	constructor(
+		private readonly databaseService: DatabaseService,
+	) {
+	}
 
-  async create(createProductDto: CreateStoreProductDto): Promise<StoreProduct> {
-    await this.databaseService.query('BEGIN');
-    try {
-      const storeProducts = await this.getStoreProductsByProductId(createProductDto.id_product, true);
+	async create(createProductDto: CreateStoreProductDto): Promise<StoreProduct> {
+		await this.databaseService.query('BEGIN');
+		try {
+			const storeProducts = await this.getStoreProductsByProductId(createProductDto.id_product, true);
 
-      if (storeProducts.length >= 2) {
-        throw new ConflictException('Following product already has 2 store products');
-      }
+			if (storeProducts.length >= 2) {
+				throw new ConflictException('Following product already has 2 store products');
+			}
 
-      const includesPromotionalProduct = storeProducts.some((storeProduct) => storeProduct.promotional_product);
-      const includesNonPromotionalProduct = storeProducts.length >= 1 && !includesPromotionalProduct;
+			const includesPromotionalProduct = storeProducts.some((storeProduct) => storeProduct.promotional_product);
+			const includesNonPromotionalProduct = storeProducts.length >= 1 && !includesPromotionalProduct;
 
-      if (includesPromotionalProduct && createProductDto.promotional_product) {
-        throw new ConflictException('Following product already has promotional store product');
-      }
-      if (includesNonPromotionalProduct && !createProductDto.promotional_product) {
-        throw new ConflictException('Following product already has non-promotional store products');
-      }
+			if (includesPromotionalProduct && createProductDto.promotional_product) {
+				throw new ConflictException('Following product already has promotional store product');
+			}
+			if (includesNonPromotionalProduct && !createProductDto.promotional_product) {
+				throw new ConflictException('Following product already has non-promotional store products');
+			}
 
-      let query = `
+			let query = `
           INSERT INTO store_product
           (upc_prom,
            id_product,
@@ -42,203 +42,239 @@ export class StoreProductService {
            promotional_product)
           VALUES ($1, $2, $3, $4, $5) RETURNING *;
       `;
-      const result = await this.databaseService.query<StoreProduct>
-      (
-        query,
-        [
-          createProductDto.promotional_product ? null : storeProducts[0]?.upc,
-          createProductDto.id_product,
-          createProductDto.selling_price,
-          createProductDto.products_number,
-          createProductDto.promotional_product,
-        ]
-      );
+			const result = await this.databaseService.query<StoreProduct>
+			(
+				query,
+				[
+					createProductDto.promotional_product ? null : storeProducts[0]?.upc,
+					createProductDto.id_product,
+					createProductDto.selling_price,
+					createProductDto.products_number,
+					createProductDto.promotional_product,
+				]
+			);
 
-      const createdStoreProduct = result.rows[0];
+			const createdStoreProduct = result.rows[0];
 
-      if (createProductDto.promotional_product && includesNonPromotionalProduct) {
-        query = `
+			if (createProductDto.promotional_product && includesNonPromotionalProduct) {
+				query = `
             UPDATE store_product
             SET upc_prom = $1
             WHERE upc = $2;
         `;
-        await this.databaseService.query
-        (
-          query,
-          [
-            createdStoreProduct.upc,
-            storeProducts[0]!.upc,
-          ]
-        );
-      }
+				await this.databaseService.query
+				(
+					query,
+					[
+						createdStoreProduct.upc,
+						storeProducts[0]!.upc,
+					]
+				);
+			}
 
-      await this.databaseService.query('COMMIT');
-      return result.rows[0];
-    } catch (e) {
-      await this.databaseService.query('ROLLBACK');
+			await this.databaseService.query('COMMIT');
+			return result.rows[0];
+		} catch (e) {
+			await this.databaseService.query('ROLLBACK');
 
-      // Handle unique constant violation
-      if (e.code === '23505') {
-        throw new ConflictException('Store product with this UPC already exists');
-      }
+			// Handle unique constant violation
+			if (e.code === '23505') {
+				throw new ConflictException('Store product with this UPC already exists');
+			}
 
-      // Handle foreign key violation
-      if (e.code === '23503') {
-        throw new NotFoundException('Product or Store_Product not found');
-      }
+			// Handle foreign key violation
+			if (e.code === '23503') {
+				throw new NotFoundException('Product or Store_Product not found');
+			}
 
-      throw e;
-    }
-  }
+			throw e;
+		}
+	}
 
-  async getStoreProductByUpc(upc: string, forUpdate: boolean = false): Promise<StoreProduct | null> {
-    const result = await this.databaseService.query<StoreProduct>(
-      `SELECT * FROM store_product WHERE upc = $1 ${forUpdate ? 'FOR UPDATE' : ''}`, [upc]
-    );
+	async getStoreProductByUpc(upc: string, forUpdate: boolean = false): Promise<StoreProduct | null> {
+		const result = await this.databaseService.query<StoreProduct>(
+			`SELECT * FROM store_product WHERE upc = $1 ${forUpdate ? 'FOR UPDATE' : ''}`, [upc]
+		);
 
-    return result.rows.length ? result.rows[0] : null;
-  }
-  async getStoreProductByUpcWithProductInfo(upc: string): Promise<StoreProduct> {
-    const result = await this.databaseService.query<StoreProduct & Product>(
-      `
+		return result.rows.length ? result.rows[0] : null;
+	}
+
+	async getStoreProductByUpcWithProductInfo(upc: string): Promise<StoreProduct> {
+		const result = await this.databaseService.query<StoreProduct & Product>(
+			`
         SELECT store_product.*, product.*
         FROM store_product
         INNER JOIN product ON store_product.id_product = product.id_product
         WHERE store_product.upc = $1
       `, [upc]
-    );
+		);
 
-    const storeProduct = result.rows.length ? result.rows[0] : null;
-    if (!storeProduct) {
-      throw new NotFoundException('Store product not found');
-    }
+		const storeProduct = result.rows.length ? result.rows[0] : null;
+		return this.transformDBJoinResultToStoreProduct([storeProduct])[0];
+	}
 
-    storeProduct.product = {
-      id_product: storeProduct.id_product,
-      product_name: storeProduct.product_name,
-      characteristics: storeProduct.characteristics,
-      category_number: storeProduct.category_number,
-    }
-
-    delete storeProduct.product_name;
-    delete storeProduct.characteristics;
-    delete storeProduct.category_number;
-    return storeProduct;
-  }
-  async getStoreProductsSorted(sortOptions: {
-    sortByAmount?: SortOrder,
-    sortByName?: SortOrder,
-    promotionalProduct?: boolean,
-  }): Promise<StoreProduct[]> {
-    const params: any[] = [];
-    let query = `
+	async getStoreProductsSorted(sortOptions: {
+		sortByAmount?: SortOrder,
+		sortByName?: SortOrder,
+		promotionalProduct?: boolean,
+		productInfo?: boolean
+	}): Promise<StoreProduct[]> {
+		const params: any[] = [];
+		let query = sortOptions?.productInfo === true ?
+			`
+				SELECT store_product.*, product.*
+        FROM store_product
+        INNER JOIN product ON store_product.id_product = product.id_product
+			`
+			: `
         SELECT * FROM store_product 
-        ${sortOptions.promotionalProduct !== undefined ? 'WHERE promotional_product = true' : 'WHERE promotional_product = false'}
     `;
 
-    if (sortOptions.sortByName) {
-      query = `
-          SELECT store_product.* 
-          FROM store_product
-          INNER JOIN product ON store_product.id_product = product.id_product
-          ${sortOptions.promotionalProduct !== undefined ? 'WHERE promotional_product = true' : 'WHERE promotional_product = false'}
+		if (sortOptions.promotionalProduct !== undefined) {
+			query += ` WHERE promotional_product = $1`;
+			params.push(sortOptions.promotionalProduct);
+		}
+
+		if (sortOptions.sortByName) {
+			query += `
           ORDER BY product.product_name ${sortOptions.sortByName}
       `
-    }
+		}
 
-    if (sortOptions.sortByAmount) {
-      query += ` ORDER BY products_number ${sortOptions.sortByAmount}`;
-    }
+		if (sortOptions.sortByAmount) {
+			if (sortOptions.sortByName) {
+				query += `,`;
+			} else {
+				query += ` ORDER BY`;
+			}
+			query += ` products_number ${sortOptions.sortByAmount}`;
+		}
 
-    const result = await this.databaseService.query<StoreProduct>(query, params);
-    return result.rows;
-  }
-  async getStoreProductsByProductId(id_product: number, forUpdate: boolean = false): Promise<StoreProduct[]> {
-    const query = `
+		if (sortOptions.productInfo === true) {
+			const result = await this.databaseService.query<StoreProduct & Product>(query, params);
+			return this.transformDBJoinResultToStoreProduct(result.rows);
+		}
+
+		const result = await this.databaseService.query<StoreProduct>(query, params);
+		return result.rows;
+	}
+
+	async getStoreProductsByProductId(id_product: number, forUpdate: boolean = false): Promise<StoreProduct[]> {
+		const query = `
       SELECT * FROM store_product WHERE id_product = $1 ${forUpdate ? 'FOR UPDATE' : ''};
     `;
 
-    const result =
-      await this.databaseService.query<StoreProduct>(query, [id_product]);
+		const result =
+			await this.databaseService.query<StoreProduct>(query, [id_product]);
 
-    return result.rows
-  }
-  async deleteStoreProduct(upc: string): Promise<void> {
-    await this.databaseService.query(`BEGIN`);
+		return result.rows
+	}
 
-    try {
-      const storeProduct = await this.getStoreProductByUpc(upc, true);
-      if (!storeProduct) {
-        throw new NotFoundException('Store product not found');
-      }
+	async deleteStoreProduct(upc: string): Promise<StoreProduct> {
+		await this.databaseService.query(`BEGIN`);
 
-      await this.databaseService.query(`DELETE FROM store_product WHERE upc = $1;`, [upc]);
-      await this.databaseService.query(`UPDATE store_product SET upc_prom = NULL WHERE id_product = $1;`, [storeProduct.id_product]);
-      await this.databaseService.query(`COMMIT`);
-    }
-    catch (e) {
-      await this.databaseService.query(`ROLLBACK`);
-      if (e.code === '23503') {  // Foreign key violation
-        throw new NotFoundException('There is Checks associated with this Store Product. Delete them first.');
-      }
+		try {
+			const storeProduct = await this.getStoreProductByUpc(upc, true);
+			if (!storeProduct) {
+				throw new NotFoundException('Store product not found');
+			}
 
-      throw e;
-    }
-  }
-  async updateStoreProduct(upc: string, updateStoreProductDto: UpdateStoreProductDto): Promise<void> {
-    await this.databaseService.query(`BEGIN`);
+			await this.databaseService.query(`DELETE FROM store_product WHERE upc = $1;`, [upc]);
+			await this.databaseService.query(`UPDATE store_product SET upc_prom = NULL WHERE id_product = $1;`, [storeProduct.id_product]);
+			await this.databaseService.query(`COMMIT`);
+			return storeProduct;
+		} catch (e) {
+			await this.databaseService.query(`ROLLBACK`);
+			if (e.code === '23503') {  // Foreign key violation
+				throw new NotFoundException('There is Checks associated with this Store Product. Delete them first.');
+			}
 
-    try {
-      const storeProduct = await this.getStoreProductByUpc(upc, true);
-      if (!storeProduct) {
-        throw new NotFoundException('Store product not found');
-      }
+			throw e;
+		}
+	}
 
-      if (updateStoreProductDto.promotional_product !== undefined) {
-        const storeProducts = await this.getStoreProductsByProductId(storeProduct.id_product, true);
-        const anotherStoreProduct = storeProducts.find((sp) => sp.upc !== upc);
+	async updateStoreProduct(upc: string, updateStoreProductDto: UpdateStoreProductDto): Promise<StoreProduct> {
+		await this.databaseService.query(`BEGIN`);
 
-        // Check if there is another store product associated with this product
-        // Because there can be only one promotional product and one non-promotional product for one product
-        // So if there is two store products, that means that one is promotional and one is non-promotional
-        // So if we try to each of them, there will be conflict
-        if (anotherStoreProduct) throw new ConflictException('You cannot change "promotional_product" field if there is another store product associated with this product');
-      }
+		try {
+			const storeProduct = await this.getStoreProductByUpc(upc, true);
+			if (!storeProduct) {
+				throw new NotFoundException('Store product not found');
+			}
 
-      let updateQuery = `UPDATE store_product SET`;
-      const params: any[] = [];
+			if (
+				updateStoreProductDto.promotional_product !== undefined &&
+				updateStoreProductDto.promotional_product !== storeProduct.promotional_product
+			) {
+				const storeProducts = await this.getStoreProductsByProductId(storeProduct.id_product, true);
+				const anotherStoreProduct = storeProducts.find((sp) => sp.upc !== upc);
 
-      if (updateStoreProductDto.upc !== undefined) {
-        updateQuery += ` upc = $${params.length + 1}`;
-        params.push(updateStoreProductDto.upc);
-      }
-      if (updateStoreProductDto.selling_price !== undefined) {
-        updateQuery += `${params.length > 0 ? ',' : ''} selling_price = $${params.length + 1}`;
-        params.push(updateStoreProductDto.selling_price);
-      }
-      if (updateStoreProductDto.products_number !== undefined) {
-        updateQuery += `${params.length > 0 ? ',' : ''} products_number = $${params.length + 1}`;
-        params.push(updateStoreProductDto.products_number);
-      }
-      if (updateStoreProductDto.promotional_product !== undefined) {
-        updateQuery += `${params.length > 0 ? ',' : ''} promotional_product = $${params.length + 1}`;
-        params.push(updateStoreProductDto.promotional_product);
-      }
+				// Check if there is another store product associated with this product
+				// Because there can be only one promotional product and one non-promotional product for one product
+				// So if there is two store products, that means that one is promotional and one is non-promotional
+				// So if we try to each of them, there will be conflict
+				if (anotherStoreProduct)
+					throw new ConflictException(
+						'You cannot change "promotional_product" field if there is another store product associated with this product'
+					);
+			}
 
-      updateQuery += ` WHERE upc = $${params.length + 1}`;
-      params.push(upc);
-      if (params.length === 1) throw new BadRequestException('Please provide at least one field to update');
+			let updateQuery = `UPDATE store_product SET`;
+			const params: any[] = [];
 
-      await this.databaseService.query(updateQuery, params);
-      await this.databaseService.query(`COMMIT`);
-    }
-    catch (e) {
-      await this.databaseService.query(`ROLLBACK`);
-      if (e.code === '23505' && e.constraint === 'store_product_pkey') {  // UNIQUE constraint violation
-        throw new ConflictException('Store Product with this UPC already exists');
-      }
+			if (updateStoreProductDto.upc !== undefined) {
+				updateQuery += ` upc = $${params.length + 1}`;
+				params.push(updateStoreProductDto.upc);
+			}
+			if (updateStoreProductDto.selling_price !== undefined) {
+				updateQuery += `${params.length > 0 ? ',' : ''} selling_price = $${params.length + 1}`;
+				params.push(updateStoreProductDto.selling_price);
+			}
+			if (updateStoreProductDto.products_number !== undefined) {
+				updateQuery += `${params.length > 0 ? ',' : ''} products_number = $${params.length + 1}`;
+				params.push(updateStoreProductDto.products_number);
+			}
+			if (updateStoreProductDto.promotional_product !== undefined) {
+				updateQuery += `${params.length > 0 ? ',' : ''} promotional_product = $${params.length + 1}`;
+				params.push(updateStoreProductDto.promotional_product);
+			}
 
-      throw e;
-    }
-  }
+			updateQuery += ` WHERE upc = $${params.length + 1}`;
+			params.push(upc);
+			if (params.length === 1) throw new BadRequestException('Please provide at least one field to update');
+
+			await this.databaseService.query(updateQuery, params);
+			await this.databaseService.query(`COMMIT`);
+
+			return Object.assign(storeProduct, updateStoreProductDto);
+		} catch (e) {
+			await this.databaseService.query(`ROLLBACK`);
+			if (e.code === '23505' && e.constraint === 'store_product_pkey') {  // UNIQUE constraint violation
+				throw new ConflictException('Store Product with this UPC already exists');
+			}
+
+			throw e;
+		}
+	}
+
+	private transformDBJoinResultToStoreProduct(dbResult: (StoreProduct & Product)[]): StoreProduct[] {
+		const result: StoreProduct[] = [];
+
+
+		dbResult.forEach((doc) => {
+			doc.product = {
+				id_product: doc.id_product,
+				product_name: doc.product_name,
+				characteristics: doc.characteristics,
+				category_number: doc.category_number,
+			}
+
+			delete doc.product_name;
+			delete doc.characteristics;
+			delete doc.category_number;
+			result.push(doc);
+		})
+
+		return result;
+	}
 }

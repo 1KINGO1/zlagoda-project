@@ -1,4 +1,4 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, Query} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseBoolPipe} from '@nestjs/common';
 import { StoreProductService } from './store-product.service';
 import { CreateStoreProductDto } from './dto/CreateStoreProduct.dto';
 import { UpdateStoreProductDto } from './dto/UpdateStoreProduct.dto';
@@ -22,8 +22,11 @@ export class StoreProductController {
   @AuthWithRole([EmployeeRole.MANAGER, EmployeeRole.CASHIER])
   findAll(
     @Query('sortByAmount', new SortOrderPipe()) sortByAmount?: SortOrder,
+    @Query('sortByName', new SortOrderPipe()) sortByName?: SortOrder,
+    @Query('promotionalProduct', new ParseBoolPipe({optional: true})) promotionalProduct?: boolean,
+    @Query('productInfo', new ParseBoolPipe({optional: true})) productInfo?: boolean,
   ) {
-    return this.storeProductService.getStoreProductsSorted({sortByAmount});
+    return this.storeProductService.getStoreProductsSorted({sortByAmount, sortByName, promotionalProduct, productInfo});
   }
 
   @Get(":upc")

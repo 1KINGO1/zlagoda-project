@@ -38,7 +38,7 @@ export const Categories = () => {
 		})
 	}
 
-	return isLoading ? (<div>Loading...</div>) : (
+	return (
 		<div>
 			<div>
 				<Button

@@ -24,6 +24,9 @@ export const NavLinks = () => {
 			<li>
 				<NavLink href="/dashboard/customers">Customers</NavLink>
 			</li>
+			<li>
+				<NavLink href="/dashboard/store-products">Store Products</NavLink>
+			</li>
 		</ul>
 	) : <span>Loading...</span>;
 }
