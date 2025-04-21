@@ -1,6 +1,5 @@
 export interface Employee {
   id_employee: string,
-  login: string,
   empl_surname: string,
   empl_name: string,
   empl_patronymic: string | null,

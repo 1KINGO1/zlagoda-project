@@ -1,10 +1,84 @@
 import {API_BASE_URL} from '@/shared/constants/apiBaseUrl';
 import {Employee} from '@/shared/entities/Employee';
+import {setURLSearchParams} from '@/shared/utils/setURLSearchParams';
+import {EmployeeSchemaType, EmployeeUpdateSchemaType} from '@/shared/schemas/Employee.schema';
+
+export interface GetAllEmployeesFilter {
+	sort?: string,
+	surname?: string,
+}
 
 class EmployeeService {
 	async getCurrentEmployeeInfo(): Promise<Employee> {
 		const res = await fetch(API_BASE_URL + "employee/me", {
 			method: 'GET',
+			credentials: "include",
+		});
+		const data = await res.json();
+
+		if (!res.ok) {
+			throw data;
+		}
+
+		return data;
+	}
+
+	async getAllEmployees(filters: GetAllEmployeesFilter): Promise<Employee[]> {
+		const url = new URL(API_BASE_URL + "employee");
+		setURLSearchParams(url, filters);
+
+		const res = await fetch(url.toString(), {
+			method: 'GET',
+			credentials: "include",
+		});
+		const data = await res.json();
+
+		if (!res.ok) {
+			throw data;
+		}
+
+		return data;
+	}
+
+	async createEmployee(employee: EmployeeSchemaType): Promise<Employee> {
+		const res = await fetch(API_BASE_URL + "employee", {
+			method: 'POST',
+			credentials: "include",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(employee)
+		});
+		const data = await res.json();
+
+		if (!res.ok) {
+			throw data;
+		}
+
+		return data;
+	}
+
+	async updateEmployee(employee: EmployeeUpdateSchemaType & {id: string}): Promise<Employee> {
+		const res = await fetch(API_BASE_URL + "employee/" + employee.id, {
+			method: 'PATCH',
+			credentials: "include",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(employee)
+		});
+		const data = await res.json();
+
+		if (!res.ok) {
+			throw data;
+		}
+
+		return data;
+	}
+
+	async deleteEmployee(id: string): Promise<void> {
+		const res = await fetch(API_BASE_URL + "employee/" + id, {
+			method: 'DELETE',
 			credentials: "include",
 		});
 		const data = await res.json();

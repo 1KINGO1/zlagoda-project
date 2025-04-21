@@ -45,6 +45,8 @@ export const EditCustomerDialog = () => {
 		}
 	}, [form, customer])
 
+	// TODO: Refactor all dialogs => separate shared forms
+
 	return (
 		<Dialog modal={false} open={modal === "update"} onOpenChange={() => {
 			closeModal();
@@ -89,10 +91,7 @@ export const EditCustomerDialog = () => {
 								<FormItem>
 									<FormLabel>Patronymic</FormLabel>
 									<FormControl>
-										<Input {...field} value={field.value ?? ''} onChange={(e) => {
-											const value = e.target.value;
-											field.onChange(value === "" ? undefined : value);
-										}}/>
+										<Input {...field} value={field.value ?? ''}/>
 									</FormControl>
 									<FormMessage/>
 								</FormItem>

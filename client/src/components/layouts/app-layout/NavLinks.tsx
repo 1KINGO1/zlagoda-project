@@ -8,7 +8,6 @@ import {PropsWithChildren} from 'react';
 
 export const NavLinks = () => {
 	const {data, isSuccess} = useCurrentEmployee();
-	const pathname = usePathname()
 
 	return isSuccess ? (
 		<ul className="flex gap-2.5">
@@ -26,6 +25,9 @@ export const NavLinks = () => {
 			</li>
 			<li>
 				<NavLink href="/dashboard/store-products">Store Products</NavLink>
+			</li>
+			<li>
+				<NavLink href="/dashboard/employees">Employees</NavLink>
 			</li>
 		</ul>
 	) : <span>Loading...</span>;

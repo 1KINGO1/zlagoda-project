@@ -1,4 +1,5 @@
 import {z} from 'zod';
+import {optionalString} from '@/shared/utils/zod-helpers';
 
 export const CustomerCardSchema = z.object({
 	cust_surname: z.string()
@@ -9,11 +10,10 @@ export const CustomerCardSchema = z.object({
 		.trim()
 		.min(3, "Customer name must be at least 3 character long")
 		.max(50, "Customer name must be at most 50 characters long"),
-	cust_patronymic: z.string()
-		.trim()
-		.min(3, "Patronymic must be at least 3 character long")
-		.max(50, "Patronymic must be at most 50 characters long")
-		.nullable(),
+	cust_patronymic: optionalString({
+		min: [3, "Customer patronymic must be at least 3 character long"],
+		max: [50, "Customer patronymic must be at most 50 characters long"]
+	}),
 	phone_number: z.string()
 		.trim()
 		.min(3, "Phone Number must be at least 3 character long")

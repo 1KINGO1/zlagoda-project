@@ -11,11 +11,11 @@ import {
 import {IsValidNumberConstraint} from "../../../core/constraints/IsValidNumber.constraint";
 
 export class UpdateEmployeeDto {
-  @IsString()
-  @IsOptional()
-  @MinLength(3)
-  @MaxLength(100)
-  password?: string
+  // @IsString()
+  // @IsOptional()
+  // @MinLength(3)
+  // @MaxLength(100)
+  // password?: string
 
   @IsString()
   @IsOptional()

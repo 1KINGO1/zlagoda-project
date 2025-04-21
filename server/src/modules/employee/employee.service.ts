@@ -80,7 +80,7 @@ export class EmployeeService {
            city,
            street,
            zip_code)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8::timestamp, $9::timestamp, $10, $11, $12, $13) RETURNING *;
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8::date, $9::date, $10, $11, $12, $13) RETURNING *;
       `,
       [
         employee.login,
@@ -101,7 +101,7 @@ export class EmployeeService {
 
     return result.rows[0];
   }
-  async deleteEmployee(authorEmployee: Employee, id_employee: string): Promise<void> {
+  async deleteEmployee(authorEmployee: Employee, id_employee: string): Promise<Employee> {
     if (authorEmployee.id_employee === id_employee)
       throw new BadRequestException('You cannot delete your own profile');
 
@@ -115,8 +115,10 @@ export class EmployeeService {
       `,
       [id_employee]
     );
+
+    return employee;
   }
-  async updateEmployee(id_employee: string, body: UpdateEmployeeDto): Promise<void> {
+  async updateEmployee(id_employee: string, body: UpdateEmployeeDto): Promise<Employee> {
     const employee = await this.getEmployeeById(id_employee);
     if (!employee)
       throw new NotFoundException('Employee with this id not found');
@@ -124,23 +126,21 @@ export class EmployeeService {
     await this.databaseService.query(
       `
         UPDATE employee
-        SET password_hash = $2,
-            empl_surname = $3,
-            empl_name = $4,
-            empl_patronymic = $5,
-            empl_role = $6,
-            salary = $7,
-            date_of_birth = $8::timestamp,
-            date_of_start = $9::timestamp,
-            phone_number = $10,
-            city = $11,
-            street = $12,
-            zip_code = $13
+        SET empl_surname = $2,
+            empl_name = $3,
+            empl_patronymic = $4,
+            empl_role = $5,
+            salary = $6,
+            date_of_birth = $7::timestamp,
+            date_of_start = $8::timestamp,
+            phone_number = $9,
+            city = $10,
+            street = $11,
+            zip_code = $12
         WHERE id_employee = $1
       `,
       [
         id_employee,
-        body.password ? await this.createPasswordHash(body.password) : employee.password_hash,
         body.empl_surname ?? employee.empl_surname,
         body.empl_name ?? employee.empl_name,
         body.empl_patronymic ?? employee.empl_patronymic,
@@ -154,6 +154,8 @@ export class EmployeeService {
         body.zip_code ?? employee.zip_code
       ]
     );
+
+    return employee;
   }
 
   private createPasswordHash(password: string): Promise<string> {

@@ -19,5 +19,9 @@ function removeSensitiveFields(data: {[key: string]: any} | any[]): Object {
     delete data.password_hash;
   }
 
+  if (data && data.login) {
+    delete data.login;
+  }
+
   return data;
 }

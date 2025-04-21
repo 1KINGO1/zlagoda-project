@@ -20,7 +20,7 @@ export class CreateEmployeeDto {
 
   @IsString()
   @IsNotEmpty()
-  @MinLength(3)
+  @MinLength(8)
   @MaxLength(100)
   password: string
 

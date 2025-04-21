@@ -99,14 +99,14 @@ export class CustomerCardService {
       `,
       [
         card_number,
-        updateCustomerCardDto.cust_surname ?? customerCard.cust_surname,
-        updateCustomerCardDto.cust_name ?? customerCard.cust_name,
-        updateCustomerCardDto.cust_patronymic ?? customerCard.cust_patronymic,
-        updateCustomerCardDto.phone_number ?? customerCard.phone_number,
-        updateCustomerCardDto.city ?? customerCard.city,
-        updateCustomerCardDto.street ?? customerCard.street,
-        updateCustomerCardDto.zip_code ?? customerCard.zip_code,
-        updateCustomerCardDto.percent ?? customerCard.percent,
+        updateCustomerCardDto.cust_surname !== undefined ? updateCustomerCardDto.cust_surname : customerCard.cust_surname,
+        updateCustomerCardDto.cust_name !== undefined ? updateCustomerCardDto.cust_name : customerCard.cust_name,
+        updateCustomerCardDto.cust_patronymic !== undefined ? updateCustomerCardDto.cust_patronymic : customerCard.cust_patronymic,
+        updateCustomerCardDto.phone_number !== undefined ? updateCustomerCardDto.phone_number : customerCard.phone_number,
+        updateCustomerCardDto.city !== undefined ? updateCustomerCardDto.city : customerCard.city,
+        updateCustomerCardDto.street !== undefined ? updateCustomerCardDto.street : customerCard.street,
+        updateCustomerCardDto.zip_code !== undefined ? updateCustomerCardDto.zip_code : customerCard.zip_code,
+        updateCustomerCardDto.percent !== undefined ? updateCustomerCardDto.percent : customerCard.percent,
       ]
     );
 
