@@ -9,8 +9,8 @@ interface OptStringOpts {
 	min?: [number, string];
 	max?: [number, string];
 }
-export function optionalString(opts: OptStringOpts = {}): ZodType<string | null, any, any> {
-	let schema: ZodNullable<ZodString> | ZodString = z.string();
+export function optionalString(opts: OptStringOpts = {}) {
+	let schema: ZodNullable<ZodString> | ZodString = z.string().trim();
 
 	if (opts.min) {
 		schema = schema.min(opts.min[0], opts.min[1]);
@@ -21,8 +21,8 @@ export function optionalString(opts: OptStringOpts = {}): ZodType<string | null,
 
 	schema = schema.nullable();
 
-	return z.preprocess((val) => {
-		if ((val + "").trim() === "") return null;
-		return val;
-	}, schema);
+	return z.preprocess(
+		(val) => ((val + "").trim() === "" ? null : val),
+		schema
+	) as unknown as ZodNullable<ZodString> | ZodString;
 }

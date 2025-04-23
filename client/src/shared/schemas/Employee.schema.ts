@@ -1,4 +1,5 @@
 import {z} from 'zod';
+import {optionalString} from '@/shared/utils/zod-helpers';
 
 export const EmployeeSchema = z.object({
 	login: z.string()
@@ -17,11 +18,10 @@ export const EmployeeSchema = z.object({
 		.trim()
 		.min(3, "Name must be at least 3 character long")
 		.max(50, "Name must be at most 50 characters long"),
-	empl_patronymic: z.string()
-		.trim()
-		.min(1, "Patronymic must be at least 3 character long")
-		.max(50, "Patronymic must be at most 50 characters long")
-		.nullable(),
+	empl_patronymic: optionalString({
+		min: [1, "Patronymic must be at least 3 character long"],
+		max: [50, "Patronymic must be at most 50 characters long"]
+	}),
 	empl_role: z.string()
 		.trim(),
 	salary: z.number()

@@ -14,10 +14,10 @@ import {Input} from '@/components/ui/input';
 import {Textarea} from '@/components/ui/textarea';
 import {useEffect} from 'react';
 import {SelectCategory} from '@/components/SelectCategory';
-import * as React from 'react';
 import { useUpdateProduct } from '@/shared/hooks/product/useUpdateProduct';
 import {toast} from 'sonner';
 import {ApiError} from '@/shared/types/ApiError';
+import {ProductForm} from '@/features/product/ProductForm';
 
 export const EditProductDialog = () => {
 	const {closeModal, modal, product} = useProductModal();
@@ -61,49 +61,7 @@ export const EditProductDialog = () => {
 				<DialogHeader>
 					<DialogTitle>Edit product "{product!.product_name}"</DialogTitle>
 				</DialogHeader>
-
-				<Form {...form}>
-					<form onSubmit={form.handleSubmit(submitHandler)} className="flex flex-col gap-4">
-						<FormField
-							control={form.control}
-							name="category_number"
-							render={({field}) => (
-								<FormItem>
-									<FormLabel>Category</FormLabel>
-									<SelectCategory {...field} onValueChange={field.onChange}/>
-									<FormMessage/>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="product_name"
-							render={({field}) => (
-								<FormItem>
-									<FormLabel>Product Name</FormLabel>
-									<FormControl>
-										<Input placeholder={product!.product_name} {...field}/>
-									</FormControl>
-									<FormMessage/>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="characteristics"
-							render={({field}) => (
-								<FormItem>
-									<FormLabel>Characteristics</FormLabel>
-									<FormControl>
-										<Textarea placeholder={product!.characteristics} {...field}/>
-									</FormControl>
-									<FormMessage/>
-								</FormItem>
-							)}
-						/>
-						<Button disabled={!form.formState.isValid || form.formState.isSubmitting}>Save changes</Button>
-					</form>
-				</Form>
+				<ProductForm form={form} onSubmit={submitHandler} buttonText={"Update"} />
 			</DialogContent>
 		</Dialog>
 	);

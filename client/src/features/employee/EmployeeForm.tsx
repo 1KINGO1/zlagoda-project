@@ -13,19 +13,18 @@ import {EmployeeRole} from '@/shared/entities/Employee';
 import {DatePicker} from '@/components/ui/date-picker';
 import {Button} from '@/components/ui/button';
 import {EmployeeSchemaType, EmployeeUpdateSchemaType} from '@/shared/schemas/Employee.schema';
-import {SubmitHandler, UseFormReturn} from 'react-hook-form';
+import {FormProps} from '@/shared/types/FormProps';
 
-interface EmployeeFormProps {
-	form: UseFormReturn<EmployeeSchemaType | EmployeeUpdateSchemaType>,
-	submitHandler: SubmitHandler<EmployeeSchemaType | EmployeeUpdateSchemaType>,
-	submitButtonText: string,
-	hideAuthFields?: boolean
+interface EmployeeFormProps extends FormProps<EmployeeSchemaType | EmployeeUpdateSchemaType> {
+	hideAuthFields: boolean
 }
 
-export const EmployeeForm = ({form, submitHandler, submitButtonText, hideAuthFields}: EmployeeFormProps) => {
+export const EmployeeForm = (
+	{form, onSubmit, buttonText, hideAuthFields}: EmployeeFormProps
+) => {
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(submitHandler)} className="flex flex-col gap-4">
+			<form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
 				<FormField
 					control={form.control}
 					name="empl_surname"
@@ -54,10 +53,7 @@ export const EmployeeForm = ({form, submitHandler, submitButtonText, hideAuthFie
 					render={({field}) => (
 						<FormItem>
 							<FormLabel>Patronymic</FormLabel>
-							<Input {...field} value={field.value ?? ''} onChange={(e) => {
-								const value = e.target.value;
-								field.onChange(value === "" ? null : value);
-							}}/>
+							<Input {...field} value={field.value ?? ''}/>
 							<FormMessage/>
 						</FormItem>
 					)}
@@ -208,7 +204,7 @@ export const EmployeeForm = ({form, submitHandler, submitButtonText, hideAuthFie
 					/>
 				</>)}
 				<Button disabled={!form.formState.isValid || form.formState.isSubmitting}>
-					{submitButtonText}
+					{buttonText}
 				</Button>
 			</form>
 		</Form>

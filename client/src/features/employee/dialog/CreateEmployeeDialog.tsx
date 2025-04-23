@@ -8,7 +8,7 @@ import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {toast} from 'sonner';
 import {ApiError} from '@/shared/types/ApiError';
-import {EmployeeSchema, EmployeeSchemaType} from '@/shared/schemas/Employee.schema';
+import {EmployeeSchema, EmployeeSchemaType, EmployeeUpdateSchemaType} from '@/shared/schemas/Employee.schema';
 import {useEffect} from 'react';
 import {useCreateEmployee} from '@/shared/hooks/employee/useCreateEmployee';
 import {EmployeeForm} from '@/features/employee/EmployeeForm';
@@ -42,7 +42,7 @@ export const CreateEmployeeDialog = () => {
 	const submitHandler = async (data: EmployeeSchemaType) => {
 		try {
 			const employee = await createEmployee(data);
-			toast.success(`Employee "${employee.login}" created successfully`);
+			toast.success(`Employee "${employee.empl_surname} ${employee.empl_name}" created successfully`);
 			form.reset();
 			closeModal();
 		}
@@ -79,9 +79,10 @@ export const CreateEmployeeDialog = () => {
 					<DialogTitle>Create employee</DialogTitle>
 				</DialogHeader>
 				<EmployeeForm
-					form={form}
-					submitHandler={submitHandler}
-					submitButtonText={"Create"}
+					form={form as never}
+					onSubmit={submitHandler as never}
+					buttonText={"Create"}
+					hideAuthFields={false}
 				/>
 			</DialogContent>
 		</Dialog>

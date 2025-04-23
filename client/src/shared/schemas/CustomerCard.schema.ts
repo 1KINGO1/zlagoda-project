@@ -18,21 +18,18 @@ export const CustomerCardSchema = z.object({
 		.trim()
 		.min(3, "Phone Number must be at least 3 character long")
 		.max(13, "Phone Number must be at most 13 characters long"),
-	city: z.string()
-		.trim()
-		.min(3, "City must be at least 3 character long")
-		.max(50, "City must be at most 50 characters long")
-		.nullable(),
-	street: z.string()
-		.trim()
-		.min(3, "Street must be at least 3 character long")
-		.max(50, "Street must be at most 50 characters long")
-		.nullable(),
-	zip_code: z.string()
-		.trim()
-		.min(3, "Zip Code must be at least 1 character long")
-		.max(50, "Zip Code must be at most 50 characters long")
-		.nullable(),
+	city: optionalString({
+		min: [3, "City must be at least 3 character long"],
+		max: [50, "City must be at most 50 characters long"]
+	}),
+	street: optionalString({
+		min: [3, "Street must be at least 3 character long"],
+		max: [50, "Street must be at most 50 characters long"]
+	}),
+	zip_code: optionalString({
+		min: [3, "Zip Code must be at least 3 character long"],
+		max: [50, "Zip Code must be at most 50 characters long"]
+	}),
 	percent: z.number().min(0).max(100)
 })
 

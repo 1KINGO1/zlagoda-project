@@ -10,7 +10,7 @@ import {useEffect} from 'react';
 import {toast} from 'sonner';
 import {ApiError} from '@/shared/types/ApiError';
 import {useEmployeeModal} from '@/features/employee/context/EmployeeModals.context';
-import {EmployeeUpdateSchema, EmployeeUpdateSchemaType} from '@/shared/schemas/Employee.schema';
+import {EmployeeSchemaType, EmployeeUpdateSchema, EmployeeUpdateSchemaType} from '@/shared/schemas/Employee.schema';
 import {EmployeeForm} from '@/features/employee/EmployeeForm';
 import {useUpdateEmployee} from '@/shared/hooks/employee/useUpdateEmployee';
 
@@ -50,8 +50,6 @@ export const EditEmployeeDialog = () => {
 		}
 	}, [form, employee])
 
-	console.log(form.getValues());
-
 	return (
 		<Dialog modal={false} open={modal === "update"} onOpenChange={() => {
 			closeModal();
@@ -63,8 +61,8 @@ export const EditEmployeeDialog = () => {
 
 				<EmployeeForm
 					form={form}
-					submitHandler={submitHandler}
-					submitButtonText="Update"
+					onSubmit={submitHandler}
+					buttonText="Update"
 					hideAuthFields
 				/>
 			</DialogContent>

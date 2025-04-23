@@ -4,17 +4,15 @@ import {
 	DialogHeader,
 	DialogTitle
 } from '@/components/ui/dialog';
-import {Button} from '@/components/ui/button';
 import {Category as CategoryType} from '@/shared/entities/Category';
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {CategorySchema, CategorySchemaType} from '@/shared/schemas/Category.schema';
-import {Input} from '@/components/ui/input';
 import {useUpdateCategory} from '@/shared/hooks/category/useUpdateCategory';
 import {toast} from 'sonner';
 import {ApiError} from '@/shared/types/ApiError';
 import {useEffect} from 'react';
+import {CategoryForm} from '@/features/category/CategoryForm';
 
 interface EditCategoryDialogProps {
 	category: CategoryType,
@@ -58,28 +56,7 @@ export const EditCategoryDialog = (props: EditCategoryDialogProps) => {
 				<DialogHeader>
 					<DialogTitle>Edit category "{props.category?.category_name}"</DialogTitle>
 				</DialogHeader>
-
-				<Form {...form}>
-					<form onSubmit={form.handleSubmit(submitHandler)} className="flex flex-col gap-4">
-						<FormField
-							control={form.control}
-							name="category_name"
-							render={({field}) => (
-								<FormItem>
-									<FormLabel>Category Name</FormLabel>
-									<FormControl>
-										<Input
-											placeholder={props.category.category_name}
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage/>
-								</FormItem>
-							)}
-						/>
-						<Button disabled={!form.formState.isValid || form.formState.isSubmitting}>Save changes</Button>
-					</form>
-				</Form>
+				<CategoryForm form={form} onSubmit={submitHandler} buttonText="Update"/>
 			</DialogContent>
 		</Dialog>
 	);

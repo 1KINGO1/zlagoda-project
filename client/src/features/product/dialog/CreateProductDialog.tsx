@@ -4,19 +4,14 @@ import {
 	DialogHeader,
 	DialogTitle
 } from '@/components/ui/dialog';
-import {Button} from '@/components/ui/button';
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {ProductSchema, ProductSchemaType} from '@/shared/schemas/Product.schema';
 import {useProductModal} from '@/features/product/context/ProductModals.context';
-import {Input} from '@/components/ui/input';
-import {Textarea} from '@/components/ui/textarea';
-import {SelectCategory} from '@/components/SelectCategory';
-import * as React from 'react';
 import {useCreateProduct} from '@/shared/hooks/product/useCreateProduct';
 import {toast} from 'sonner';
 import {ApiError} from '@/shared/types/ApiError';
+import {ProductForm} from '@/features/product/ProductForm';
 
 export const CreateProductDialog = () => {
 	const {closeModal, modal} = useProductModal();
@@ -53,49 +48,7 @@ export const CreateProductDialog = () => {
 				<DialogHeader>
 					<DialogTitle>Create product</DialogTitle>
 				</DialogHeader>
-
-				<Form {...form}>
-					<form onSubmit={form.handleSubmit(submitHandler)} className="flex flex-col gap-4">
-						<FormField
-							control={form.control}
-							name="category_number"
-							render={({field}) => (
-								<FormItem>
-									<FormLabel>Category</FormLabel>
-									<SelectCategory {...field} onValueChange={field.onChange}/>
-									<FormMessage/>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="product_name"
-							render={({field}) => (
-								<FormItem>
-									<FormLabel>Product Name</FormLabel>
-									<FormControl>
-										<Input {...field}/>
-									</FormControl>
-									<FormMessage/>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="characteristics"
-							render={({field}) => (
-								<FormItem>
-									<FormLabel>Characteristics</FormLabel>
-									<FormControl>
-										<Textarea {...field}/>
-									</FormControl>
-									<FormMessage/>
-								</FormItem>
-							)}
-						/>
-						<Button disabled={!form.formState.isValid || form.formState.isSubmitting}>Create</Button>
-					</form>
-				</Form>
+				<ProductForm form={form} onSubmit={submitHandler} buttonText={"Create"} />
 			</DialogContent>
 		</Dialog>
 	);

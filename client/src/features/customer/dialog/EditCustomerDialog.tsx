@@ -15,6 +15,7 @@ import {useEffect} from 'react';
 import {useUpdateCustomer} from '@/shared/hooks/customer/useUpdateCustomer';
 import {toast} from 'sonner';
 import {ApiError} from '@/shared/types/ApiError';
+import {CustomerForm} from '@/features/customer/CustomerForm';
 
 export const EditCustomerDialog = () => {
 	const {closeModal, modal, customer} = useCustomerModal();
@@ -55,128 +56,7 @@ export const EditCustomerDialog = () => {
 				<DialogHeader>
 					<DialogTitle>Update customer</DialogTitle>
 				</DialogHeader>
-
-				<Form {...form}>
-					<form onSubmit={form.handleSubmit(submitHandler)} className="flex flex-col gap-4">
-						<FormField
-							control={form.control}
-							name="cust_surname"
-							render={({field}) => (
-								<FormItem>
-									<FormLabel>Surname *</FormLabel>
-									<FormControl>
-										<Input {...field}/>
-									</FormControl>
-									<FormMessage/>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="cust_name"
-							render={({field}) => (
-								<FormItem>
-									<FormLabel>Name *</FormLabel>
-									<FormControl>
-										<Input {...field}/>
-									</FormControl>
-									<FormMessage/>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="cust_patronymic"
-							render={({field}) => (
-								<FormItem>
-									<FormLabel>Patronymic</FormLabel>
-									<FormControl>
-										<Input {...field} value={field.value ?? ''}/>
-									</FormControl>
-									<FormMessage/>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="phone_number"
-							render={({field}) => (
-								<FormItem>
-									<FormLabel>Phone number *</FormLabel>
-									<FormControl>
-										<Input {...field}/>
-									</FormControl>
-									<FormMessage/>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="city"
-							render={({field}) => (
-								<FormItem>
-									<FormLabel>City</FormLabel>
-									<FormControl>
-										<Input {...field} value={field.value ?? ''} onChange={(e) => {
-											const value = e.target.value;
-											field.onChange(value === "" ? undefined : value);
-										}}/>
-									</FormControl>
-									<FormMessage/>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="street"
-							render={({field}) => (
-								<FormItem>
-									<FormLabel>Street</FormLabel>
-									<FormControl>
-										<Input {...field} value={field.value ?? ''} onChange={(e) => {
-											const value = e.target.value;
-											field.onChange(value === "" ? undefined : value);
-										}}/>
-									</FormControl>
-									<FormMessage/>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="zip_code"
-							render={({field}) => (
-								<FormItem>
-									<FormLabel>Zip Code</FormLabel>
-									<FormControl>
-										<Input {...field} value={field.value ?? ''} onChange={(e) => {
-											const value = e.target.value;
-											field.onChange(value === "" ? undefined : value);
-										}}/>
-									</FormControl>
-									<FormMessage/>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="percent"
-							render={({field}) => (
-								<FormItem>
-									<FormLabel>Percent *</FormLabel>
-									<FormControl>
-										<Input type="number" {...field} onChange={(e) => {
-											const value = e.target.value;
-											field.onChange(value === "" ? undefined : +value);
-										}}/>
-									</FormControl>
-									<FormMessage/>
-								</FormItem>
-							)}
-						/>
-						<Button disabled={!form.formState.isValid || form.formState.isSubmitting}>Update</Button>
-					</form>
-				</Form>
+				<CustomerForm form={form} onSubmit={submitHandler} buttonText="Update" />
 			</DialogContent>
 		</Dialog>
 	);
