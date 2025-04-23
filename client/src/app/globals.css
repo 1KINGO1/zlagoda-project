@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -13,8 +13,10 @@
     }
   }
 
-  --animate-backgroundTextAnimation: backgroundTextAnimation 6s linear infinite alternate;
-  --animate-backgroundTextAnimationReverse: backgroundTextAnimation 6s linear infinite alternate-reverse;
+  --animate-backgroundTextAnimation: backgroundTextAnimation 6s linear infinite
+    alternate;
+  --animate-backgroundTextAnimationReverse: backgroundTextAnimation 6s linear
+    infinite alternate-reverse;
 }
 
 @theme inline {

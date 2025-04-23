@@ -1,5 +1,5 @@
-import {Categories} from '@/features/category/Categories';
+import { Categories } from '@/features/category/Categories'
 
-export default function Page(){
-	return (<Categories />);
+export default function Page() {
+  return <Categories />
 }

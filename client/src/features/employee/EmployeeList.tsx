@@ -1,44 +1,56 @@
 'use client'
 
-import {useMemo} from 'react';
-import {TableCell, TableRow} from '@/components/ui/table';
-import {Button} from '@/components/ui/button';
-import {Pencil, Trash2} from 'lucide-react';
-import {useEmployees} from '@/shared/hooks/employee/useEmployees';
-import {useEmployeeFilter} from '@/features/employee/context/EmployeeFilter.context';
-import {useEmployeeModal} from '@/features/employee/context/EmployeeModals.context';
+import { Pencil, Trash2 } from 'lucide-react'
+import { useMemo } from 'react'
+
+import { Button } from '@/components/ui/button'
+import { TableCell, TableRow } from '@/components/ui/table'
+import { useEmployeeFilter } from '@/features/employee/context/EmployeeFilter.context'
+import { useEmployeeModal } from '@/features/employee/context/EmployeeModals.context'
+import { useEmployees } from '@/shared/hooks/employee/useEmployees'
 
 export const EmployeeList = () => {
-	const {surname, sortOrder} = useEmployeeFilter()
-	const {data: employees, isSuccess: isEmployeesLoaded} = useEmployees({
-		sort: sortOrder,
-		surname: surname,
-	})
-	const {openModal} = useEmployeeModal()
+  const { surname, sortOrder } = useEmployeeFilter()
+  const { data: employees, isSuccess: isEmployeesLoaded } = useEmployees({
+    sort: sortOrder,
+    surname: surname,
+  })
+  const { openModal } = useEmployeeModal()
 
-	return useMemo(() => {
-		if (!isEmployeesLoaded) return [];
+  return useMemo(() => {
+    if (!isEmployeesLoaded) return []
 
-		return employees!.map((employee) => (
-			<TableRow key={employee.id_employee}>
-				<TableCell>{employee.id_employee}</TableCell>
-				<TableCell>{employee.empl_surname} {employee.empl_name}{employee.empl_patronymic ? (" " + employee.empl_patronymic) : ""}</TableCell>
-				<TableCell>{employee.empl_role}</TableCell>
-				<TableCell className="text-center">{employee.salary}</TableCell>
-				<TableCell className="text-center">{employee.phone_number}</TableCell>
-				<TableCell className="text-right">
-					<Button size="icon" variant="ghost" onClick={() => {
-						openModal("update", employee)
-					}}>
-						<Pencil />
-					</Button>
-					<Button size="icon" variant="ghost" onClick={() => {
-						openModal("delete", employee)
-					}}>
-						<Trash2 />
-					</Button>
-				</TableCell>
-			</TableRow>
-		));
-	}, [employees, isEmployeesLoaded]);
+    return employees!.map(employee => (
+      <TableRow key={employee.id_employee}>
+        <TableCell>{employee.id_employee}</TableCell>
+        <TableCell>
+          {employee.empl_surname} {employee.empl_name}
+          {employee.empl_patronymic ? ' ' + employee.empl_patronymic : ''}
+        </TableCell>
+        <TableCell>{employee.empl_role}</TableCell>
+        <TableCell className='text-center'>{employee.salary}</TableCell>
+        <TableCell className='text-center'>{employee.phone_number}</TableCell>
+        <TableCell className='text-right'>
+          <Button
+            size='icon'
+            variant='ghost'
+            onClick={() => {
+              openModal('update', employee)
+            }}
+          >
+            <Pencil />
+          </Button>
+          <Button
+            size='icon'
+            variant='ghost'
+            onClick={() => {
+              openModal('delete', employee)
+            }}
+          >
+            <Trash2 />
+          </Button>
+        </TableCell>
+      </TableRow>
+    ))
+  }, [employees, isEmployeesLoaded])
 }

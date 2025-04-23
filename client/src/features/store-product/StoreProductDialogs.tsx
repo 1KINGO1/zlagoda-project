@@ -1,31 +1,36 @@
 'use client'
 
-import {DeleteStoreProductDialog} from './dialog/DeleteStoreProductDialog';
-import {EditStoreProductDialog} from './dialog/EditStoreProductDialog';
-import {Button} from '@/components/ui/button';
-import {CirclePlus} from 'lucide-react';
-import {useStoreProductModal} from '@/features/store-product/context/StoreProductModals.context';
-import {CreateStoreProductDialog} from '@/features/store-product/dialog/CreateStoreProductDialog';
+import { CirclePlus } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
+import { useStoreProductModal } from '@/features/store-product/context/StoreProductModals.context'
+import { CreateStoreProductDialog } from '@/features/store-product/dialog/CreateStoreProductDialog'
+
+import { DeleteStoreProductDialog } from './dialog/DeleteStoreProductDialog'
+import { EditStoreProductDialog } from './dialog/EditStoreProductDialog'
 
 export const StoreProductDialogs = () => {
-	const {storeProduct, openModal} = useStoreProductModal();
+  const { storeProduct, openModal } = useStoreProductModal()
 
-	return (
-		<>
-			{storeProduct !== undefined && (
-				<>
-					<EditStoreProductDialog/>
-					<DeleteStoreProductDialog/>
-				</>
-			)}
+  return (
+    <>
+      {storeProduct !== undefined && (
+        <>
+          <EditStoreProductDialog />
+          <DeleteStoreProductDialog />
+        </>
+      )}
 
-			<CreateStoreProductDialog />
+      <CreateStoreProductDialog />
 
-			<div className="fixed bottom-8 right-8">
-				<Button className="w-12 h-12" onClick={() => openModal("add", undefined)}>
-					<CirclePlus/>
-				</Button>
-			</div>
-		</>
-	)
+      <div className='fixed bottom-8 right-8'>
+        <Button
+          className='w-12 h-12'
+          onClick={() => openModal('add', undefined)}
+        >
+          <CirclePlus />
+        </Button>
+      </div>
+    </>
+  )
 }

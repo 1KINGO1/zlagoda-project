@@ -1,32 +1,35 @@
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {QueryKeys} from '@/shared/constants/QueryKeys';
-import {customerService} from '@/shared/services/customer.service';
-import {CustomerCard} from '@/shared/entities/CustomerCard';
+import { QueryKeys } from '@/shared/constants/QueryKeys'
+import { CustomerCard } from '@/shared/entities/CustomerCard'
+import { customerService } from '@/shared/services/customer.service'
+
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 export const useUpdateCustomer = () => {
-	const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
-	return useMutation({
-		mutationFn: customerService.updateCustomer,
-		onSuccess(data: CustomerCard) {
-			const queries = queryClient.getQueriesData({
-				queryKey: [QueryKeys.CUSTOMERS],
-				exact: false
-			});
+  return useMutation({
+    mutationFn: customerService.updateCustomer,
+    onSuccess(data: CustomerCard) {
+      const queries = queryClient.getQueriesData({
+        queryKey: [QueryKeys.CUSTOMERS],
+        exact: false,
+      })
 
-			for (const [query] of queries) {
-				queryClient.setQueryData(query, (oldData: CustomerCard[]) => {
-					if (!oldData) return oldData;
+      for (const [query] of queries) {
+        queryClient.setQueryData(query, (oldData: CustomerCard[]) => {
+          if (!oldData) return oldData
 
-					const index = oldData.findIndex((customer) => customer.card_number === data.card_number);
-					if (index === -1) return oldData;
+          const index = oldData.findIndex(
+            customer => customer.card_number === data.card_number,
+          )
+          if (index === -1) return oldData
 
-					const newData = [...oldData];
-					newData[index] = data;
+          const newData = [...oldData]
+          newData[index] = data
 
-					return newData;
-				});
-			}
-		}
-	})
+          return newData
+        })
+      }
+    },
+  })
 }

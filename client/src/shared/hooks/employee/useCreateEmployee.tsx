@@ -1,14 +1,18 @@
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {employeeService} from '@/shared/services/exployee.service';
-import {QueryKeys} from '@/shared/constants/QueryKeys';
+import { QueryKeys } from '@/shared/constants/QueryKeys'
+import { employeeService } from '@/shared/services/exployee.service'
+
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 export const useCreateEmployee = () => {
-	const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
-	return useMutation({
-		mutationFn: employeeService.createEmployee,
-		onSuccess() {
-			queryClient.invalidateQueries({queryKey: [QueryKeys.EMPLOYEES], exact: false});
-		}
-	})
+  return useMutation({
+    mutationFn: employeeService.createEmployee,
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.EMPLOYEES],
+        exact: false,
+      })
+    },
+  })
 }

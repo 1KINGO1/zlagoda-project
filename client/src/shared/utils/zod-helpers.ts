@@ -1,4 +1,4 @@
-import {z, ZodNullable, ZodString, ZodType, ZodTypeAny} from "zod";
+import { z, ZodNullable, ZodString, ZodType, ZodTypeAny } from 'zod'
 
 /**
  * Nullable string schema
@@ -6,23 +6,23 @@ import {z, ZodNullable, ZodString, ZodType, ZodTypeAny} from "zod";
  */
 
 interface OptStringOpts {
-	min?: [number, string];
-	max?: [number, string];
+  min?: [number, string]
+  max?: [number, string]
 }
 export function optionalString(opts: OptStringOpts = {}) {
-	let schema: ZodNullable<ZodString> | ZodString = z.string().trim();
+  let schema: ZodNullable<ZodString> | ZodString = z.string().trim()
 
-	if (opts.min) {
-		schema = schema.min(opts.min[0], opts.min[1]);
-	}
-	if (opts.max) {
-		schema = schema.max(opts.max[0], opts.max[1]);
-	}
+  if (opts.min) {
+    schema = schema.min(opts.min[0], opts.min[1])
+  }
+  if (opts.max) {
+    schema = schema.max(opts.max[0], opts.max[1])
+  }
 
-	schema = schema.nullable();
+  schema = schema.nullable()
 
-	return z.preprocess(
-		(val) => ((val + "").trim() === "" ? null : val),
-		schema
-	) as unknown as ZodNullable<ZodString> | ZodString;
+  return z.preprocess(
+    val => ((val + '').trim() === '' ? null : val),
+    schema,
+  ) as unknown as ZodNullable<ZodString> | ZodString
 }
