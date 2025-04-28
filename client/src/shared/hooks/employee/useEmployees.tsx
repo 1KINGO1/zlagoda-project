@@ -6,11 +6,11 @@ import {
 
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
-export const useEmployees = (filters: GetAllEmployeesFilter) => {
+export const useEmployees = (filters?: GetAllEmployeesFilter) => {
   return useQuery({
     queryKey: [QueryKeys.EMPLOYEES, filters],
     staleTime: 1000 * 60,
-    queryFn: () => employeeService.getAllEmployees(filters),
+    queryFn: () => employeeService.getAllEmployees(filters ?? {}),
     placeholderData: keepPreviousData,
   })
 }

@@ -14,6 +14,8 @@ import { StoreProductDialogs } from '@/features/store-product/StoreProductDialog
 import { toggleSortByColumn } from '@/shared/utils/toggleSortByColumn'
 
 import { StoreProductList } from './StoreProductList'
+import { Button } from '@/components/ui/button'
+import { usePrintStoreProduct } from '@/shared/hooks/store-products/usePrintStoreProduct'
 
 export const StoreProducts = () => {
   const {
@@ -24,6 +26,8 @@ export const StoreProducts = () => {
     setSortByName,
     setPromotionalProduct,
   } = useStoreProductFilter()
+
+  const {printStoreProduct} = usePrintStoreProduct();
 
   const amountColumnClickHandler = toggleSortByColumn(
     sortByAmount,
@@ -43,6 +47,9 @@ export const StoreProducts = () => {
 
   return (
     <div>
+      <div>
+        <Button onClick={printStoreProduct}>Print</Button>
+      </div>
       <Table className='mt-3'>
         <TableHeader>
           <TableRow>

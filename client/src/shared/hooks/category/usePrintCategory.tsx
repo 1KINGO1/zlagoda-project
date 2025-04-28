@@ -23,8 +23,8 @@ export const usePrintCategory = () => {
             categories!.map(category => {
               return `
               <tr>
-                <td>${category.category_name}</td>
                 <td>${category.category_number}</td>
+                <td>${category.category_name}</td>
               </tr>
             `
             }).join(`\n`)

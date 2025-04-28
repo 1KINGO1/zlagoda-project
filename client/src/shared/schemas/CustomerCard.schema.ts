@@ -32,7 +32,7 @@ export const CustomerCardSchema = z.object({
   }),
   zip_code: optionalString({
     min: [3, 'Zip Code must be at least 3 character long'],
-    max: [50, 'Zip Code must be at most 50 characters long'],
+    max: [9, 'Zip Code must be at most 50 characters long'],
   }),
   percent: z.number().min(0).max(100),
 })

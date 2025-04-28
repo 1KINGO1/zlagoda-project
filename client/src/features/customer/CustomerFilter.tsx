@@ -5,9 +5,12 @@ import { ChangeEvent } from 'react'
 import { Input } from '@/components/ui/input'
 import { useCustomerFilter } from '@/features/customer/context/CustomerFilter.context'
 import { debounce } from '@/shared/utils/debounce'
+import { Button } from '@/components/ui/button'
+import { usePrintCustomer } from '@/shared/hooks/customer/usePrintCustomer'
 
 export const CustomerFilter = () => {
   const { setCustomerSurname, setPercent } = useCustomerFilter()
+  const {printCustomers, isLoading} = usePrintCustomer();
 
   return (
     <div className='flex gap-2'>
@@ -31,6 +34,9 @@ export const CustomerFilter = () => {
           300,
         )}
       />
+      <Button disabled={isLoading} onClick={printCustomers}>
+        Print
+      </Button>
     </div>
   )
 }

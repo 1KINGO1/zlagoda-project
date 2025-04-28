@@ -4,9 +4,12 @@ import { useReceiptFilter } from '@/features/receipt/context/ReceiptFilter.conte
 import { SelectEmployee } from '@/components/SelectEmployee'
 import { DatePicker } from '@/components/ui/date-picker'
 import { DateRange } from 'react-day-picker'
+import { usePrintReceipt } from '@/shared/hooks/receipt/usePrintReceipt'
+import { Button } from '@/components/ui/button'
 
 export const ReceiptFilter = () => {
   const {employee_id, setEmployeeId, startDate, endDate, setEndDate, setStartDate} = useReceiptFilter();
+  const {printReceipt, isLoading} = usePrintReceipt();
 
   const setDate = (date?: DateRange) => {
     setStartDate(date?.from);
@@ -29,6 +32,9 @@ export const ReceiptFilter = () => {
                       onChange={setEmployeeId}
                       className="w-full shrink-1"
       />
+      <Button disabled={isLoading} onClick={printReceipt}>
+        Print
+      </Button>
     </div>
   )
 }
