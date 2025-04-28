@@ -110,13 +110,11 @@ export class StoreProductService {
 	}
 
 	async getStoreProductByUpcWithProductInfo(upc: string): Promise<StoreProduct> {
+		let query = this.storeProductQuery;
+		query += ` WHERE store_product.upc = $1`;
+
 		const result = await this.databaseService.query<StoreProduct & Product>(
-			`
-        SELECT store_product.*, product.*
-        FROM store_product
-        INNER JOIN product ON store_product.id_product = product.id_product
-        WHERE store_product.upc = $1
-      `, [upc]
+			query, [upc]
 		);
 
 		const storeProduct = result.rows.length ? result.rows[0] : null;

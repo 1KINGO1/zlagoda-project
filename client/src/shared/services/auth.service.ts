@@ -28,13 +28,10 @@ class AuthService {
       },
       credentials: 'include',
     })
-    const data = await res.json()
 
     if (!res.ok) {
-      throw data
+      throw new Error("Logout failed")
     }
-
-    return data
   }
 }
 

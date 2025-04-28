@@ -1,9 +1,12 @@
 'use client'
 
 import { useCurrentEmployee } from '@/shared/hooks/auth/useCurrentEmployee'
+import { useLogout } from '@/shared/hooks/auth/useLogout'
+import { Button } from '@/components/ui/button'
 
 export const UserInfo = () => {
   const { data, isSuccess } = useCurrentEmployee()
+  const {mutateAsync: logout} = useLogout()
 
   return isSuccess ? (
     <div className='flex gap-2 items-center'>
@@ -13,6 +16,9 @@ export const UserInfo = () => {
       <p className='text-lg font-medium'>
         {data?.empl_surname} {data?.empl_name} {data?.empl_patronymic}
       </p>
+      <Button size="sm" variant="outline" className="ml-4" onClick={() => logout()}>
+        Logout
+      </Button>
     </div>
   ) : (
     <span>Loading...</span>
