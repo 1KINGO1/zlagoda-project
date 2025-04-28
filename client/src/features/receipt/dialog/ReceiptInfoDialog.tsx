@@ -5,7 +5,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { useReceiptModal } from '@/features/receipt/context/ReceiptModals.context'
-import { Card } from '@/components/ui/card'
 
 export const ReceiptInfoDialog = () => {
   const { closeModal, modal, receipt } = useReceiptModal()

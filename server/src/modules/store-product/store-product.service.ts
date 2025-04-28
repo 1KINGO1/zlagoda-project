@@ -118,7 +118,12 @@ export class StoreProductService {
 		);
 
 		const storeProduct = result.rows.length ? result.rows[0] : null;
-		return this.transformDBJoinResultToStoreProduct([storeProduct])[0];
+
+		if (!storeProduct) {
+			throw new NotFoundException('Store product not found');
+		}
+
+		return storeProduct;
 	}
 
 	async queryStoreProduct(sortOptions: {

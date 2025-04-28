@@ -8,6 +8,7 @@ import { CreateStoreProductDialog } from '@/features/store-product/dialog/Create
 
 import { DeleteStoreProductDialog } from './dialog/DeleteStoreProductDialog'
 import { EditStoreProductDialog } from './dialog/EditStoreProductDialog'
+import { InfoStoreProductDialog } from '@/features/store-product/dialog/InfoStoreProductDialog'
 
 export const StoreProductDialogs = () => {
   const { storeProduct, openModal } = useStoreProductModal()
@@ -22,6 +23,7 @@ export const StoreProductDialogs = () => {
       )}
 
       <CreateStoreProductDialog />
+      <InfoStoreProductDialog />
 
       <div className='fixed bottom-8 right-8'>
         <Button

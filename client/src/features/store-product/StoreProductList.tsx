@@ -15,7 +15,6 @@ export const StoreProductList = () => {
   const { openModal } = useStoreProductModal()
   const { data: storeProducts, isSuccess: isStoreProductsLoaded } =
     useStoreProducts({
-      productInfo: true,
       sortByName,
       sortByAmount,
       promotionalProduct,

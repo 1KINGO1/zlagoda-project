@@ -93,6 +93,21 @@ class StoreProductService {
     }
     return data
   }
+  async getStoreProductByUPC(upc: string): Promise<StoreProduct> {
+    const response = await fetch(`${API_BASE_URL}store-product/${upc}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const data = await response.json()
+    if (!response.ok) {
+      throw data
+    }
+    return data
+  }
 }
 
 export const storeProductService = new StoreProductService()
