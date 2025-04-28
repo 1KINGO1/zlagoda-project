@@ -128,6 +128,7 @@ export const EmployeeForm = ({
             <FormItem>
               <FormLabel>Date of Birth*</FormLabel>
               <DatePicker
+                mode='single'
                 date={field.value}
                 setDate={field.onChange}
                 toYear={new Date().getFullYear() - 18}
@@ -143,6 +144,7 @@ export const EmployeeForm = ({
             <FormItem>
               <FormLabel>Date of Start*</FormLabel>
               <DatePicker
+                mode='single'
                 date={field.value}
                 setDate={field.onChange}
                 toYear={new Date().getFullYear()}

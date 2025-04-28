@@ -1,3 +1,5 @@
+import { CustomerCard } from '@/shared/entities/CustomerCard'
+
 export interface Receipt {
   receipt_number: string
   id_employee: string
@@ -6,11 +8,17 @@ export interface Receipt {
   sum_total: number
   vat: number
 
-  items?: ReceiptItem[]
+  items: ReceiptItem[],
+  customer: null | CustomerCard,
+  employee: {
+    id_employee: string
+    empl_surname: string
+    empl_name: string
+  }
 }
 
 export interface ReceiptItem {
-  print_date: Date
+  upc: string
   product_number: number
   selling_price: number
   product_name: string

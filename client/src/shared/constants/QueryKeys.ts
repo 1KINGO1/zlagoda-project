@@ -5,4 +5,5 @@ export enum QueryKeys {
   CUSTOMERS = 'customers',
   STORE_PRODUCTS = 'storeProducts',
   EMPLOYEES = 'employees',
+  RECEIPTS = 'receipts',
 }

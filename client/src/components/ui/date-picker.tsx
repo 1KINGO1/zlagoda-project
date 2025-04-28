@@ -1,6 +1,5 @@
 import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
-import * as React from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -10,14 +9,44 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { cn } from '@/shared/utils/utils'
+import { DateRange } from 'react-day-picker'
 
-interface DataPickerProps {
-  date: Date | undefined
-  setDate: (date: Date | undefined) => void
-  toYear: number
-}
+type DataPickerProps =
+  {
+    date?: Date
+    setDate: (date?: Date) => void
+    toYear: number,
+    mode: 'single',
+    className?: string
+  } |
+  {
+    date?: DateRange
+    setDate: (date?: DateRange) => void
+    toYear: number,
+    mode: 'range',
+    className?: string
+  }
 
-export const DatePicker = ({ date, setDate, toYear }: DataPickerProps) => {
+export const DatePicker = ({ date, setDate, toYear, mode, className }: DataPickerProps) => {
+  const isDate = date instanceof Date
+
+  let formattedDate: string = ''
+  if (date === undefined) {
+    formattedDate = 'Pick a date'
+  }
+
+  if (isDate) {
+    formattedDate = format(date, 'LLL dd, y')
+  } else if (date?.from && date?.to) {
+    if (date?.from) {
+      formattedDate += format(date.from, 'LLL dd, y')
+    }
+
+    if (date?.to) {
+      formattedDate += ` - ${format(date.to, 'LLL dd, y')}`
+    }
+  }
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -26,17 +55,18 @@ export const DatePicker = ({ date, setDate, toYear }: DataPickerProps) => {
           className={cn(
             'w-full justify-start text-left font-normal',
             !date && 'text-muted-foreground',
+            className
           )}
         >
           <CalendarIcon />
-          {date ? format(date, 'PPP') : <span>Pick a date</span>}
+          {formattedDate}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-auto p-0' align='start'>
+      <PopoverContent className="w-auto p-0" align="start">
         <Calendar
-          mode='single'
-          captionLayout='dropdown'
-          selected={date}
+          mode={mode as never}
+          captionLayout="dropdown"
+          selected={mode === 'range' ? (date as DateRange) : (date as Date)}
           onSelect={setDate}
           toYear={toYear}
           fromYear={1900}

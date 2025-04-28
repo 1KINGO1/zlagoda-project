@@ -17,61 +17,62 @@ import {
   CommandList,
 } from './ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
+import { useStoreProducts } from '@/shared/hooks/store-products/useStoreProducts'
 
-interface SelectProductProps {
-  value: number
-  onChange(value: number): void,
+interface SelectStoreProductProps {
+  value: string | undefined
+  onChange(value: string | undefined): void,
   className?: string
 }
 
-export function SelectProduct({ value, onChange, className }: SelectProductProps) {
+export function SelectStoreProduct({ value, onChange, className }: SelectStoreProductProps) {
   const [open, setOpen] = useState(false)
   const [searchValue, setSearchValue] = useState('')
 
-  const { data: products, isLoading } = useProducts({ name: searchValue })
+  const { data: storeProducts, isLoading } = useStoreProducts({ name: searchValue })
 
-  if (!products || isLoading) return <></>
+  if (!storeProducts || isLoading) return <></>
+
+  const selectedStoreProduct = storeProducts.find(storeProduct => storeProduct.upc === value)
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          variant='outline'
-          role='combobox'
+          variant="outline"
+          role="combobox"
           aria-expanded={open}
           className={cn('w-full justify-between', className)}
         >
-          {value
-            ? products.find(product => product.id_product === value)
-                ?.product_name
-            : 'Select product...'}
-          <ChevronsUpDown className='opacity-50' />
+          {selectedStoreProduct ? selectedStoreProduct.product?.product_name : 'Select product...'}
+          <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='p-0'>
+      <PopoverContent className="p-0">
         <Command>
           <CommandInput
-            placeholder='Search product...'
-            className='h-9'
+            placeholder="Search store product..."
+            className="h-9"
             onValueChange={debounce(
               (value: string) => setSearchValue(value),
               300,
             )}
           />
           <CommandList>
-            <CommandEmpty>No products found.</CommandEmpty>
+            <CommandEmpty>No store products found.</CommandEmpty>
             <CommandGroup>
-              {products.map(product => (
+              {storeProducts.map(storeProduct => (
                 <CommandItem
-                  key={product.id_product}
+                  key={storeProduct.upc}
                   onSelect={() => {
-                    onChange(product.id_product)
+                    onChange(storeProduct.upc)
                     setOpen(false)
                   }}
                 >
-                  {product.product_name}
+                  {storeProduct.product?.product_name}
                   <Check
                     className={cn(
-                      value === product.id_product
+                      value === storeProduct.upc
                         ? 'opacity-100'
                         : 'opacity-0',
                     )}

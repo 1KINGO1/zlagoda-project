@@ -1,10 +1,7 @@
 import { QueryKeys } from '@/shared/constants/QueryKeys'
-import {
-  GetStoreProductsFilters,
-  storeProductService,
-} from '@/shared/services/storeProduct.service'
 
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { GetStoreProductsFilters, storeProductService } from '@/shared/services/storeProduct.service'
 
 export const useStoreProducts = (filters?: GetStoreProductsFilters) => {
   return useQuery({

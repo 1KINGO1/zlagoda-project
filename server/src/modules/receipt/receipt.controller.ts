@@ -15,13 +15,11 @@ export class ReceiptController {
   async findAll(@Query('employee_id') employee_id: string,
                 @Query('startDate', new ParseDatePipe({optional: true})) startDate: Date,
                 @Query('endDate', new ParseDatePipe({optional: true})) endDate: Date,
-                @Query('detailed', new ParseBoolPipe({optional: true})) detailed: boolean
                 ) {
-    return await this.receiptService.getReceiptsSorted({
+    return await this.receiptService.queryReceipts({
       employee_id,
       startDate,
       endDate,
-      detailed
     });
   }
 
@@ -41,7 +39,7 @@ export class ReceiptController {
   @Get(':receipt_number')
   @AuthWithRole([EmployeeRole.MANAGER, EmployeeRole.CASHIER])
   async findReceipt(@Param('receipt_number') receipt_number: string) {
-    return await this.receiptService.getReceiptById(receipt_number, true);
+    return await this.receiptService.getReceiptById(receipt_number);
   }
 
   @Post()

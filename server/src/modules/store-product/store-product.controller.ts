@@ -24,9 +24,9 @@ export class StoreProductController {
     @Query('sortByAmount', new SortOrderPipe()) sortByAmount?: SortOrder,
     @Query('sortByName', new SortOrderPipe()) sortByName?: SortOrder,
     @Query('promotionalProduct', new ParseBoolPipe({optional: true})) promotionalProduct?: boolean,
-    @Query('productInfo', new ParseBoolPipe({optional: true})) productInfo?: boolean,
+    @Query('name') name?: string,
   ) {
-    return this.storeProductService.getStoreProductsSorted({sortByAmount, sortByName, promotionalProduct, productInfo});
+    return this.storeProductService.queryStoreProduct({sortByAmount, sortByName, promotionalProduct, name});
   }
 
   @Get(":upc")

@@ -1,0 +1,63 @@
+import { API_BASE_URL } from '@/shared/constants/apiBaseUrl'
+import { setURLSearchParams } from '@/shared/utils/setURLSearchParams'
+import { Receipt } from '../entities/Receipt'
+import { ReceiptSchemaType } from '@/shared/schemas/Receipt.schema'
+
+export interface GetReceiptsFilters {
+  employee_id?: string
+  startDate?: Date,
+  endDate?: Date
+}
+
+class ReceiptService {
+  async getReceipts(filters: GetReceiptsFilters): Promise<Receipt[]> {
+    const url = new URL(`${API_BASE_URL}receipt`)
+    setURLSearchParams(url, filters)
+
+    const response = await fetch(url.toString(), {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const data = await response.json()
+    if (!response.ok) {
+      throw data
+    }
+    return data
+  }
+  async deleteReceipt(id: string): Promise<void> {
+    const response = await fetch(`${API_BASE_URL}receipt/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const data = await response.json()
+    if (!response.ok) {
+      throw data
+    }
+  }
+  async createReceipt(receipt: ReceiptSchemaType): Promise<Receipt> {
+    const response = await fetch(`${API_BASE_URL}receipt`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(receipt),
+    });
+
+    const data = await response.json()
+    if (!response.ok) {
+      throw data
+    }
+    return data
+  }
+}
+
+export const receiptService = new ReceiptService();

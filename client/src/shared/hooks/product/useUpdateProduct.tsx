@@ -12,7 +12,11 @@ export const useUpdateProduct = () => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.PRODUCTS],
         exact: false,
-      })
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.STORE_PRODUCTS],
+        exact: false,
+      });
     },
   })
 }

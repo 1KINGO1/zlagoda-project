@@ -2,6 +2,11 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
+// TODO: Use dirty fields and isDirty instead of sending all data
+// TODO: Add reset filter buttons
+// TODO: Refactor project structure
+
+
 import {
   Dialog,
   DialogContent,

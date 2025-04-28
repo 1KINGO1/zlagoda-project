@@ -31,6 +31,9 @@ export const NavLinks = () => {
       <li>
         <NavLink href='/dashboard/employees'>Employees</NavLink>
       </li>
+      <li>
+        <NavLink href='/dashboard/receipts'>Receipts</NavLink>
+      </li>
     </ul>
   ) : (
     <span>Loading...</span>

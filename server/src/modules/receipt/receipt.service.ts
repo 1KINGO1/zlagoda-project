@@ -11,6 +11,39 @@ export class ReceiptService {
 		private readonly databaseService: DatabaseService,
 	) {
 	}
+	private receiptQuery = `
+      	SELECT 
+					receipt.*,
+					json_build_object(
+					  'id_employee', employee.id_employee,
+					  'empl_surname', employee.empl_surname,
+				    'empl_name', employee.empl_name
+					) as employee,
+					CASE 
+						WHEN customer_card.card_number IS NULL THEN NULL
+						ELSE json_build_object(
+						'card_number', customer_card.card_number,
+						'cust_surname', customer_card.cust_surname,
+						'cust_name', customer_card.cust_name
+						)
+					END AS customer,
+					(
+						SELECT json_agg(json_build_object(
+							'upc', store_product.upc,
+							'product_number', sale.product_number,
+							'selling_price', sale.selling_price,
+							'product_name', product.product_name
+						))
+						FROM receipt AS receipt1
+						INNER JOIN sale ON receipt1.receipt_number = sale.receipt_number
+						INNER JOIN store_product ON store_product.upc = sale.upc
+						INNER JOIN product ON store_product.id_product = product.id_product
+						WHERE receipt1.receipt_number = receipt.receipt_number
+					) AS items
+				FROM receipt
+				INNER JOIN employee ON employee.id_employee = receipt.id_employee
+				LEFT JOIN customer_card ON customer_card.card_number = receipt.card_number
+    `;
 
 	async create(employee: Employee, createReceiptDto: CreateReceiptDto) {
 		const transactionClient = await this.databaseService.getClient();
@@ -30,7 +63,7 @@ export class ReceiptService {
 
 			if (productsResult.rows.length < createReceiptDto.products.length) {
 				const notFoundProducts = createReceiptDto.products.filter(product => !productsResult.rows.some(row => row.upc === product.upc));
-				throw new NotFoundException(`Products with UPC ${notFoundProducts.map(product => product.upc).join(', ')} not found`);
+				throw new NotFoundException(`Products with UPC ${notFoundProducts.map(product => product.upc).join(', ')} not found or you provided two same UPCs`);
 			}
 
 			// Check if all products are available
@@ -109,12 +142,9 @@ export class ReceiptService {
 			throw e;
 		}
 	}
-
-	async getReceiptById(receipt_number: string, detailed: boolean = false): Promise<Receipt | null> {
-		const query = `
-      SELECT * FROM receipt
-      WHERE receipt_number = $1
-    `;
+	async getReceiptById(receipt_number: string): Promise<Receipt | null> {
+		let query = this.receiptQuery;
+		query += ` WHERE receipt.receipt_number = $1`;
 		const result = await this.databaseService.query<Receipt>(query, [receipt_number]);
 
 		const receipt = result.rows.length ? result.rows[0] : null;
@@ -123,14 +153,9 @@ export class ReceiptService {
 			return receipt;
 		}
 
-		if (detailed) {
-			const receiptItems = await this.getReceiptsItemsByReceiptNumber([receipt.receipt_number]);
-			receipt.items = receiptItems[receipt.receipt_number];
-		}
-
 		return receipt
 	}
-	async remove(receipt_number: string): Promise<void> {
+	async remove(receipt_number: string): Promise<Receipt> {
 		const receipt = await this.getReceiptById(receipt_number);
 		if (!receipt) {
 			throw new NotFoundException('Receipt not found');
@@ -142,77 +167,31 @@ export class ReceiptService {
     `;
 
 		await this.databaseService.query(query, [receipt_number]);
-	}
-	async getReceiptsItemsByReceiptNumber(receipt_numbers: string[]): Promise<{
-		[k: string]: ReceiptItem[]
-	}> {
-		const query = `
-      SELECT 
-			receipt.receipt_number, 
-			receipt.print_date,
-			sale.product_number, 
-			sale.selling_price,
-			product.product_name
-			FROM receipt
-			INNER JOIN sale ON receipt.receipt_number = sale.receipt_number
-			INNER JOIN store_product ON store_product.upc = sale.upc
-			INNER JOIN product ON store_product.id_product = product.id_product
-			WHERE receipt.receipt_number = ANY($1)
-    `;
-		const result = await this.databaseService.query
-			< ReceiptItem & {receipt_number: string} >
-			(query, [receipt_numbers]
-			);
-		const receipts = new Map<string, ReceiptItem[]>();
-		for (const row of result.rows) {
-			if (!receipts.has(row.receipt_number)) {
-				receipts.set(row.receipt_number, []);
-			}
-			receipts.get(row.receipt_number).push({
-				print_date: row.print_date,
-				product_number: row.product_number,
-				selling_price: row.selling_price,
-				product_name: row.product_name,
-			});
-		}
 
-		return Object.fromEntries(receipts);
+		return receipt;
 	}
-	async getReceiptsSorted(sortOptions: {
+	async queryReceipts(sortOptions: {
 		employee_id?: string;
 		startDate?: Date;
 		endDate?: Date;
-		detailed?: boolean;
 	}): Promise<Receipt[]> {
-		let query = `
-      SELECT * FROM receipt
-    `;
+		let query = this.receiptQuery;
 		const values = [];
 
 		if (sortOptions.employee_id !== undefined) {
-			query += ` WHERE id_employee = $${values.length + 1}`;
+			query += ` WHERE receipt.id_employee = $${values.length + 1}`;
 			values.push(sortOptions.employee_id);
 		}
 		if (sortOptions.startDate !== undefined) {
-			query += ` ${values.length > 0 ? "AND" : "WHERE"} print_date >= $${values.length + 1}`;
+			query += ` ${values.length > 0 ? "AND" : "WHERE"} receipt.print_date >= $${values.length + 1}`;
 			values.push(sortOptions.startDate);
 		}
 		if (sortOptions.endDate !== undefined) {
-			query += ` ${values.length > 0 ? "AND" : "WHERE"} print_date <= $${values.length + 1}`;
+			query += ` ${values.length > 0 ? "AND" : "WHERE"} receipt.print_date <= $${values.length + 1}`;
 			values.push(sortOptions.endDate);
 		}
 
 		const receiptQueryResult = await this.databaseService.query<Receipt>(query, values);
-
-		if (sortOptions.detailed === undefined) return receiptQueryResult.rows;
-
-		const receiptUpcs = receiptQueryResult.rows.map(receipt => receipt.receipt_number);
-
-		const receiptItems = await this.getReceiptsItemsByReceiptNumber(receiptUpcs);
-		for (const receipt of receiptQueryResult.rows) {
-			receipt.items = receiptItems[receipt.receipt_number];
-		}
-
 		return receiptQueryResult.rows;
 	}
 	async getReceiptsSum(sortOptions: {

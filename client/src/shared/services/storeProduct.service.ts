@@ -9,7 +9,7 @@ export interface GetStoreProductsFilters {
   sortByAmount?: 'ASC' | 'DESC'
   sortByName?: 'ASC' | 'DESC'
   promotionalProduct?: boolean
-  productInfo?: boolean
+  name?: string
 }
 
 class StoreProductService {

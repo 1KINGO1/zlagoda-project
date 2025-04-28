@@ -14,6 +14,16 @@ export class StoreProductService {
 	) {
 	}
 
+	private readonly storeProductQuery = `
+		SELECT 	store_product.*,
+						json_build_object(
+							'id_product', product.id_product,
+							'product_name', product.product_name
+						) as product
+		FROM store_product
+		INNER JOIN product ON store_product.id_product = product.id_product
+	`;
+
 	async create(createProductDto: CreateStoreProductDto): Promise<StoreProduct> {
 		await this.databaseService.query('BEGIN');
 		try {
@@ -113,22 +123,14 @@ export class StoreProductService {
 		return this.transformDBJoinResultToStoreProduct([storeProduct])[0];
 	}
 
-	async getStoreProductsSorted(sortOptions: {
+	async queryStoreProduct(sortOptions: {
 		sortByAmount?: SortOrder,
 		sortByName?: SortOrder,
 		promotionalProduct?: boolean,
-		productInfo?: boolean
+		name?: string,
 	}): Promise<StoreProduct[]> {
 		const params: any[] = [];
-		let query = sortOptions?.productInfo === true ?
-			`
-				SELECT store_product.*, product.*
-        FROM store_product
-        INNER JOIN product ON store_product.id_product = product.id_product
-			`
-			: `
-        SELECT * FROM store_product 
-    `;
+		let query = this.storeProductQuery;
 
 		if (sortOptions.promotionalProduct !== undefined) {
 			query += ` WHERE promotional_product = $1`;
@@ -150,9 +152,9 @@ export class StoreProductService {
 			query += ` products_number ${sortOptions.sortByAmount}`;
 		}
 
-		if (sortOptions.productInfo === true) {
-			const result = await this.databaseService.query<StoreProduct & Product>(query, params);
-			return this.transformDBJoinResultToStoreProduct(result.rows);
+		if (sortOptions.name) {
+			query += ` WHERE product.product_name ILIKE '%' || $${params.length + 1} || '%'`;
+			params.push(sortOptions.name);
 		}
 
 		const result = await this.databaseService.query<StoreProduct>(query, params);
@@ -186,7 +188,7 @@ export class StoreProductService {
 		} catch (e) {
 			await this.databaseService.query(`ROLLBACK`);
 			if (e.code === '23503') {  // Foreign key violation
-				throw new NotFoundException('There is Checks associated with this Store Product. Delete them first.');
+				throw new NotFoundException('There is Receipts associated with this Store Product. Delete them first.');
 			}
 
 			throw e;

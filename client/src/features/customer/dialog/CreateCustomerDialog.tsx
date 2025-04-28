@@ -25,8 +25,12 @@ export const CreateCustomerDialog = () => {
   const form = useForm<CustomerCardSchemaType>({
     defaultValues: {
       cust_surname: '',
+      cust_patronymic: null,
       cust_name: '',
       phone_number: '',
+      city: null,
+      street: null,
+      zip_code: null,
       percent: 0,
     },
     mode: 'onChange',

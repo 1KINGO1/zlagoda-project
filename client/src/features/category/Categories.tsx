@@ -10,6 +10,7 @@ import { DeleteCategoryDialog } from '@/features/category/dialog/DeleteCategoryD
 import { EditCategoryDialog } from '@/features/category/dialog/EditCategoryDialog'
 import { Category as CategoryType } from '@/shared/entities/Category'
 import { useCategories } from '@/shared/hooks/category/useCategories'
+import { usePrintCategory } from '@/shared/hooks/category/usePrintCategory'
 
 export const Categories = () => {
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
@@ -22,7 +23,8 @@ export const Categories = () => {
   const [sortOrder, setSortOrder] = useState<'ASC' | 'DESC' | undefined>(
     undefined,
   )
-  const { data: categories, isLoading } = useCategories(sortOrder)
+  const { data: categories } = useCategories(sortOrder)
+  const { printCategories, isLoading } = usePrintCategory()
 
   const handleOpenEditDialog = (category: CategoryType) => {
     setSelectedCategory(category)
@@ -47,15 +49,18 @@ export const Categories = () => {
 
   return (
     <div>
-      <div>
-        <Button onClick={handleSortOrderChange} className='flex items-center'>
+      <div className="flex gap-2">
+        <Button onClick={handleSortOrderChange} className="flex items-center">
           Sort by name{' '}
           {sortOrder !== undefined &&
             (sortOrder === 'ASC' ? <ChevronUp /> : <ChevronDown />)}
         </Button>
+        <Button onClick={printCategories} disabled={isLoading}>
+          Print
+        </Button>
       </div>
 
-      <div className='flex flex-col gap-4 mt-4 h-auto'>
+      <div className="flex flex-col gap-4 mt-4 h-auto">
         {categories?.map(category => (
           <Category
             category={category}
@@ -86,8 +91,8 @@ export const Categories = () => {
         setOpen={closeDialog}
       />
 
-      <div className='fixed bottom-8 right-8'>
-        <Button className='w-12 h-12' onClick={() => setOpenedDialog('create')}>
+      <div className="fixed bottom-8 right-8">
+        <Button className="w-12 h-12" onClick={() => setOpenedDialog('create')}>
           <CirclePlus />
         </Button>
       </div>

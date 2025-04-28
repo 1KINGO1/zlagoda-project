@@ -3,7 +3,6 @@
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { useState } from 'react'
 
-import { useProducts } from '@/shared/hooks/product/useProducts'
 import { debounce } from '@/shared/utils/debounce'
 import { cn } from '@/shared/utils/utils'
 
@@ -17,20 +16,25 @@ import {
   CommandList,
 } from './ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
+import { useCustomers } from '@/shared/hooks/customer/useCustomers'
 
-interface SelectProductProps {
-  value: number
-  onChange(value: number): void,
-  className?: string
+interface SelectCustomerProps {
+  value: string | null
+  onChange(value: string | null): void
 }
 
-export function SelectProduct({ value, onChange, className }: SelectProductProps) {
+export function SelectCustomer({ value, onChange }: SelectCustomerProps) {
   const [open, setOpen] = useState(false)
   const [searchValue, setSearchValue] = useState('')
 
-  const { data: products, isLoading } = useProducts({ name: searchValue })
+  const { data: customers, isLoading } = useCustomers({ surname: searchValue })
 
-  if (!products || isLoading) return <></>
+  if (!customers || isLoading) return <></>
+
+  const selectedCustomer = customers.find(
+    customer => customer.card_number === value,
+  )
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -38,19 +42,18 @@ export function SelectProduct({ value, onChange, className }: SelectProductProps
           variant='outline'
           role='combobox'
           aria-expanded={open}
-          className={cn('w-full justify-between', className)}
+          className='w-full justify-between'
         >
-          {value
-            ? products.find(product => product.id_product === value)
-                ?.product_name
-            : 'Select product...'}
+          {selectedCustomer
+            ? `${selectedCustomer.cust_surname} ${selectedCustomer.cust_name} ${selectedCustomer.card_number}`
+            : 'Select customer...'}
           <ChevronsUpDown className='opacity-50' />
         </Button>
       </PopoverTrigger>
       <PopoverContent className='p-0'>
         <Command>
           <CommandInput
-            placeholder='Search product...'
+            placeholder='Search customer...'
             className='h-9'
             onValueChange={debounce(
               (value: string) => setSearchValue(value),
@@ -58,20 +61,35 @@ export function SelectProduct({ value, onChange, className }: SelectProductProps
             )}
           />
           <CommandList>
-            <CommandEmpty>No products found.</CommandEmpty>
+            <CommandEmpty>No customers found.</CommandEmpty>
             <CommandGroup>
-              {products.map(product => (
+              <CommandItem
+                onSelect={() => {
+                  onChange(null)
+                  setOpen(false)
+                }}
+              >
+                NOT SET
+                <Check
+                  className={cn(
+                    value === null
+                      ? 'opacity-100'
+                      : 'opacity-0',
+                  )}
+                />
+              </CommandItem>
+              {customers.map(customer => (
                 <CommandItem
-                  key={product.id_product}
+                  key={customer.card_number}
                   onSelect={() => {
-                    onChange(product.id_product)
+                    onChange(customer.card_number)
                     setOpen(false)
                   }}
                 >
-                  {product.product_name}
+                  {customer.cust_surname} {customer.cust_name} {customer.card_number}
                   <Check
                     className={cn(
-                      value === product.id_product
+                      value === customer.card_number
                         ? 'opacity-100'
                         : 'opacity-0',
                     )}

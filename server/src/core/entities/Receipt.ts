@@ -1,3 +1,6 @@
+import { Employee } from './Employee'
+import { CustomerCard } from './CustomerCard'
+
 export interface Receipt {
   receipt_number: string,
   id_employee: string,
@@ -7,10 +10,12 @@ export interface Receipt {
   vat: number,
 
   items?: ReceiptItem[],
+  employee?: Employee,
+  customer: null | CustomerCard,
 }
 
 export interface ReceiptItem{
-  print_date: Date;
+  upc: string,
   product_number: number;
   selling_price: number;
   product_name: string;

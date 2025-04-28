@@ -17,41 +17,46 @@ import {
   CommandList,
 } from './ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
+import { useEmployees } from '@/shared/hooks/employee/useEmployees'
 
-interface SelectProductProps {
-  value: number
-  onChange(value: number): void,
+interface SelectEmployeeProps {
+  value: string
+  onChange(value: string): void
   className?: string
 }
 
-export function SelectProduct({ value, onChange, className }: SelectProductProps) {
+export function SelectEmployee({ value, onChange, className }: SelectEmployeeProps) {
   const [open, setOpen] = useState(false)
   const [searchValue, setSearchValue] = useState('')
 
-  const { data: products, isLoading } = useProducts({ name: searchValue })
+  const { data: employees, isLoading } = useEmployees({ surname: searchValue })
 
-  if (!products || isLoading) return <></>
+  if (!employees || isLoading) return <></>
+
+  const selectedEmployee = employees.find(employee => employee.id_employee === value)
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          variant='outline'
-          role='combobox'
+          variant="outline"
+          role="combobox"
           aria-expanded={open}
-          className={cn('w-full justify-between', className)}
+          className={cn("w-full justify-between", className)}
         >
-          {value
-            ? products.find(product => product.id_product === value)
-                ?.product_name
-            : 'Select product...'}
-          <ChevronsUpDown className='opacity-50' />
+          {
+            selectedEmployee ?
+              `${selectedEmployee.empl_surname} ${selectedEmployee.empl_name} ${selectedEmployee.id_employee}` :
+              'Select employee...'
+          }
+          <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='p-0'>
+      <PopoverContent className="p-0">
         <Command>
           <CommandInput
-            placeholder='Search product...'
-            className='h-9'
+            placeholder="Search employee..."
+            className="h-9"
             onValueChange={debounce(
               (value: string) => setSearchValue(value),
               300,
@@ -60,18 +65,18 @@ export function SelectProduct({ value, onChange, className }: SelectProductProps
           <CommandList>
             <CommandEmpty>No products found.</CommandEmpty>
             <CommandGroup>
-              {products.map(product => (
+              {employees.map(employee => (
                 <CommandItem
-                  key={product.id_product}
+                  key={employee.id_employee}
                   onSelect={() => {
-                    onChange(product.id_product)
+                    onChange(employee.id_employee)
                     setOpen(false)
                   }}
                 >
-                  {product.product_name}
+                  {employee.empl_surname} {employee.empl_name} {employee.id_employee}
                   <Check
                     className={cn(
-                      value === product.id_product
+                      value === employee.id_employee
                         ? 'opacity-100'
                         : 'opacity-0',
                     )}
