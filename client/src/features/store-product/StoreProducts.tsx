@@ -9,15 +9,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { useStoreProductFilter } from '@/features/store-product/context/StoreProductFilter.context'
-import { StoreProductDialogs } from '@/features/store-product/StoreProductDialogs'
-import { toggleSortByColumn } from '@/shared/utils/toggleSortByColumn'
+import { useStoreProductFilter } from './context/StoreProductFilter.context'
+import { StoreProductDialogs } from './StoreProductDialogs'
 
 import { StoreProductList } from './StoreProductList'
-import { Button } from '@/components/ui/button'
-import { usePrintStoreProduct } from '@/shared/hooks/store-products/usePrintStoreProduct'
-import { Input } from '@/components/ui/input'
-import { StoreProductsTopPanel } from '@/features/store-product/StoreProductsTopPanel'
+import { StoreProductsTopPanel } from './StoreProductsTopPanel'
+import { toggleSortByColumn } from '@/shared/utils/toggleSortByColumn'
 
 export const StoreProducts = () => {
   const {

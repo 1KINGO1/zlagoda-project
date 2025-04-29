@@ -9,6 +9,7 @@ export interface GetReceiptsFilters {
   endDate?: Date
 }
 
+
 class ReceiptService {
   async getReceipts(filters: GetReceiptsFilters): Promise<Receipt[]> {
     const url = new URL(`${API_BASE_URL}receipt`)
@@ -51,6 +52,24 @@ class ReceiptService {
       credentials: 'include',
       body: JSON.stringify(receipt),
     });
+
+    const data = await response.json()
+    if (!response.ok) {
+      throw data
+    }
+    return data
+  }
+  async getTotalSum(filters: GetReceiptsFilters): Promise<{ totalSum: number }> {
+    const url = new URL(`${API_BASE_URL}receipt/sum`)
+    setURLSearchParams(url, filters)
+
+    const response = await fetch(url.toString(), {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
 
     const data = await response.json()
     if (!response.ok) {

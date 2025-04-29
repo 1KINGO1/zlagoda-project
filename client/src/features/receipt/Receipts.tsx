@@ -8,13 +8,15 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { ReceiptList } from './ReceiptList'
-import { ReceiptFilter } from '@/features/receipt/ReceiptFilter'
-import { ReceiptDialogs } from '@/features/receipt/ReceiptDialogs'
+import { ReceiptFilter } from './ReceiptFilter'
+import { ReceiptDialogs } from './ReceiptDialogs'
+import { ReceiptTotalSum } from './ReceiptTotalSum'
 
 export const Receipts = () => {
   return (
     <div>
       <ReceiptFilter />
+      <ReceiptTotalSum />
       <Table className='mt-3'>
         <TableHeader>
           <TableRow>
