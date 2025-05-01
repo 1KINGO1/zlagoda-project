@@ -19,7 +19,7 @@ import { useUpdateCategory } from '@/shared/hooks/category/useUpdateCategory'
 import {
   CategorySchema,
   CategorySchemaType,
-} from '@/shared/schemas/Category.schema'
+} from '@/shared/schemas/category.schema'
 import { ApiError } from '@/shared/types/ApiError'
 
 import { zodResolver } from '@hookform/resolvers/zod'

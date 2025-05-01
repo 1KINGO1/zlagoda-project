@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { QueryKeys } from '@/shared/constants/QueryKeys'
+import { QueryKeys } from '@/shared/constants/query-keys'
 import { GetSoldProductsCountFilters, receiptService } from '@/shared/services/receipt.service'
 
 export const useSoldProductsCount = (filters: GetSoldProductsCountFilters) => {

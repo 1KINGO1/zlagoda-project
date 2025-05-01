@@ -1,4 +1,4 @@
-import { QueryKeys } from '@/shared/constants/QueryKeys'
+import { QueryKeys } from '@/shared/constants/query-keys'
 import { customerService } from '@/shared/services/customer.service'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'

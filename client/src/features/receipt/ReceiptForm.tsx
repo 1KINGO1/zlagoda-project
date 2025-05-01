@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { FormProps } from '@/shared/types/FormProps'
-import { ReceiptSchemaType } from '@/shared/schemas/Receipt.schema'
+import { ReceiptSchemaType } from '@/shared/schemas/receipt.schema'
 import { SelectCustomer } from '@/components/SelectCustomer'
 import { SelectProducts } from './SelectProducts'
 

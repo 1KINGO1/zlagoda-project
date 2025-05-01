@@ -17,7 +17,7 @@ import { useLogin } from '@/shared/hooks/auth/useLogin'
 import {
   LoginFormSchema,
   LoginFormSchemaType,
-} from '@/shared/schemas/LoginForm.schema'
+} from '@/shared/schemas/loginForm.schema'
 import { ApiError } from '@/shared/types/ApiError'
 
 import { zodResolver } from '@hookform/resolvers/zod'

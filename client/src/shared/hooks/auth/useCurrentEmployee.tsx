@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { QueryKeys } from '@/shared/constants/QueryKeys'
+import { QueryKeys } from '@/shared/constants/query-keys'
 import { useLogout } from '@/shared/hooks/auth/useLogout'
 import { employeeService } from '@/shared/services/exployee.service'
 

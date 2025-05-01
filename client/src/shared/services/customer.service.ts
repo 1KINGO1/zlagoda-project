@@ -1,7 +1,7 @@
-import { API_BASE_URL } from '@/shared/constants/apiBaseUrl'
+import { API_BASE_URL } from '@/shared/constants/api-base-url'
 import { CustomerCard } from '@/shared/entities/CustomerCard'
-import { CustomerCardSchemaType } from '@/shared/schemas/CustomerCard.schema'
-import { setURLSearchParams } from '@/shared/utils/setURLSearchParams'
+import { CustomerCardSchemaType } from '@/shared/schemas/customerCard.schema'
+import { setUrlSearchParams } from '@/shared/utils/set-url-search-params'
 
 export interface GetCustomerFilters {
   percent?: number
@@ -12,7 +12,7 @@ export interface GetCustomerFilters {
 class CustomerService {
   async getCustomers(filters: GetCustomerFilters): Promise<CustomerCard[]> {
     const url = new URL(`${API_BASE_URL}customer-card`)
-    setURLSearchParams(url, filters)
+    setUrlSearchParams(url, filters)
 
     const response = await fetch(url.toString(), {
       method: 'GET',

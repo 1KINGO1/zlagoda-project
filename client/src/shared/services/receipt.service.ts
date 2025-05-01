@@ -1,7 +1,7 @@
-import { API_BASE_URL } from '@/shared/constants/apiBaseUrl'
-import { setURLSearchParams } from '@/shared/utils/setURLSearchParams'
+import { API_BASE_URL } from '@/shared/constants/api-base-url'
+import { setUrlSearchParams } from '@/shared/utils/set-url-search-params'
 import { Receipt } from '../entities/Receipt'
-import { ReceiptSchemaType } from '@/shared/schemas/Receipt.schema'
+import { ReceiptSchemaType } from '@/shared/schemas/receipt.schema'
 
 export interface GetReceiptsFilters {
   employee_id?: string
@@ -19,7 +19,7 @@ export interface GetSoldProductsCountFilters {
 class ReceiptService {
   async getReceipts(filters: GetReceiptsFilters): Promise<Receipt[]> {
     const url = new URL(`${API_BASE_URL}receipt`)
-    setURLSearchParams(url, filters)
+    setUrlSearchParams(url, filters)
 
     const response = await fetch(url.toString(), {
       method: 'GET',
@@ -67,7 +67,7 @@ class ReceiptService {
   }
   async getTotalSum(filters: GetReceiptsFilters): Promise<{ totalSum: number }> {
     const url = new URL(`${API_BASE_URL}receipt/sum`)
-    setURLSearchParams(url, filters)
+    setUrlSearchParams(url, filters)
 
     const response = await fetch(url.toString(), {
       method: 'GET',
@@ -85,7 +85,7 @@ class ReceiptService {
   }
   async getSoldProductsCount(filters: GetSoldProductsCountFilters): Promise<{ productCount: number }> {
     const url = new URL(`${API_BASE_URL}receipt/sold-products`)
-    setURLSearchParams(url, filters)
+    setUrlSearchParams(url, filters)
 
     const response = await fetch(url.toString(), {
       method: 'GET',

@@ -1,4 +1,4 @@
-import { QueryKeys } from '@/shared/constants/QueryKeys'
+import { QueryKeys } from '@/shared/constants/query-keys'
 import { Category } from '@/shared/entities/Category'
 import { categoryService } from '@/shared/services/category.service'
 

@@ -12,7 +12,7 @@ import { ApiError } from '@/shared/types/ApiError'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReceiptForm } from '@/features/receipt/ReceiptForm'
 import { useReceiptModal } from '@/features/receipt/context/ReceiptModals.context'
-import { ReceiptSchema, ReceiptSchemaType } from '@/shared/schemas/Receipt.schema'
+import { ReceiptSchema, ReceiptSchemaType } from '@/shared/schemas/receipt.schema'
 import { useEffect } from 'react'
 import { useCreateReceipt } from '@/shared/hooks/receipt/useCreateReceipt'
 

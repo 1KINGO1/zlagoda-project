@@ -25,7 +25,7 @@ import { useCreateStoreProduct } from '@/shared/hooks/store-products/useCreateSt
 import {
   StoreProductSchema,
   StoreProductSchemaType,
-} from '@/shared/schemas/StoreProduct.schema'
+} from '@/shared/schemas/store-product.schema'
 import { ApiError } from '@/shared/types/ApiError'
 
 import { StoreProductForm } from '../StoreProductForm'

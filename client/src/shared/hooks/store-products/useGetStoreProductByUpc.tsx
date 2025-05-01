@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { QueryKeys } from '@/shared/constants/QueryKeys'
+import { QueryKeys } from '@/shared/constants/query-keys'
 import { storeProductService } from '@/shared/services/storeProduct.service'
 
 export const useGetStoreProductByUpc = (upc?: string) => {

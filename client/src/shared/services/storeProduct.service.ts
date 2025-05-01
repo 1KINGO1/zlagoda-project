@@ -1,9 +1,9 @@
-import { API_BASE_URL } from '@/shared/constants/apiBaseUrl'
+import { API_BASE_URL } from '@/shared/constants/api-base-url'
 import { Product } from '@/shared/entities/Product'
 import { StoreProduct } from '@/shared/entities/StoreProduct'
-import { ProductSchemaType } from '@/shared/schemas/Product.schema'
-import { StoreProductSchemaType } from '@/shared/schemas/StoreProduct.schema'
-import { setURLSearchParams } from '@/shared/utils/setURLSearchParams'
+import { ProductSchemaType } from '@/shared/schemas/product.schema'
+import { StoreProductSchemaType } from '@/shared/schemas/store-product.schema'
+import { setUrlSearchParams } from '@/shared/utils/set-url-search-params'
 
 export interface GetStoreProductsFilters {
   sortByAmount?: 'ASC' | 'DESC'
@@ -17,7 +17,7 @@ class StoreProductService {
     filters: GetStoreProductsFilters,
   ): Promise<StoreProduct[]> {
     const url = new URL(`${API_BASE_URL}store-product`)
-    setURLSearchParams(url, filters)
+    setUrlSearchParams(url, filters)
 
     const response = await fetch(url.toString(), {
       method: 'GET',

@@ -1,6 +1,8 @@
 import { RecentReceiptItem } from '@/features/metrics/RecentReceiptItem'
 import { useMyRecentReceipts } from '@/shared/hooks/receipt/useMyRecentReceipts'
 
+
+// TODO: Move it into receipt feature
 export const RecentReceipts = () => {
   const {data: recentReceipts, isLoading, isError, isSuccess} = useMyRecentReceipts()
   return (

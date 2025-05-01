@@ -13,7 +13,7 @@ import { useCreateCustomer } from '@/shared/hooks/customer/useCreateCustomer'
 import {
   CustomerCardSchema,
   CustomerCardSchemaType,
-} from '@/shared/schemas/CustomerCard.schema'
+} from '@/shared/schemas/customerCard.schema'
 import { ApiError } from '@/shared/types/ApiError'
 
 import { zodResolver } from '@hookform/resolvers/zod'

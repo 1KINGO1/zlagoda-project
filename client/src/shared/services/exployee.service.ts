@@ -1,10 +1,10 @@
-import { API_BASE_URL } from '@/shared/constants/apiBaseUrl'
+import { API_BASE_URL } from '@/shared/constants/api-base-url'
 import { Employee } from '@/shared/entities/Employee'
 import {
   EmployeeSchemaType,
   EmployeeUpdateSchemaType,
-} from '@/shared/schemas/Employee.schema'
-import { setURLSearchParams } from '@/shared/utils/setURLSearchParams'
+} from '@/shared/schemas/employee.schema'
+import { setUrlSearchParams } from '@/shared/utils/set-url-search-params'
 
 export interface GetAllEmployeesFilter {
   sort?: string
@@ -28,7 +28,7 @@ class EmployeeService {
 
   async getAllEmployees(filters: GetAllEmployeesFilter): Promise<Employee[]> {
     const url = new URL(API_BASE_URL + 'employee')
-    setURLSearchParams(url, filters)
+    setUrlSearchParams(url, filters)
 
     const res = await fetch(url.toString(), {
       method: 'GET',

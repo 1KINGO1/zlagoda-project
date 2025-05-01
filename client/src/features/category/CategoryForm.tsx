@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { CategorySchemaType } from '@/shared/schemas/Category.schema'
+import { CategorySchemaType } from '@/shared/schemas/category.schema'
 import { FormProps } from '@/shared/types/FormProps'
 
 export const CategoryForm = ({

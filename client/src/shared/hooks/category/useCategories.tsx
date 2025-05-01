@@ -1,4 +1,4 @@
-import { QueryKeys } from '@/shared/constants/QueryKeys'
+import { QueryKeys } from '@/shared/constants/query-keys'
 import { categoryService } from '@/shared/services/category.service'
 
 import { useQuery } from '@tanstack/react-query'

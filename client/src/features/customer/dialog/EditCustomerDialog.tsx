@@ -24,7 +24,7 @@ import { useUpdateCustomer } from '@/shared/hooks/customer/useUpdateCustomer'
 import {
   CustomerCardSchema,
   CustomerCardSchemaType,
-} from '@/shared/schemas/CustomerCard.schema'
+} from '@/shared/schemas/customerCard.schema'
 import { ApiError } from '@/shared/types/ApiError'
 
 import { zodResolver } from '@hookform/resolvers/zod'

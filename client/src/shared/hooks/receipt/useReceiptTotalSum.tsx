@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { GetReceiptsFilters, receiptService } from '@/shared/services/receipt.service'
-import { QueryKeys } from '@/shared/constants/QueryKeys'
+import { QueryKeys } from '@/shared/constants/query-keys'
 
 export const useReceiptTotalSum = (filters: GetReceiptsFilters) => {
   return useQuery({

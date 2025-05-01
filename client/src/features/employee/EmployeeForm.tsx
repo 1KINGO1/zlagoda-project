@@ -21,7 +21,7 @@ import { EmployeeRole } from '@/shared/entities/Employee'
 import {
   EmployeeSchemaType,
   EmployeeUpdateSchemaType,
-} from '@/shared/schemas/Employee.schema'
+} from '@/shared/schemas/employee.schema'
 import { FormProps } from '@/shared/types/FormProps'
 
 interface EmployeeFormProps

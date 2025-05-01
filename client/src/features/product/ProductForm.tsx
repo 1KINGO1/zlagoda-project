@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { ProductSchemaType } from '@/shared/schemas/Product.schema'
+import { ProductSchemaType } from '@/shared/schemas/product.schema'
 import { FormProps } from '@/shared/types/FormProps'
 
 export const ProductForm = ({

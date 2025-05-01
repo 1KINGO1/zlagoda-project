@@ -12,7 +12,7 @@ import {
 import { useEmployeeFilter } from '@/features/employee/context/EmployeeFilter.context'
 import { EmployeeDialogs } from '@/features/employee/EmployeeDialogs'
 import { EmployeeFilter } from '@/features/employee/EmployeeFilter'
-import { toggleSortByColumn } from '@/shared/utils/toggleSortByColumn'
+import { toggleSortByColumn } from '@/shared/utils/toggle-sort-by-column'
 
 import { EmployeeList } from './EmployeeList'
 

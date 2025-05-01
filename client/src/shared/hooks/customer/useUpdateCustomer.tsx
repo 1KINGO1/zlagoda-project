@@ -1,4 +1,4 @@
-import { QueryKeys } from '@/shared/constants/QueryKeys'
+import { QueryKeys } from '@/shared/constants/query-keys'
 import { CustomerCard } from '@/shared/entities/CustomerCard'
 import { customerService } from '@/shared/services/customer.service'
 

@@ -1,6 +1,6 @@
-import { API_BASE_URL } from '@/shared/constants/apiBaseUrl'
+import { API_BASE_URL } from '@/shared/constants/api-base-url'
 import { Category } from '@/shared/entities/Category'
-import { CategorySchemaType } from '@/shared/schemas/Category.schema'
+import { CategorySchemaType } from '@/shared/schemas/category.schema'
 
 class CategoryService {
   async getAllCategories(sort?: 'ASC' | 'DESC'): Promise<Category[]> {

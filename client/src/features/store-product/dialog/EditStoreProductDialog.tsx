@@ -14,7 +14,7 @@ import { useUpdateStoreProduct } from '@/shared/hooks/store-products/useUpdateSt
 import {
   StoreProductSchema,
   StoreProductSchemaType,
-} from '@/shared/schemas/StoreProduct.schema'
+} from '@/shared/schemas/store-product.schema'
 import { ApiError } from '@/shared/types/ApiError'
 
 import { zodResolver } from '@hookform/resolvers/zod'

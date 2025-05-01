@@ -26,7 +26,7 @@ import { useUpdateProduct } from '@/shared/hooks/product/useUpdateProduct'
 import {
   ProductSchema,
   ProductSchemaType,
-} from '@/shared/schemas/Product.schema'
+} from '@/shared/schemas/product.schema'
 import { ApiError } from '@/shared/types/ApiError'
 
 import { zodResolver } from '@hookform/resolvers/zod'

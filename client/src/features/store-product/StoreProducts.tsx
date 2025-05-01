@@ -14,7 +14,7 @@ import { StoreProductDialogs } from './StoreProductDialogs'
 
 import { StoreProductList } from './StoreProductList'
 import { StoreProductsTopPanel } from './StoreProductsTopPanel'
-import { toggleSortByColumn } from '@/shared/utils/toggleSortByColumn'
+import { toggleSortByColumn } from '@/shared/utils/toggle-sort-by-column'
 
 export const StoreProducts = () => {
   const {

@@ -21,6 +21,7 @@ export const ReceiptList = () => {
   return useMemo(() => {
     if (!isReceiptsLoaded) return []
 
+    // TODO: Make ReceiptTableItem
     return receipts!.map(receipt => (
       <TableRow key={receipt.receipt_number}>
         <TableCell>{receipt.receipt_number}</TableCell>

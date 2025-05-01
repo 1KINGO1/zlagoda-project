@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { StoreProductSchemaType } from '@/shared/schemas/StoreProduct.schema'
+import { StoreProductSchemaType } from '@/shared/schemas/store-product.schema'
 import { FormProps } from '@/shared/types/FormProps'
 
 export const StoreProductForm = ({

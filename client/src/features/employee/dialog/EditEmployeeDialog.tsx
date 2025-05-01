@@ -15,7 +15,7 @@ import {
   EmployeeSchemaType,
   EmployeeUpdateSchema,
   EmployeeUpdateSchemaType,
-} from '@/shared/schemas/Employee.schema'
+} from '@/shared/schemas/employee.schema'
 import { ApiError } from '@/shared/types/ApiError'
 
 import { zodResolver } from '@hookform/resolvers/zod'

@@ -12,7 +12,7 @@ import { useCreateCategory } from '@/shared/hooks/category/useCreateCategory'
 import {
   CategorySchema,
   CategorySchemaType,
-} from '@/shared/schemas/Category.schema'
+} from '@/shared/schemas/category.schema'
 import { ApiError } from '@/shared/types/ApiError'
 
 import { zodResolver } from '@hookform/resolvers/zod'

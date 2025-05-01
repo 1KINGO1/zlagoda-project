@@ -13,7 +13,7 @@ import { useCreateProduct } from '@/shared/hooks/product/useCreateProduct'
 import {
   ProductSchema,
   ProductSchemaType,
-} from '@/shared/schemas/Product.schema'
+} from '@/shared/schemas/product.schema'
 import { ApiError } from '@/shared/types/ApiError'
 
 import { zodResolver } from '@hookform/resolvers/zod'
