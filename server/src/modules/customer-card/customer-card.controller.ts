@@ -1,12 +1,11 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post, Query} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common'
 import {CustomerCardService} from './customer-card.service';
-import {CreateCustomerCardDto} from './dto/CreateCustomerCard.dto';
-import {UpdateCustomerCardDto} from './dto/UpdateCustomerCard.dto';
-import {AuthWithRole} from "../auth/decorators/AuthWithRole.decorator";
-import {EmployeeRole} from "../../core/entities/Employee";
-import {SortOrderPipe} from "../../core/pipes/SortOrder.pipe";
-import {SortOrder} from "../../core/types/SortOrder";
-import {OptionalParseIntPipe} from '../../core/pipes/OptionalParseInt.pipe';
+import {CreateCustomerCardDto} from './dto/create-customer-card.dto';
+import {UpdateCustomerCardDto} from './dto/update-customer-card.dto';
+import {AuthWithRole} from "../auth/decorators/auth-with-role.decorator";
+import {EmployeeRole} from "../../core/entities/employee";
+import {SortOrderPipe} from "../../core/pipes/sort-order.pipe";
+import {SortOrder} from "../../core/types/sort-order";
 
 @Controller('customer-card')
 export class CustomerCardController {
@@ -23,7 +22,7 @@ export class CustomerCardController {
   findAll(
     @Query('sort', new SortOrderPipe()) sort?: SortOrder,
     @Query('surname') surname?: string,
-    @Query('percent', new OptionalParseIntPipe()) percent?: number
+    @Query('percent', new ParseIntPipe({optional: true})) percent?: number
   ) {
     return this.customerCardService.getCustomerCardSorted({sort, cust_surname: surname, percent});
   }

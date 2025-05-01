@@ -1,5 +1,5 @@
 import { API_BASE_URL } from '@/shared/constants/api-base-url'
-import { Product } from '@/shared/entities/Product'
+import { Product } from '@/shared/entities/product'
 import { ProductSchemaType } from '@/shared/schemas/product.schema'
 import { setUrlSearchParams } from '@/shared/utils/set-url-search-params'
 

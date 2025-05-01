@@ -2,7 +2,7 @@
 
 import { createContext, PropsWithChildren, useContext, useState } from 'react'
 
-import { Receipt } from '@/shared/entities/Receipt'
+import { Receipt } from '@/shared/entities/receipt'
 
 // 'closed' modal type is needed to handle state in <ReceiptSearch />
 // undefined - default state

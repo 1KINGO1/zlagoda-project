@@ -8,7 +8,7 @@ import { Category } from '@/features/category/Category'
 import { CreateCategoryDialog } from '@/features/category/dialog/CreateCategoryDialog'
 import { DeleteCategoryDialog } from '@/features/category/dialog/DeleteCategoryDialog'
 import { EditCategoryDialog } from '@/features/category/dialog/EditCategoryDialog'
-import { Category as CategoryType } from '@/shared/entities/Category'
+import { Category as CategoryType } from '@/shared/entities/category'
 import { useCategories } from '@/shared/hooks/category/useCategories'
 import { usePrintCategory } from '@/shared/hooks/category/usePrintCategory'
 

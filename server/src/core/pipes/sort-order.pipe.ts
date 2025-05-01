@@ -1,5 +1,5 @@
 import {BadRequestException, Injectable, PipeTransform} from "@nestjs/common";
-import {SortOrder, sortOrders} from "../types/SortOrder";
+import {SortOrder, sortOrders} from "../types/sort-order";
 
 @Injectable()
 export class SortOrderPipe implements PipeTransform {

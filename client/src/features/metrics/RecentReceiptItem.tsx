@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Receipt } from '@/shared/entities/Receipt'
+import { Receipt } from '@/shared/entities/receipt'
 import { SquareArrowRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 

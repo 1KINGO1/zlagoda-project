@@ -1,12 +1,11 @@
 import {Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query} from '@nestjs/common';
 import {ProductService} from './product.service';
-import {CreateProductDto} from './dto/CreateProduct.dto';
-import {UpdateProductDto} from './dto/UpdateProduct.dto';
-import {AuthWithRole} from "../auth/decorators/AuthWithRole.decorator";
-import {EmployeeRole} from "../../core/entities/Employee";
-import {SortOrderPipe} from "../../core/pipes/SortOrder.pipe";
-import {SortOrder} from "../../core/types/SortOrder";
-import {OptionalParseIntPipe} from "../../core/pipes/OptionalParseInt.pipe";
+import {CreateProductDto} from './dto/create-product.dto';
+import {UpdateProductDto} from './dto/update-product.dto';
+import {AuthWithRole} from "../auth/decorators/auth-with-role.decorator";
+import {EmployeeRole} from "../../core/entities/employee";
+import {SortOrderPipe} from "../../core/pipes/sort-order.pipe";
+import {SortOrder} from "../../core/types/sort-order";
 
 @Controller('product')
 export class ProductController {
@@ -22,7 +21,7 @@ export class ProductController {
   @AuthWithRole([EmployeeRole.MANAGER, EmployeeRole.CASHIER])
   findAll(
     @Query('sort', new SortOrderPipe()) sort?: SortOrder,
-    @Query('category_number', new OptionalParseIntPipe()) category_number?: number,
+    @Query('category_number', new ParseIntPipe({optional: true})) category_number?: number,
     @Query('name') name?: string,
   ) {
     return this.productService.getProductsSorted({sort, category_number, name});

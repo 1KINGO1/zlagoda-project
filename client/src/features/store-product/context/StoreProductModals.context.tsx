@@ -2,7 +2,7 @@
 
 import { createContext, PropsWithChildren, useContext, useState } from 'react'
 
-import { StoreProduct } from '@/shared/entities/StoreProduct'
+import { StoreProduct } from '@/shared/entities/store-product'
 
 type ModalTypes = 'add' | 'update' | 'delete' | 'info' | undefined
 

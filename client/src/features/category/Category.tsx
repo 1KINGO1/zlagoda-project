@@ -2,7 +2,7 @@ import { Pencil, Trash2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Category as CategoryType } from '@/shared/entities/Category'
+import { Category as CategoryType } from '@/shared/entities/category'
 
 interface CategoryProps {
   category: CategoryType

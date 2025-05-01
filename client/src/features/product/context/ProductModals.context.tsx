@@ -3,7 +3,7 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react'
 
 import { ProductFilterContext } from '@/features/product/context/ProductFilter.context'
-import { Product } from '@/shared/entities/Product'
+import { Product } from '@/shared/entities/product'
 import { GetProductsFilters } from '@/shared/services/product.service'
 
 type ModalTypes = 'add' | 'update' | 'delete' | undefined

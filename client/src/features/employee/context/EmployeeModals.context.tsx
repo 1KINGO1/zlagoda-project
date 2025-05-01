@@ -3,7 +3,7 @@
 // Todo: Repeated code, refactor to a shared context
 import { createContext, PropsWithChildren, useContext, useState } from 'react'
 
-import { Employee } from '@/shared/entities/Employee'
+import { Employee } from '@/shared/entities/employee'
 
 type ModalTypes = 'add' | 'update' | 'delete' | undefined
 

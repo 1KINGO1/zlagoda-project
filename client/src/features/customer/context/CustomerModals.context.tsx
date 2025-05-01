@@ -2,7 +2,7 @@
 
 import { createContext, PropsWithChildren, useContext, useState } from 'react'
 
-import { CustomerCard } from '@/shared/entities/CustomerCard'
+import { CustomerCard } from '@/shared/entities/customer-card'
 
 type ModalTypes = 'add' | 'update' | 'delete' | 'info' | undefined
 

@@ -1,5 +1,5 @@
-import { Employee } from './Employee'
-import { CustomerCard } from './CustomerCard'
+import { Employee } from './employee'
+import { CustomerCard } from './customer-card'
 
 export interface Receipt {
   receipt_number: string,

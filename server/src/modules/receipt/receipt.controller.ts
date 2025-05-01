@@ -11,9 +11,9 @@ import {
   BadRequestException,
 } from '@nestjs/common'
 import { ReceiptService } from './receipt.service';
-import { CreateReceiptDto } from './dto/CreateReceipt.dto';
-import {AuthWithRole} from "../auth/decorators/AuthWithRole.decorator";
-import {EmployeeRole} from "../../core/entities/Employee";
+import { CreateReceiptDto } from './dto/create-receipt.dto';
+import {AuthWithRole} from "../auth/decorators/auth-with-role.decorator";
+import {EmployeeRole} from "../../core/entities/employee";
 import {Request} from "express";
 import {ParseDatePipe} from '@nestjs/common/pipes/parse-date.pipe';
 

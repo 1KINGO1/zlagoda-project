@@ -1,4 +1,4 @@
-import {EmployeeRole} from "../../../core/entities/Employee";
+import {EmployeeRole} from "../../../core/entities/employee";
 import {
   IsEnum,
   IsISO8601,
@@ -8,7 +8,7 @@ import {
   MinLength,
   Validate
 } from "class-validator";
-import {IsValidNumberConstraint} from "../../../core/constraints/IsValidNumber.constraint";
+import {IsValidNumber} from "../../../core/constraints/is-valid-number";
 
 export class UpdateEmployeeDto {
   // @IsString()
@@ -40,7 +40,7 @@ export class UpdateEmployeeDto {
   empl_role?: EmployeeRole
 
   @IsOptional()
-  @Validate(IsValidNumberConstraint)
+  @Validate(IsValidNumber)
   salary?: number
 
   @IsOptional()

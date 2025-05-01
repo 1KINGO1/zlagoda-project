@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Category as CategoryType } from '@/shared/entities/Category'
+import { Category as CategoryType } from '@/shared/entities/category'
 import { useDeleteCategory } from '@/shared/hooks/category/useDeleteCategory'
 import { ApiError } from '@/shared/types/ApiError'
 

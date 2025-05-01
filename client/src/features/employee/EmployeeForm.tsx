@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { EmployeeRole } from '@/shared/entities/Employee'
+import { EmployeeRole } from '@/shared/entities/employee'
 import {
   EmployeeSchemaType,
   EmployeeUpdateSchemaType,

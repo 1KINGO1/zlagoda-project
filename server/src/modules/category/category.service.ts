@@ -2,8 +2,8 @@ import {ConflictException, Injectable, NotFoundException} from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import {DatabaseService} from "../../core/database/database.service";
-import {SortOrder} from "../../core/types/SortOrder";
-import {Category} from "../../core/entities/Category";
+import {SortOrder} from "../../core/types/sort-order";
+import {Category} from "../../core/entities/category";
 
 @Injectable()
 export class CategoryService {

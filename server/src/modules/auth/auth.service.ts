@@ -1,5 +1,5 @@
 import {BadRequestException, Injectable, NotFoundException} from '@nestjs/common';
-import {LoginDto} from "./dto/Login.dto";
+import {LoginDto} from "./dto/login.dto";
 import {EmployeeService} from "../employee/employee.service";
 import {JwtService} from "@nestjs/jwt";
 import * as argon2 from 'argon2';

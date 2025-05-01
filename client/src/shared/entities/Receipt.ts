@@ -1,4 +1,4 @@
-import { CustomerCard } from '@/shared/entities/CustomerCard'
+import { CustomerCard } from '@/shared/entities/customer-card'
 
 export interface Receipt {
   receipt_number: string

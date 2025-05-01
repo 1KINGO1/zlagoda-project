@@ -1,6 +1,6 @@
 import { API_BASE_URL } from '@/shared/constants/api-base-url'
 import { setUrlSearchParams } from '@/shared/utils/set-url-search-params'
-import { Receipt } from '../entities/Receipt'
+import { Receipt } from '../entities/receipt'
 import { ReceiptSchemaType } from '@/shared/schemas/receipt.schema'
 
 export interface GetReceiptsFilters {

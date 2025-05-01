@@ -1,5 +1,5 @@
 import { QueryKeys } from '@/shared/constants/query-keys'
-import { CustomerCard } from '@/shared/entities/CustomerCard'
+import { CustomerCard } from '@/shared/entities/customer-card'
 import { customerService } from '@/shared/services/customer.service'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'

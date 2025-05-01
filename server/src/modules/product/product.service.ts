@@ -5,11 +5,11 @@ import {
   Injectable,
   NotFoundException
 } from '@nestjs/common';
-import {CreateProductDto} from './dto/CreateProduct.dto';
-import {UpdateProductDto} from './dto/UpdateProduct.dto';
+import {CreateProductDto} from './dto/create-product.dto';
+import {UpdateProductDto} from './dto/update-product.dto';
 import {DatabaseService} from "../../core/database/database.service";
-import {SortOrder} from "../../core/types/SortOrder";
-import {Product} from "../../core/entities/Product";
+import {SortOrder} from "../../core/types/sort-order";
+import {Product} from "../../core/entities/product";
 import {CategoryService} from "../category/category.service";
 
 @Injectable()

@@ -1,14 +1,14 @@
 import {Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, UseInterceptors} from '@nestjs/common';
 import { EmployeeService } from './employee.service';
-import {CreateEmployeeDto} from "./dto/CreateEmployee.dto";
-import {RemoveSensitiveFieldsInterceptor} from "../../core/interceptors/RemoveSensitiveFields.interceptor";
-import {SortOrderPipe} from "../../core/pipes/SortOrder.pipe";
-import {AuthWithRole} from "../auth/decorators/AuthWithRole.decorator";
-import {EmployeeRole} from "../../core/entities/Employee";
-import {UpdateEmployeeDto} from "./dto/UpdateEmployee.dto";
+import {CreateEmployeeDto} from "./dto/create-employee.dto";
+import {RemoveSensitiveFieldsInterceptor} from "../../core/interceptors/remove-sensitive-fields.interceptor";
+import {SortOrderPipe} from "../../core/pipes/sort-order.pipe";
+import {AuthWithRole} from "../auth/decorators/auth-with-role.decorator";
+import {EmployeeRole} from "../../core/entities/employee";
+import {UpdateEmployeeDto} from "./dto/update-employee.dto";
 import {Request} from "express";
-import {SortOrder} from "../../core/types/SortOrder";
-import {Auth} from '../auth/decorators/Auth.decorator';
+import {SortOrder} from "../../core/types/sort-order";
+import {Auth} from '../auth/decorators/auth.decorator';
 
 @Controller('employee')
 @UseInterceptors(RemoveSensitiveFieldsInterceptor)

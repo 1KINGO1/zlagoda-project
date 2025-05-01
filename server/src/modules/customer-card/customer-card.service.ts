@@ -1,9 +1,9 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
-import { CreateCustomerCardDto } from './dto/CreateCustomerCard.dto';
-import { UpdateCustomerCardDto } from './dto/UpdateCustomerCard.dto';
+import { CreateCustomerCardDto } from './dto/create-customer-card.dto';
+import { UpdateCustomerCardDto } from './dto/update-customer-card.dto';
 import {DatabaseService} from "../../core/database/database.service";
-import {CustomerCard} from "../../core/entities/CustomerCard";
-import {SortOrder} from "../../core/types/SortOrder";
+import {CustomerCard} from "../../core/entities/customer-card";
+import {SortOrder} from "../../core/types/sort-order";
 
 @Injectable()
 export class CustomerCardService {

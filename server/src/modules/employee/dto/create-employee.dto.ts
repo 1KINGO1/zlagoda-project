@@ -1,4 +1,4 @@
-import {EmployeeRole} from "../../../core/entities/Employee";
+import {EmployeeRole} from "../../../core/entities/employee";
 import {
   IsEnum,
   IsISO8601,
@@ -8,8 +8,8 @@ import {
   MinLength,
   Validate
 } from "class-validator";
-import {IsValidNumberConstraint} from "../../../core/constraints/IsValidNumber.constraint";
-import {IsAdultConstraint} from "../../../core/constraints/IsAdult.constraint";
+import {IsValidNumber} from "../../../core/constraints/is-valid-number";
+import {IsAdultConstraint} from "../../../core/constraints/is-adult.constraint";
 
 export class CreateEmployeeDto {
   @IsString()
@@ -47,7 +47,7 @@ export class CreateEmployeeDto {
 
   @IsNotEmpty()
   @Min(0)
-  @Validate(IsValidNumberConstraint)
+  @Validate(IsValidNumber)
   salary: number
 
   @IsNotEmpty()

@@ -1,11 +1,11 @@
 import {BadRequestException, ConflictException, Injectable, NotFoundException} from '@nestjs/common';
 import {DatabaseService} from "../../core/database/database.service";
-import {CreateStoreProductDto} from "./dto/CreateStoreProduct.dto";
-import {StoreProduct} from "../../core/entities/StoreProduct";
-import {SortOrder} from "../../core/types/SortOrder";
-import {UpdateStoreProductDto} from "./dto/UpdateStoreProduct.dto";
+import {CreateStoreProductDto} from "./dto/create-store-product.dto";
+import {StoreProduct} from "../../core/entities/store-product";
+import {SortOrder} from "../../core/types/sort-order";
+import {UpdateStoreProductDto} from "./dto/update-store-product.dto";
 import {async} from 'rxjs';
-import {Product} from '../../core/entities/Product';
+import {Product} from '../../core/entities/product';
 
 @Injectable()
 export class StoreProductService {

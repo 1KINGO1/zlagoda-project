@@ -2,10 +2,10 @@ import {Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query} 
 import {CategoryService} from './category.service';
 import {CreateCategoryDto} from './dto/create-category.dto';
 import {UpdateCategoryDto} from './dto/update-category.dto';
-import {AuthWithRole} from "../auth/decorators/AuthWithRole.decorator";
-import {EmployeeRole} from "../../core/entities/Employee";
-import {SortOrderPipe} from "../../core/pipes/SortOrder.pipe";
-import {SortOrder} from "../../core/types/SortOrder";
+import {AuthWithRole} from "../auth/decorators/auth-with-role.decorator";
+import {EmployeeRole} from "../../core/entities/employee";
+import {SortOrderPipe} from "../../core/pipes/sort-order.pipe";
+import {SortOrder} from "../../core/types/sort-order";
 
 @Controller('category')
 export class CategoryController {

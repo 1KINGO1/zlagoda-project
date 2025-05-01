@@ -1,10 +1,10 @@
 import {BadRequestException, ConflictException, Injectable, NotFoundException} from '@nestjs/common';
 import {DatabaseService} from "../../core/database/database.service";
-import {Employee} from "../../core/entities/Employee";
-import {CreateEmployeeDto} from "./dto/CreateEmployee.dto";
+import {Employee} from "../../core/entities/employee";
+import {CreateEmployeeDto} from "./dto/create-employee.dto";
 import * as argon2 from "argon2";
-import {UpdateEmployeeDto} from "./dto/UpdateEmployee.dto";
-import {SortOrder} from "../../core/types/SortOrder";
+import {UpdateEmployeeDto} from "./dto/update-employee.dto";
+import {SortOrder} from "../../core/types/sort-order";
 
 @Injectable()
 export class EmployeeService {

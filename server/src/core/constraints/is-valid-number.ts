@@ -1,7 +1,7 @@
 import { ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments } from 'class-validator';
 
 @ValidatorConstraint({ async: false })
-export class IsValidNumberConstraint implements ValidatorConstraintInterface {
+export class IsValidNumber implements ValidatorConstraintInterface {
   validate(value: any) {
     if (typeof value !== 'number') {
       return false;

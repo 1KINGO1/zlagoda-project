@@ -1,5 +1,5 @@
 import { API_BASE_URL } from '@/shared/constants/api-base-url'
-import { Category } from '@/shared/entities/Category'
+import { Category } from '@/shared/entities/category'
 import { CategorySchemaType } from '@/shared/schemas/category.schema'
 
 class CategoryService {

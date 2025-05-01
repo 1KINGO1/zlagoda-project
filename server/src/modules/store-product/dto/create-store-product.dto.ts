@@ -1,5 +1,5 @@
 import {IsBoolean, IsInt, IsNotEmpty, IsString, MaxLength, Min, MinLength, Validate} from "class-validator";
-import {IsValidNumberConstraint} from "../../../core/constraints/IsValidNumber.constraint";
+import {IsValidNumber} from "../../../core/constraints/is-valid-number";
 
 export class CreateStoreProductDto {
   @IsInt()
@@ -9,7 +9,7 @@ export class CreateStoreProductDto {
 
   @IsNotEmpty()
   @Min(0)
-  @Validate(IsValidNumberConstraint)
+  @Validate(IsValidNumber)
   selling_price: number
 
   @IsInt()

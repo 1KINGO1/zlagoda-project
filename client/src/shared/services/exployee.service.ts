@@ -1,5 +1,5 @@
 import { API_BASE_URL } from '@/shared/constants/api-base-url'
-import { Employee } from '@/shared/entities/Employee'
+import { Employee } from '@/shared/entities/employee'
 import {
   EmployeeSchemaType,
   EmployeeUpdateSchemaType,

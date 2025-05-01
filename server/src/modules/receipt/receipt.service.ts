@@ -1,8 +1,8 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
 import {DatabaseService} from "../../core/database/database.service";
-import {Receipt, ReceiptItem} from "../../core/entities/Receipt";
-import {CreateReceiptDto} from "./dto/CreateReceipt.dto";
-import {Employee} from "../../core/entities/Employee";
+import {Receipt, ReceiptItem} from "../../core/entities/receipt";
+import {CreateReceiptDto} from "./dto/create-receipt.dto";
+import {Employee} from "../../core/entities/employee";
 import {EmployeeService} from '../employee/employee.service';
 
 @Injectable()

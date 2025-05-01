@@ -14,7 +14,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { CategoryForm } from '@/features/category/CategoryForm'
-import { Category as CategoryType } from '@/shared/entities/Category'
+import { Category as CategoryType } from '@/shared/entities/category'
 import { useUpdateCategory } from '@/shared/hooks/category/useUpdateCategory'
 import {
   CategorySchema,

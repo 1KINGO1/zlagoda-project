@@ -1,12 +1,11 @@
 import {Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseBoolPipe} from '@nestjs/common';
 import { StoreProductService } from './store-product.service';
-import { CreateStoreProductDto } from './dto/CreateStoreProduct.dto';
-import { UpdateStoreProductDto } from './dto/UpdateStoreProduct.dto';
-import {AuthWithRole} from "../auth/decorators/AuthWithRole.decorator";
-import {EmployeeRole} from "../../core/entities/Employee";
-import {SortOrderPipe} from "../../core/pipes/SortOrder.pipe";
-import {SortOrder} from "../../core/types/SortOrder";
-import {OptionalParseIntPipe} from "../../core/pipes/OptionalParseInt.pipe";
+import { CreateStoreProductDto } from './dto/create-store-product.dto';
+import { UpdateStoreProductDto } from './dto/update-store-product.dto';
+import {AuthWithRole} from "../auth/decorators/auth-with-role.decorator";
+import {EmployeeRole} from "../../core/entities/employee";
+import {SortOrderPipe} from "../../core/pipes/sort-order.pipe";
+import {SortOrder} from "../../core/types/sort-order";
 
 @Controller('store-product')
 export class StoreProductController {
