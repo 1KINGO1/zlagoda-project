@@ -8,4 +8,5 @@ export enum QueryKeys {
   RECEIPTS = 'receipts',
   RECEIPT_TOTAL_SUM = 'receiptTotalSum',
   RECEIPT_SOLD_PRODUCTS = 'receiptSoldProducts',
+  MY_RECENT_RECEIPTS = 'myRecentReceipts',
 }

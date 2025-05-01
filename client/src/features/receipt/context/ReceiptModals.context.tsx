@@ -4,7 +4,10 @@ import { createContext, PropsWithChildren, useContext, useState } from 'react'
 
 import { Receipt } from '@/shared/entities/Receipt'
 
-type ModalTypes = 'add' | 'info' | 'delete' | undefined
+// 'closed' modal type is needed to handle state in <ReceiptSearch />
+// undefined - default state
+// 'closed' - when modal was opened and then closed
+type ModalTypes = 'add' | 'info' | 'delete' | undefined | 'closed'
 
 interface ReceiptModalContextType {
   modal: ModalTypes
@@ -14,7 +17,7 @@ interface ReceiptModalContextType {
 }
 export const ReceiptModalContext = createContext<ReceiptModalContextType>({
   modal: undefined,
-  openModal: (modalType, receipt) => {},
+  openModal: () => {},
   receipt: undefined,
   closeModal: () => {},
 })
@@ -32,7 +35,7 @@ export const ReceiptModalProvider = ({ children }: PropsWithChildren) => {
   }
 
   const closeModal = () => {
-    setModal(undefined)
+    setModal('closed')
   }
 
   return (

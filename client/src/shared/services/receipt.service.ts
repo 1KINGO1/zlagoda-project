@@ -116,6 +116,21 @@ class ReceiptService {
     }
     return data
   }
+  async getMyRecentReceipts(): Promise<Receipt[]>{
+    const response = await fetch(`${API_BASE_URL}receipt/me/last`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const data = await response.json()
+    if (!response.ok) {
+      throw data
+    }
+    return data
+  }
 }
 
 export const receiptService = new ReceiptService();

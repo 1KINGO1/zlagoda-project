@@ -7,9 +7,11 @@ import { useReceiptModal } from '@/features/receipt/context/ReceiptModals.contex
 
 export const ReceiptSearch = () => {
   const [searchValue, setSearchValue] = useState('')
-  const [receiptId, setReceiptId] = useState<string | undefined>(undefined)
   const { openModal, modal } = useReceiptModal()
+
+  // TODO:  move this logic into useSearchReceipt
   const params = useParams<{ searchValue: string[] }>();
+  const [receiptId, setReceiptId] = useState<string | undefined>(params.searchValue?.[0])
 
   const { data: receipt, isSuccess } = useGetReceiptById(receiptId);
 
@@ -21,7 +23,6 @@ export const ReceiptSearch = () => {
   useEffect(() => {
     if (params.searchValue && params.searchValue[0]) {
       setSearchValue(params.searchValue[0]);
-      setReceiptId(params.searchValue[0]);
     }
   }, [params.searchValue?.[0]])
 
@@ -32,7 +33,9 @@ export const ReceiptSearch = () => {
   }, [isSuccess, receipt])
 
   useEffect(() => {
-    setReceiptId(undefined);
+    if (modal === "closed") {
+      setReceiptId(undefined)
+    }
   }, [modal])
 
   return (
