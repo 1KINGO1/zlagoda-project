@@ -6,7 +6,9 @@ import { createContext, PropsWithChildren, useContext, useState } from 'react'
 interface ReceiptFilterContextType {
   employee_id?: string
   startDate?: Date
-  endDate?: Date
+  endDate?: Date,
+  productId?: number,
+  setProductId: (productId?: number) => void
   setEmployeeId: (employee_id?: string) => void
   setStartDate: (startDate?: Date) => void
   setEndDate: (endDate?: Date) => void
@@ -16,6 +18,8 @@ export const ReceiptFilterContext = createContext<ReceiptFilterContextType>({
   employee_id: undefined,
   startDate: undefined,
   endDate: undefined,
+  productId: undefined,
+  setProductId: () => {},
   setEmployeeId: () => {},
   setStartDate: () => {},
   setEndDate: () => {},
@@ -28,6 +32,7 @@ export const ReceiptFilterProvider = ({ children }: PropsWithChildren) => {
   )
   const [startDate, setStartDate] = useState<Date | undefined>(undefined)
   const [endDate, setEndDate] = useState<Date | undefined>(undefined)
+  const [productId, setProductId] = useState<number | undefined>(undefined)
 
   const clear = () => {
     setStartDate(undefined)
@@ -39,6 +44,8 @@ export const ReceiptFilterProvider = ({ children }: PropsWithChildren) => {
     <ReceiptFilterContext.Provider
       value={{
         employee_id: employeeId,
+        productId,
+        setProductId,
         startDate,
         endDate,
         setEmployeeId,

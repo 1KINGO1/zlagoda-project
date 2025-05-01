@@ -194,7 +194,7 @@ export class ReceiptService {
 		const receiptQueryResult = await this.databaseService.query<Receipt>(query, values);
 		return receiptQueryResult.rows;
 	}
-	async getReceiptsSum(sortOptions: {
+	async getReceiptsSum(params: {
 		employee_id?: string;
 		startDate?: Date;
 		endDate?: Date;
@@ -207,19 +207,19 @@ export class ReceiptService {
 		`
 		const values = [];
 
-		if (sortOptions.employee_id !== undefined) {
+		if (params.employee_id !== undefined) {
 			query += ` WHERE receipt.id_employee = $${values.length + 1}`;
-			values.push(sortOptions.employee_id);
+			values.push(params.employee_id);
 		}
 
-		if (sortOptions.startDate !== undefined) {
+		if (params.startDate !== undefined) {
 			query += ` ${values.length > 0 ? "AND" : "WHERE"} receipt.print_date >= $${values.length + 1}`;
-			values.push(sortOptions.startDate);
+			values.push(params.startDate);
 		}
 
-		if (sortOptions.endDate !== undefined) {
+		if (params.endDate !== undefined) {
 			query += ` ${values.length > 0 ? "AND" : "WHERE"} receipt.print_date <= $${values.length + 1}`;
-			values.push(sortOptions.endDate);
+			values.push(params.endDate);
 		}
 
 		const result = await this.databaseService.query<{ total_sum: number }>(query, values);
@@ -235,5 +235,32 @@ export class ReceiptService {
 		const result = await this.databaseService.query<Receipt>(query, [employee.id_employee]);
 
 		return result.rows;
+	}
+	async getSoldProductsCount(params: {productId: string, startDate?: Date, endDate?: Date}): Promise<{productCount: number}> {
+		let query = `
+				SELECT SUM(sale.product_number) AS product_count FROM receipt
+				INNER JOIN sale ON receipt.receipt_number = sale.receipt_number
+				INNER JOIN store_product ON store_product.upc = sale.upc
+				INNER JOIN product ON store_product.id_product = product.id_product
+		`;
+		const values = [];
+
+		query += ` WHERE product.id_product = $1`;
+		values.push(params.productId);
+
+		if (params.startDate !== undefined) {
+			query += ` ${values.length > 0 ? "AND" : "WHERE"} receipt.print_date >= $${values.length + 1}`;
+			values.push(params.startDate);
+		}
+
+		if (params.endDate !== undefined) {
+			query += ` ${values.length > 0 ? "AND" : "WHERE"} receipt.print_date <= $${values.length + 1}`;
+			values.push(params.endDate);
+		}
+
+		query += ` GROUP BY product.id_product`;
+
+		const result = await this.databaseService.query<{ product_count: number }>(query, values);
+		return {productCount: result.rows[0]?.product_count ?? 0}
 	}
 }

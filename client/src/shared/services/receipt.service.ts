@@ -9,6 +9,12 @@ export interface GetReceiptsFilters {
   endDate?: Date
 }
 
+export interface GetSoldProductsCountFilters {
+  productId: number
+  startDate?: Date
+  endDate?: Date
+}
+
 
 class ReceiptService {
   async getReceipts(filters: GetReceiptsFilters): Promise<Receipt[]> {
@@ -64,6 +70,39 @@ class ReceiptService {
     setURLSearchParams(url, filters)
 
     const response = await fetch(url.toString(), {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const data = await response.json()
+    if (!response.ok) {
+      throw data
+    }
+    return data
+  }
+  async getSoldProductsCount(filters: GetSoldProductsCountFilters): Promise<{ productCount: number }> {
+    const url = new URL(`${API_BASE_URL}receipt/sold-products`)
+    setURLSearchParams(url, filters)
+
+    const response = await fetch(url.toString(), {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const data = await response.json()
+    if (!response.ok) {
+      throw data
+    }
+    return data
+  }
+  async getReceiptById(id: string): Promise<Receipt> {
+    const response = await fetch(`${API_BASE_URL}receipt/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -1,4 +1,15 @@
-import {Controller, Get, Post, Body, Req, Delete, Param, Query, ParseBoolPipe} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Req,
+  Delete,
+  Param,
+  Query,
+  ParseBoolPipe,
+  BadRequestException,
+} from '@nestjs/common'
 import { ReceiptService } from './receipt.service';
 import { CreateReceiptDto } from './dto/CreateReceipt.dto';
 import {AuthWithRole} from "../auth/decorators/AuthWithRole.decorator";
@@ -33,6 +44,24 @@ export class ReceiptController {
       employee_id,
       startDate,
       endDate,
+    });
+  }
+
+  @Get('sold-products')
+  @AuthWithRole([EmployeeRole.MANAGER, EmployeeRole.CASHIER])
+  async findTotalSoldProductsCount(
+    @Query('startDate', new ParseDatePipe({optional: true})) startDate: Date,
+    @Query('endDate', new ParseDatePipe({optional: true})) endDate: Date,
+    @Query('productId') productId : string,
+  ) {
+    if (!productId) {
+      throw new BadRequestException('Product ID is required');
+    }
+
+    return await this.receiptService.getSoldProductsCount({
+      startDate,
+      endDate,
+      productId,
     });
   }
 

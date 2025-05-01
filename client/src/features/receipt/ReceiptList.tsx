@@ -39,6 +39,7 @@ export const ReceiptList = () => {
             size='icon'
             variant='ghost'
             onClick={() => {
+              window.history.pushState(null, '', '/dashboard/receipts/' + receipt.receipt_number)
               openModal('info', receipt)
             }}
           >

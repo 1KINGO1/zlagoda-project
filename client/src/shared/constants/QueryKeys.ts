@@ -6,4 +6,6 @@ export enum QueryKeys {
   STORE_PRODUCTS = 'storeProducts',
   EMPLOYEES = 'employees',
   RECEIPTS = 'receipts',
+  RECEIPT_TOTAL_SUM = 'receiptTotalSum',
+  RECEIPT_SOLD_PRODUCTS = 'receiptSoldProducts',
 }

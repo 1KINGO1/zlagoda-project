@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { TotalProductSoldCount } from './TotalProductSoldCount'
 import { ReceiptList } from './ReceiptList'
 import { ReceiptFilter } from './ReceiptFilter'
 import { ReceiptDialogs } from './ReceiptDialogs'
@@ -17,6 +18,7 @@ export const Receipts = () => {
     <div>
       <ReceiptFilter />
       <ReceiptTotalSum />
+      <TotalProductSoldCount />
       <Table className='mt-3'>
         <TableHeader>
           <TableRow>

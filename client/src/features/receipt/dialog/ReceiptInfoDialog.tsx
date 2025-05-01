@@ -14,6 +14,7 @@ export const ReceiptInfoDialog = () => {
       modal={false}
       open={modal === 'info'}
       onOpenChange={() => {
+        window.history.pushState(null, '', '/dashboard/receipts')
         closeModal()
       }}
     >

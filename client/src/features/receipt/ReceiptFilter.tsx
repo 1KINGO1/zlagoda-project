@@ -3,12 +3,23 @@
 import { useReceiptFilter } from '@/features/receipt/context/ReceiptFilter.context'
 import { SelectEmployee } from '@/components/SelectEmployee'
 import { DatePicker } from '@/components/ui/date-picker'
+import { ReceiptSearch } from '@/features/receipt/ReceiptSearch'
 import { DateRange } from 'react-day-picker'
 import { usePrintReceipt } from '@/shared/hooks/receipt/usePrintReceipt'
 import { Button } from '@/components/ui/button'
+import { SelectProduct } from 'src/components/SelectProduct'
 
 export const ReceiptFilter = () => {
-  const {employee_id, setEmployeeId, startDate, endDate, setEndDate, setStartDate} = useReceiptFilter();
+  const {
+    employee_id,
+    setEmployeeId,
+    startDate,
+    endDate,
+    setEndDate,
+    setStartDate,
+    productId,
+    setProductId
+  } = useReceiptFilter();
   const {printReceipt, isLoading} = usePrintReceipt();
 
   const setDate = (date?: DateRange) => {
@@ -17,21 +28,27 @@ export const ReceiptFilter = () => {
   }
 
   return (
-    <div className='flex gap-2 w-full justify-between'>
-      <DatePicker
-        className="w-100"
-        mode="range"
-        date={{
-          from: startDate,
-          to: endDate,
-        }}
-        setDate={setDate}
-        toYear={new Date().getFullYear()}
-      />
-      <SelectEmployee value={employee_id ?? ''}
-                      onChange={setEmployeeId}
-                      className="w-full shrink-1"
-      />
+    <div className='flex gap-2 w-full'>
+      <div className="flex gap-2">
+        <DatePicker
+          className="w-100"
+          mode="range"
+          date={{
+            from: startDate,
+            to: endDate,
+          }}
+          setDate={setDate}
+          toYear={new Date().getFullYear()}
+        />
+        <SelectEmployee value={employee_id ?? ''}
+                        onChange={setEmployeeId}
+                        className="w-full shrink-1"
+        />
+      </div>
+      <div className="ml-auto">
+        <SelectProduct value={productId ?? 0} onChange={setProductId}/>
+      </div>
+      <ReceiptSearch />
       <Button disabled={isLoading} onClick={printReceipt}>
         Print
       </Button>
