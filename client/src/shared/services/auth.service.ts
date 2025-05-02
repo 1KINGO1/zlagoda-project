@@ -1,5 +1,5 @@
 import { API_BASE_URL } from '@/shared/constants/api-base-url'
-import { LoginFormSchemaType } from '@/shared/schemas/loginForm.schema'
+import { LoginFormSchemaType } from '@/shared/schemas/login-form.schema'
 
 class AuthService {
   async login(loginSchema: LoginFormSchemaType) {

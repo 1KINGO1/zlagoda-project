@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { useEmployeeRole } from '@/shared/hooks/useEmployeeRole'
 import { TotalProductSoldCount } from './TotalProductSoldCount'
 import { ReceiptList } from './ReceiptList'
 import { ReceiptFilter } from './ReceiptFilter'
@@ -14,11 +15,18 @@ import { ReceiptDialogs } from './ReceiptDialogs'
 import { ReceiptTotalSum } from './ReceiptTotalSum'
 
 export const Receipts = () => {
+  const role = useEmployeeRole();
+
   return (
     <div>
       <ReceiptFilter />
-      <ReceiptTotalSum />
-      <TotalProductSoldCount />
+      {role === "MANAGER" ? (
+        <>
+          <ReceiptTotalSum />
+          <TotalProductSoldCount />
+        </>
+      ) : null}
+
       <Table className='mt-3'>
         <TableHeader>
           <TableRow>

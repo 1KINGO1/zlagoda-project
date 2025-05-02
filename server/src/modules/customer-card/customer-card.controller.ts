@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common'
+import { OptionalParseIntPipe } from '../../core/pipes/optional-parse-int.pipe'
 import {CustomerCardService} from './customer-card.service';
 import {CreateCustomerCardDto} from './dto/create-customer-card.dto';
 import {UpdateCustomerCardDto} from './dto/update-customer-card.dto';
@@ -22,7 +23,7 @@ export class CustomerCardController {
   findAll(
     @Query('sort', new SortOrderPipe()) sort?: SortOrder,
     @Query('surname') surname?: string,
-    @Query('percent', new ParseIntPipe({optional: true})) percent?: number
+    @Query('percent', new OptionalParseIntPipe()) percent?: number
   ) {
     return this.customerCardService.getCustomerCardSorted({sort, cust_surname: surname, percent});
   }

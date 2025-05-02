@@ -30,6 +30,7 @@ export const CreateEmployeeDialog = () => {
     defaultValues: {
       empl_surname: '',
       empl_name: '',
+      empl_patronymic: null,
       salary: 0,
       date_of_birth: minBirthDate,
       date_of_start: new Date(),

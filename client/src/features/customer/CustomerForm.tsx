@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { CustomerCardSchemaType } from '@/shared/schemas/customerCard.schema'
+import { CustomerCardSchemaType } from '@/shared/schemas/customer-card.schema'
 import { FormProps } from '@/shared/types/FormProps'
 
 export const CustomerForm = ({

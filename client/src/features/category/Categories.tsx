@@ -1,5 +1,7 @@
 'use client'
 
+import { PrintButton } from '@/components/PrintButton'
+import { useEmployeeRole } from '@/shared/hooks/useEmployeeRole'
 import { ChevronDown, ChevronUp, CirclePlus } from 'lucide-react'
 import { useState } from 'react'
 
@@ -25,6 +27,7 @@ export const Categories = () => {
   )
   const { data: categories } = useCategories(sortOrder)
   const { printCategories, isLoading } = usePrintCategory()
+  const role = useEmployeeRole()
 
   const handleOpenEditDialog = (category: CategoryType) => {
     setSelectedCategory(category)
@@ -55,9 +58,7 @@ export const Categories = () => {
           {sortOrder !== undefined &&
             (sortOrder === 'ASC' ? <ChevronUp /> : <ChevronDown />)}
         </Button>
-        <Button onClick={printCategories} disabled={isLoading}>
-          Print
-        </Button>
+        <PrintButton onClick={printCategories} disabled={isLoading} />
       </div>
 
       <div className="flex flex-col gap-4 mt-4 h-auto">

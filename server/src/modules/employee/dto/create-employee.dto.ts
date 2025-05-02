@@ -3,6 +3,7 @@ import {
   IsEnum,
   IsISO8601,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength, Min,
   MinLength,
@@ -36,6 +37,7 @@ export class CreateEmployeeDto {
   @MaxLength(50)
   empl_name: string
 
+  @IsOptional()
   @IsString()
   @MinLength(1)
   @MaxLength(50)

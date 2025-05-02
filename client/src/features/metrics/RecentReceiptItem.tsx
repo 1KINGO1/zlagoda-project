@@ -9,7 +9,7 @@ export const RecentReceiptItem = ({receipt}: {receipt: Receipt}) => {
 
   return (
     <Card className="py-2 px-6 flex flex-row items-center gap-4">
-      <h2 className="text-xl">#{receipt.receipt_number}</h2>
+      <h3 className="text-xl">#{receipt.receipt_number}</h3>
       <p>Total sum: {receipt.sum_total}</p>
       <div>
         <Button variant="ghost" size="icon" onClick={() => router.push("/dashboard/receipts/" + receipt.receipt_number)}>

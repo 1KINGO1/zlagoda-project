@@ -1,6 +1,6 @@
 'use client'
 
-import { Check, ChevronsUpDown } from 'lucide-react'
+import { Check, ChevronsUpDown, Percent } from 'lucide-react'
 import { useState } from 'react'
 
 import { useProducts } from '@/shared/hooks/product/useProducts'
@@ -69,7 +69,7 @@ export function SelectStoreProduct({ value, onChange, className }: SelectStorePr
                     setOpen(false)
                   }}
                 >
-                  {storeProduct.product?.product_name}
+                  {storeProduct.product?.product_name} ({storeProduct.upc.slice(-4)}) {storeProduct.promotional_product ? <Percent /> : null}
                   <Check
                     className={cn(
                       value === storeProduct.upc

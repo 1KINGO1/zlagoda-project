@@ -1,21 +1,13 @@
 'use client'
 
+import { PrintButton } from '@/components/PrintButton'
 import { ChangeEvent } from 'react'
 
 import { SelectCategory } from '@/components/SelectCategory'
 import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { useProductFilter } from '@/features/product/context/ProductFilter.context'
-import { useCategories } from '@/shared/hooks/category/useCategories'
 import { debounce } from '@/shared/utils/debounce'
 import { usePrintProduct } from '@/shared/hooks/product/usePrintProduct'
-import { Button } from '@/components/ui/button'
 
 export const ProductFilter = () => {
   const { setSearchName, category_number, setCategoryNumber } =
@@ -35,9 +27,7 @@ export const ProductFilter = () => {
         value={category_number ? category_number + '' : undefined}
         onValueChange={value => setCategoryNumber(+value)}
       />
-      <Button onClick={printProducts} disabled={isLoading}>
-        Print
-      </Button>
+      <PrintButton onClick={printProducts} disabled={isLoading} />
     </div>
   )
 }

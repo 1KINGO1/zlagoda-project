@@ -1,11 +1,11 @@
 'use client'
 
+import { PrintButton } from '@/components/PrintButton'
 import { ChangeEvent } from 'react'
 
 import { Input } from '@/components/ui/input'
 import { useCustomerFilter } from '@/features/customer/context/CustomerFilter.context'
 import { debounce } from '@/shared/utils/debounce'
-import { Button } from '@/components/ui/button'
 import { usePrintCustomer } from '@/shared/hooks/customer/usePrintCustomer'
 
 export const CustomerFilter = () => {
@@ -34,9 +34,7 @@ export const CustomerFilter = () => {
           300,
         )}
       />
-      <Button disabled={isLoading} onClick={printCustomers}>
-        Print
-      </Button>
+      <PrintButton disabled={isLoading} onClick={printCustomers} />
     </div>
   )
 }

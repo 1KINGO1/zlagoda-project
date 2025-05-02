@@ -11,7 +11,7 @@ export const EmployeeSchema = z.object({
   password: z
     .string()
     .trim()
-    .min(3, 'Password must be at least 8 character long')
+    .min(8, 'Password must be at least 8 character long')
     .max(100, 'Password must be at most 100 characters long'),
   empl_surname: z
     .string()

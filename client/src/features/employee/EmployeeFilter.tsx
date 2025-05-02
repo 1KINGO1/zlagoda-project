@@ -1,5 +1,6 @@
 'use client'
 
+import { PrintButton } from '@/components/PrintButton'
 import { ChangeEvent } from 'react'
 
 import { Input } from '@/components/ui/input'
@@ -21,9 +22,7 @@ export const EmployeeFilter = () => {
           300,
         )}
       />
-      <Button disabled={isLoading} onClick={printEmployee}>
-        Print
-      </Button>
+      <PrintButton disabled={isLoading} onClick={printEmployee} />
     </div>
   )
 }

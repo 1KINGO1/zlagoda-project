@@ -1,4 +1,5 @@
 import {Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query} from '@nestjs/common';
+import { OptionalParseIntPipe } from '../../core/pipes/optional-parse-int.pipe'
 import {ProductService} from './product.service';
 import {CreateProductDto} from './dto/create-product.dto';
 import {UpdateProductDto} from './dto/update-product.dto';
@@ -21,7 +22,7 @@ export class ProductController {
   @AuthWithRole([EmployeeRole.MANAGER, EmployeeRole.CASHIER])
   findAll(
     @Query('sort', new SortOrderPipe()) sort?: SortOrder,
-    @Query('category_number', new ParseIntPipe({optional: true})) category_number?: number,
+    @Query('category_number', new OptionalParseIntPipe()) category_number?: number,
     @Query('name') name?: string,
   ) {
     return this.productService.getProductsSorted({sort, category_number, name});

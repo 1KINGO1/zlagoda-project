@@ -1,6 +1,6 @@
 import { API_BASE_URL } from '@/shared/constants/api-base-url'
 import { CustomerCard } from '@/shared/entities/customer-card'
-import { CustomerCardSchemaType } from '@/shared/schemas/customerCard.schema'
+import { CustomerCardSchemaType } from '@/shared/schemas/customer-card.schema'
 import { setUrlSearchParams } from '@/shared/utils/set-url-search-params'
 
 export interface GetCustomerFilters {
