@@ -130,4 +130,28 @@ export class ProductService {
     }
     return product;
   }
+
+  async getNotSoldProducts(){
+    const query = `
+    SELECT 
+    p.id_product,
+    p.product_name
+    FROM product p
+    WHERE 
+        NOT EXISTS (
+            SELECT 1
+            FROM store_product sp
+            WHERE sp.id_product = p.id_product
+        )
+        AND NOT EXISTS (
+            SELECT 1
+            FROM sale s
+            WHERE s.upc = (SELECT sp.upc FROM store_product sp WHERE sp.id_product = p.id_product LIMIT 1)
+        );
+    `;
+
+    const result = await this.databaseService.query<{ id_product: number, product_name: string }>(query);
+
+    return result.rows;
+  }
 }

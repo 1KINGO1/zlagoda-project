@@ -84,6 +84,23 @@ class ProductService {
     }
     return data
   }
+  async getNotSoldProducts(): Promise<{ id_product: number, product_name: string }[]> {
+    const url = new URL(`${API_BASE_URL}product/not-sold`)
+
+    const response = await fetch(url.toString(), {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const data = await response.json()
+    if (!response.ok) {
+      throw data
+    }
+    return data
+  }
 }
 
 export const productService = new ProductService()

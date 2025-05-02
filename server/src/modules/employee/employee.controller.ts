@@ -45,4 +45,10 @@ export class EmployeeController {
   async getMe(@Req() req: Request) {
     return this.employeeService.getEmployeeById(req.id_employee);
   }
+
+  @Get('employee-with-no-high-discount-clients')
+  @AuthWithRole([EmployeeRole.MANAGER])
+  async getEmployeeThatHaventServedHighDiscountClients() {
+    return this.employeeService.getEmployeeThatHaventServedHighDiscountClients();
+  }
 }

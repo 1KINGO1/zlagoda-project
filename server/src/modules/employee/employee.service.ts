@@ -11,13 +11,6 @@ export class EmployeeService {
   constructor(private readonly databaseService: DatabaseService) {
   }
 
-  async getEmployees(): Promise<Employee[]> {
-    const result = await this.databaseService.query<Employee>(
-      'SELECT * FROM employee'
-    );
-
-    return result.rows;
-  }
   async getEmployeeByLogin(login: string): Promise<Employee | null> {
     const result = await this.databaseService.query<Employee>(
       'SELECT * FROM employee WHERE login = $1', [login]
@@ -49,13 +42,6 @@ export class EmployeeService {
     );
 
     return result.rows.length ? result.rows[0] : null;
-  }
-  async findEmployeeBySurname(surname: string): Promise<Employee[]> {
-    const result = await this.databaseService.query<Employee>(
-      `SELECT * FROM employee WHERE empl_surname ILIKE $1`, [`${surname}%`]
-    );
-
-    return result.rows;
   }
   async createEmployee(employee: CreateEmployeeDto): Promise<Employee> {
     const existingEmployee = await this.getEmployeeByLogin(employee.login);
@@ -157,7 +143,22 @@ export class EmployeeService {
 
     return employee;
   }
+  async getEmployeeThatHaventServedHighDiscountClients(): Promise<Employee[]> {
+    const query = `
+      SELECT e.*
+      FROM employee e
+      WHERE NOT EXISTS (
+          SELECT 1
+          FROM receipt r
+          JOIN customer_card ON r.card_number = customer_card.card_number
+          WHERE r.id_employee = e.id_employee 
+            AND NOT (customer_card.percent < 10)
+      );
+    `;
 
+    const result = await this.databaseService.query<Employee>(query);
+    return result.rows.length ? result.rows : [];
+  }
   private createPasswordHash(password: string): Promise<string> {
     return argon2.hash(password);
   }

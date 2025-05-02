@@ -15,7 +15,6 @@ export interface GetSoldProductsCountFilters {
   endDate?: Date
 }
 
-
 class ReceiptService {
   async getReceipts(filters: GetReceiptsFilters): Promise<Receipt[]> {
     const url = new URL(`${API_BASE_URL}receipt`)
@@ -118,6 +117,21 @@ class ReceiptService {
   }
   async getMyRecentReceipts(): Promise<Receipt[]>{
     const response = await fetch(`${API_BASE_URL}receipt/me/last`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const data = await response.json()
+    if (!response.ok) {
+      throw data
+    }
+    return data
+  }
+  async getReceiptSummaryByCategories(): Promise<{category_name: string, total_sales: number, category_number: number}[]> {
+    const response = await fetch(`${API_BASE_URL}receipt/summary-by-categories`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

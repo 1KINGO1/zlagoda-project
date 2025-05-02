@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 // TODO: Use dirty fields and isDirty instead of sending all data
 // TODO: Add reset filter buttons
 // TODO: Refactor project structure
+// TODO: Refactor filters context to be using '' for default values instead of undefined
 
 
 import {

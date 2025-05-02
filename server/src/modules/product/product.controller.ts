@@ -39,4 +39,10 @@ export class ProductController {
   remove(@Param('id', new ParseIntPipe()) id: number) {
     return this.productService.remove(id);
   }
+
+  @Get('not-sold')
+  @AuthWithRole([EmployeeRole.MANAGER])
+  getNotSold() {
+    return this.productService.getNotSoldProducts();
+  }
 }

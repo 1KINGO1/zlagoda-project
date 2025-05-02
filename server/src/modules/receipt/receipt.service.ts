@@ -1,11 +1,10 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
 import {DatabaseService} from "../../core/database/database.service";
 import { CustomerCard } from '../../core/entities/customer-card'
-import {Receipt, ReceiptItem} from "../../core/entities/receipt";
+import {Receipt} from "../../core/entities/receipt";
 import { CustomerCardService } from '../customer-card/customer-card.service'
 import {CreateReceiptDto} from "./dto/create-receipt.dto";
 import {Employee} from "../../core/entities/employee";
-import {EmployeeService} from '../employee/employee.service';
 
 @Injectable()
 export class ReceiptService {
@@ -166,7 +165,7 @@ export class ReceiptService {
 		const receipt = result.rows.length ? result.rows[0] : null;
 
 		if (!receipt) {
-			return receipt;
+			throw new NotFoundException("Receipt not found");
 		}
 
 		return receipt
@@ -278,5 +277,33 @@ export class ReceiptService {
 
 		const result = await this.databaseService.query<{ product_count: number }>(query, values);
 		return {productCount: result.rows[0]?.product_count ?? 0}
+	}
+	async getSummaryByCategory(){
+		const query = `
+		SELECT 
+    category.category_number,
+		category.category_name,
+    SUM(sale.selling_price * sale.product_number) AS total_sales
+		FROM 
+				sale
+		JOIN 
+				store_product store_product ON sale.upc = store_product.upc
+		JOIN 
+				product ON store_product.id_product = product.id_product
+		JOIN 
+				category ON product.category_number = category.category_number
+		JOIN 
+				receipt ON sale.receipt_number = receipt.receipt_number
+		WHERE 
+				receipt.print_date >= CURRENT_DATE - INTERVAL '1 month'
+		GROUP BY category.category_number, category.category_name
+		ORDER BY 
+				total_sales DESC;
+		`;
+
+		const receiptQueryResult =
+			await this.databaseService.query<{category_name: string, total_sales: number, category_number: number}>(query);
+
+		return receiptQueryResult.rows;
 	}
 }

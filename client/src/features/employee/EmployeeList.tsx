@@ -1,5 +1,6 @@
 'use client'
 
+import { useDebounce } from '@/shared/hooks/useDebounce'
 import { Pencil, Trash2 } from 'lucide-react'
 import { useMemo } from 'react'
 
@@ -11,9 +12,10 @@ import { useEmployees } from '@/shared/hooks/employee/useEmployees'
 
 export const EmployeeList = () => {
   const { surname, sortOrder } = useEmployeeFilter()
+  const debounceSurname = useDebounce(surname, 300);
   const { data: employees, isSuccess: isEmployeesLoaded } = useEmployees({
     sort: sortOrder,
-    surname: surname,
+    surname: debounceSurname,
   })
   const { openModal } = useEmployeeModal()
 

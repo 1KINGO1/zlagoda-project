@@ -5,8 +5,10 @@ import { createContext, PropsWithChildren, useContext, useState } from 'react'
 interface EmployeeFilterContextType {
   sortOrder?: 'ASC' | 'DESC'
   setSortOrder(order: 'ASC' | 'DESC' | undefined): void
+
   surname?: string
   setSurname(name: string | undefined): void
+
   clear(): void
 }
 export const EmployeeFilterContext = createContext<EmployeeFilterContextType>({

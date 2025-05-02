@@ -1,10 +1,10 @@
 'use client'
 
 import { Pencil, Trash2 } from 'lucide-react'
-import { ReactElement, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { useDebounce } from '@/shared/hooks/useDebounce'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { useProductFilter } from '@/features/product/context/ProductFilter.context'
 import { useProductModal } from '@/features/product/context/ProductModals.context'
@@ -13,8 +13,9 @@ import { useProducts } from '@/shared/hooks/product/useProducts'
 
 export const ProductList = () => {
   const { name, category_number, sort } = useProductFilter()
+  const debouncedName = useDebounce(name, 300);
   const { data: products, isSuccess: isProductsLoaded } = useProducts({
-    name,
+    name: debouncedName,
     category_number,
     sort,
   })

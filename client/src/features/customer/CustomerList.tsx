@@ -1,5 +1,6 @@
 'use client'
 
+import { useDebounce } from '@/shared/hooks/useDebounce'
 import { Pencil, Trash2 } from 'lucide-react'
 import { useMemo } from 'react'
 
@@ -8,24 +9,29 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { useCustomerFilter } from '@/features/customer/context/CustomerFilter.context'
 import { useCustomerModal } from '@/features/customer/context/CustomerModals.context'
-import { useCategories } from '@/shared/hooks/category/useCategories'
 import { useCustomers } from '@/shared/hooks/customer/useCustomers'
 
 export const CustomerList = () => {
-  const filters = useCustomerFilter()
+  const { percent, surnameSort, customerSurname } = useCustomerFilter()
+  const { openModal } = useCustomerModal()
+
+  const debouncedCustomerSurname = useDebounce(customerSurname, 300);
+  const debouncedPercent = useDebounce(percent, 300);
+
   const {
     data: customers,
     isSuccess: isCustomersLoaded,
     isLoading,
   } = useCustomers({
-    percent: filters.percent,
-    sort: filters.surnameSort,
-    surname: filters.customerSurname,
+    percent: +debouncedPercent || undefined,
+    sort: surnameSort,
+    surname: debouncedCustomerSurname,
   })
-  const { openModal } = useCustomerModal()
+
 
   return useMemo(() => {
     if (isLoading || !isCustomersLoaded)
+      // TODO: Move to a separated component
       return [
         <TableRow key='loading1'>
           <TableCell colSpan={6} className='text-center'>
@@ -44,6 +50,7 @@ export const CustomerList = () => {
         </TableRow>,
       ]
 
+    // TODO: Move to a separated component
     return customers!.map(customer => (
       <TableRow key={customer.card_number}>
         <TableCell>{customer.card_number}</TableCell>

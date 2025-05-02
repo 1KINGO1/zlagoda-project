@@ -261,25 +261,4 @@ export class StoreProductService {
 			throw e;
 		}
 	}
-
-	private transformDBJoinResultToStoreProduct(dbResult: (StoreProduct & Product)[]): StoreProduct[] {
-		const result: StoreProduct[] = [];
-
-
-		dbResult.forEach((doc) => {
-			doc.product = {
-				id_product: doc.id_product,
-				product_name: doc.product_name,
-				characteristics: doc.characteristics,
-				category_number: doc.category_number,
-			}
-
-			delete doc.product_name;
-			delete doc.characteristics;
-			delete doc.category_number;
-			result.push(doc);
-		})
-
-		return result;
-	}
 }

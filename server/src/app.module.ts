@@ -26,7 +26,7 @@ import { ReceiptModule } from './modules/receipt/receipt.module';
     CategoryModule,
     ProductModule,
     StoreProductModule,
-    ReceiptModule
+    ReceiptModule,
   ],
 })
 export class AppModule {

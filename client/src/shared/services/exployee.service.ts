@@ -94,6 +94,20 @@ class EmployeeService {
 
     return data
   }
+
+  async getEmployeeThatHaventServedHighDiscountClients(): Promise<Employee[]> {
+    const res = await fetch(API_BASE_URL + 'employee/employee-with-no-high-discount-clients', {
+      method: 'GET',
+      credentials: 'include',
+    })
+    const data = await res.json()
+
+    if (!res.ok) {
+      throw data
+    }
+
+    return data
+  }
 }
 
 export const employeeService = new EmployeeService()

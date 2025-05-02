@@ -38,6 +38,7 @@ export const ReceiptFilterProvider = ({ children }: PropsWithChildren) => {
     setStartDate(undefined)
     setEndDate(undefined)
     setEmployeeId(undefined)
+    setProductId(undefined)
   }
 
   return (

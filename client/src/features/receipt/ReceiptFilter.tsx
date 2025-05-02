@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { useReceiptFilter } from '@/features/receipt/context/ReceiptFilter.context'
 import { SelectEmployee } from '@/components/SelectEmployee'
 import { DatePicker } from '@/components/ui/date-picker'
@@ -19,7 +20,8 @@ export const ReceiptFilter = () => {
     setEndDate,
     setStartDate,
     productId,
-    setProductId
+    setProductId,
+    clear,
   } = useReceiptFilter();
   const {printReceipt, isLoading} = usePrintReceipt();
   const role = useEmployeeRole();
@@ -52,6 +54,9 @@ export const ReceiptFilter = () => {
       </div>
       <ReceiptSearch />
       <PrintButton disabled={isLoading} onClick={printReceipt} />
+      <Button onClick={clear}>
+        Reset
+      </Button>
     </div>
   )
 }

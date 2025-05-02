@@ -3,18 +3,19 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react'
 
 interface CustomerFilterContextType {
-  customerSurname: string | undefined
-  setCustomerSurname: (surname: string | undefined) => void
-  percent: number | undefined
-  setPercent: (percent: number | undefined) => void
+  customerSurname: string
+  setCustomerSurname: (surname: string) => void
+  percent: string
+  setPercent: (percent: string) => void
   surnameSort: 'ASC' | 'DESC' | undefined
   setSurnameSort: (sort: 'ASC' | 'DESC' | undefined) => void
   clear: () => void
 }
+
 export const CustomerFilterContext = createContext<CustomerFilterContextType>({
-  customerSurname: undefined,
+  customerSurname: '',
   setCustomerSurname: () => {},
-  percent: undefined,
+  percent: '',
   setPercent: () => {},
   surnameSort: undefined,
   setSurnameSort: () => {},
@@ -22,17 +23,17 @@ export const CustomerFilterContext = createContext<CustomerFilterContextType>({
 })
 
 export const CustomerFilterProvider = ({ children }: PropsWithChildren) => {
-  const [customerSurname, setCustomerSurname] = useState<string | undefined>(
-    undefined,
+  const [customerSurname, setCustomerSurname] = useState<string>(
+    '',
   )
-  const [percent, setPercent] = useState<number | undefined>(undefined)
+  const [percent, setPercent] = useState<string>('')
   const [surnameSort, setSurnameSort] = useState<'ASC' | 'DESC' | undefined>(
     undefined,
   )
 
   const clear = () => {
-    setCustomerSurname(undefined)
-    setPercent(undefined)
+    setCustomerSurname('')
+    setPercent('')
     setSurnameSort(undefined)
   }
 
