@@ -5,6 +5,7 @@ export const ReceiptProductSchema = z.object({
   upc: z.string().min(12, 'UPC must be 12 characters long').max(12, 'UPC must be 12 characters long'),
   products_number: z.number()
     .min(1, 'Products number must be at least 1'),
+  selling_price: z.number()
 })
 
 export const ReceiptSchema = z.object({

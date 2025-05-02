@@ -125,7 +125,7 @@ export class ProductService {
       );
     }catch (e) {
       if (e.code === '23503') { // Foreign key violation
-        throw new ConflictException('There are Store Customers associated with this category. Delete them first');
+        throw new ConflictException('There are Store Products associated with this category. Delete them first');
       }
     }
     return product;

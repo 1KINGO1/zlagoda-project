@@ -13,7 +13,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ReceiptForm } from '@/features/receipt/ReceiptForm'
 import { useReceiptModal } from '@/features/receipt/context/ReceiptModals.context'
 import { ReceiptSchema, ReceiptSchemaType } from '@/shared/schemas/receipt.schema'
-import { useEffect } from 'react'
 import { useCreateReceipt } from '@/shared/hooks/receipt/useCreateReceipt'
 
 export const CreateReceiptDialog = () => {
@@ -40,8 +39,6 @@ export const CreateReceiptDialog = () => {
       toast.error(error.message)
     }
   }
-
-  // TODO: Add total sum and vat and customer discount counter
 
   return (
     <Dialog

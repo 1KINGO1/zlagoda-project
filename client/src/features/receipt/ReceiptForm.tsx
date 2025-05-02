@@ -1,4 +1,5 @@
-import * as React from 'react'
+import { useCustomer } from '@/shared/hooks/customer/useCustomer'
+import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -18,6 +19,30 @@ export const ReceiptForm = ({
   onSubmit,
   buttonText,
 }: FormProps<ReceiptSchemaType>) => {
+  const [totalSum, setTotalSum] = useState(0);
+  const watchedProducts = form.watch("products");
+  const watchedCustomerCardNumber = form.watch("card_number");
+  const {data: customer} = useCustomer(watchedCustomerCardNumber ?? undefined);
+
+  useEffect(() => {
+    const products = form.getValues("products");
+    if (!products || products.length === 0) {
+      setTotalSum(0);
+      return;
+    }
+
+    setTotalSum(
+      products.reduce(
+        (prev, product) => prev + product.products_number * product.selling_price, 0)
+    )
+  }, [watchedProducts])
+
+  let sum = totalSum;
+  let customerSale = customer ? customer.percent * 0.01 * sum : 0;
+  let sumWithSale = sum - customerSale;
+  let vat = sumWithSale * 0.2;
+  let finalSum = sumWithSale + vat;
+
   return (
     <Form {...form}>
       <form
@@ -46,6 +71,10 @@ export const ReceiptForm = ({
             </FormItem>
           )}
         />
+        <p>Sum: <span>{sum.toFixed(4)}</span></p>
+        {customer ? (<p>Customer Sale: <span>{sum.toFixed(4)} * {customer.percent}% = {customerSale.toFixed(4)}</span></p>) : null}
+        <p>Vat: <span>{(sum - customerSale).toFixed(4)} * 20% = {vat.toFixed(4)}</span></p>
+        <p>Total: <span>{sumWithSale.toFixed(4)} + {vat.toFixed(4)} = {finalSum.toFixed(4)}</span></p>
         <Button
           disabled={!form.formState.isValid || form.formState.isSubmitting}
         >

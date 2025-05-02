@@ -1,9 +1,9 @@
 'use client'
 
+import { StoreProduct } from '@/shared/entities/store-product'
 import { Check, ChevronsUpDown, Percent } from 'lucide-react'
 import { useState } from 'react'
 
-import { useProducts } from '@/shared/hooks/product/useProducts'
 import { debounce } from '@/shared/utils/debounce'
 import { cn } from '@/shared/utils/utils'
 
@@ -20,8 +20,8 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { useStoreProducts } from '@/shared/hooks/store-products/useStoreProducts'
 
 interface SelectStoreProductProps {
-  value: string | undefined
-  onChange(value: string | undefined): void,
+  value: StoreProduct | null
+  onChange(value: StoreProduct): void,
   className?: string
 }
 
@@ -33,7 +33,7 @@ export function SelectStoreProduct({ value, onChange, className }: SelectStorePr
 
   if (!storeProducts || isLoading) return <></>
 
-  const selectedStoreProduct = storeProducts.find(storeProduct => storeProduct.upc === value)
+  const selectedStoreProduct = storeProducts.find(storeProduct => storeProduct.upc === value?.upc)
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -44,7 +44,7 @@ export function SelectStoreProduct({ value, onChange, className }: SelectStorePr
           aria-expanded={open}
           className={cn('w-full justify-between', className)}
         >
-          {selectedStoreProduct ? selectedStoreProduct.product?.product_name : 'Select product...'}
+          {selectedStoreProduct ? `${selectedStoreProduct.product?.product_name} (${selectedStoreProduct.upc.slice(-4)})` : 'Select product...'}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -65,14 +65,14 @@ export function SelectStoreProduct({ value, onChange, className }: SelectStorePr
                 <CommandItem
                   key={storeProduct.upc}
                   onSelect={() => {
-                    onChange(storeProduct.upc)
+                    onChange(storeProduct)
                     setOpen(false)
                   }}
                 >
                   {storeProduct.product?.product_name} ({storeProduct.upc.slice(-4)}) {storeProduct.promotional_product ? <Percent /> : null}
                   <Check
                     className={cn(
-                      value === storeProduct.upc
+                      value?.upc === storeProduct.upc
                         ? 'opacity-100'
                         : 'opacity-0',
                     )}

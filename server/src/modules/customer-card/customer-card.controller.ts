@@ -28,6 +28,12 @@ export class CustomerCardController {
     return this.customerCardService.getCustomerCardSorted({sort, cust_surname: surname, percent});
   }
 
+  @Get(":id")
+  @AuthWithRole([EmployeeRole.MANAGER, EmployeeRole.CASHIER])
+  getOne(@Param('id') id: string) {
+    return this.customerCardService.getCustomerCardByCardNumber(id);
+  }
+
   @Patch(':id')
   @AuthWithRole([EmployeeRole.MANAGER, EmployeeRole.CASHIER])
   update(@Param('id') id: string, @Body() updateCustomerCardDto: UpdateCustomerCardDto) {

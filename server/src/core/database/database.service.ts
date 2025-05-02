@@ -93,7 +93,7 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
             card_number VARCHAR(13),
             print_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             sum_total DECIMAL(13,4) NOT NULL CHECK (sum_total >= 0),
-            vat DECIMAL(13,4) GENERATED ALWAYS AS (sum_total * 0.2) STORED
+            vat DECIMAL(13,4) NOT NULL CHECK (vat >= 0)
           );
           
           CREATE TABLE IF NOT EXISTS category

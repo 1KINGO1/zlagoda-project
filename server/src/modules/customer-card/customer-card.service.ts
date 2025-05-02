@@ -1,4 +1,4 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
 import { CreateCustomerCardDto } from './dto/create-customer-card.dto';
 import { UpdateCustomerCardDto } from './dto/update-customer-card.dto';
 import {DatabaseService} from "../../core/database/database.service";
@@ -118,10 +118,17 @@ export class CustomerCardService {
       throw new NotFoundException("Card not found");
     }
 
-    await this.databaseService.query(
-      'DELETE FROM customer_card WHERE card_number = $1',
-      [card_number]
-    );
+    try {
+      await this.databaseService.query(
+        'DELETE FROM customer_card WHERE card_number = $1',
+        [card_number]
+      );
+    }
+    catch(e) {
+      if (e.code === '23503') { // Foreign key violation
+        throw new ConflictException('There are receipts associated with this customer. Delete them first');
+      }
+    }
 
     return customerCard;
   }

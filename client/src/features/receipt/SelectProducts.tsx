@@ -3,31 +3,33 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { SelectStoreProduct } from '@/components/SelectStoreProduct'
 import { Trash2 } from 'lucide-react'
+import { StoreProduct } from '@/shared/entities/store-product'
 
 // Output value format
 type SelectProductValue = {
   upc: string,
-  products_number: number
+  products_number: number,
+  selling_price: number
 }[]
 
 // Inner value format to handle the component state
 type SelectProductPlaceholder = {
   id: number,
-  upc?: string,
+  storeProduct?: StoreProduct
   products_number?: number
-}[]
+}
 
 interface SelectProductProps {
   onChange: (value: SelectProductValue | undefined) => void
 }
 
 export const SelectProducts = ({ onChange }: SelectProductProps) => {
-  const [products, setProducts] = useState<SelectProductPlaceholder>([])
+  const [products, setProducts] = useState<SelectProductPlaceholder[]>([])
 
   const addProductHandler = (e: MouseEvent) => {
     e.preventDefault()
 
-    const newProduct = {
+    const newProduct: SelectProductPlaceholder = {
       id: Date.now(),
       products_number: 1
     }
@@ -38,11 +40,12 @@ export const SelectProducts = ({ onChange }: SelectProductProps) => {
     const filteredProducts = products
       .filter(
         (product) =>
-          product.upc !== undefined && product.products_number !== undefined,
+          product.storeProduct?.upc !== undefined && product.products_number !== undefined,
       )
       .map((product) => ({
-        upc: product.upc,
+        upc: product.storeProduct!.upc,
         products_number: product.products_number,
+        selling_price: +product.storeProduct!.selling_price,
       })) as SelectProductValue;
 
     onChange(filteredProducts.length > 0 ? filteredProducts : undefined);
@@ -56,11 +59,11 @@ export const SelectProducts = ({ onChange }: SelectProductProps) => {
             <div key={product.id} className="flex gap-2">
               <SelectStoreProduct
                 className="w-[50%]"
-                value={product.upc}
-                onChange={(value) => {
+                value={product.storeProduct ?? null}
+                onChange={(selectedStoreProduct) => {
                   setProducts(products.map(product1 => {
                     if (product1.id === product.id) {
-                      product1.upc = value
+                      product1.storeProduct = selectedStoreProduct
                     }
                     return product1
                   }))

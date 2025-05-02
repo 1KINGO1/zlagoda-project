@@ -12,8 +12,3 @@ export function middleware(request: NextRequest) {
     return NextResponse.rewrite(new URL('/404', request.url))
   }
 }
-
-// See "Matching Paths" below to learn more
-// export const config = {
-// 	matcher: ['/login', '/dashboard', '/dashboard/*'],
-// }

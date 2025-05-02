@@ -1,6 +1,8 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
 import {DatabaseService} from "../../core/database/database.service";
+import { CustomerCard } from '../../core/entities/customer-card'
 import {Receipt, ReceiptItem} from "../../core/entities/receipt";
+import { CustomerCardService } from '../customer-card/customer-card.service'
 import {CreateReceiptDto} from "./dto/create-receipt.dto";
 import {Employee} from "../../core/entities/employee";
 import {EmployeeService} from '../employee/employee.service';
@@ -9,6 +11,7 @@ import {EmployeeService} from '../employee/employee.service';
 export class ReceiptService {
 	constructor(
 		private readonly databaseService: DatabaseService,
+		private readonly customerCardService: CustomerCardService,
 	) {
 	}
 	private receiptQuery = `
@@ -79,21 +82,34 @@ export class ReceiptService {
 				}
 			}
 
+			let customerCard: CustomerCard;
+			if (createReceiptDto.card_number) {
+				customerCard = await this.customerCardService.getCustomerCardByCardNumber(createReceiptDto.card_number);
+				if (!customerCard) {
+					throw new NotFoundException(`Customer card number does not exist`);
+				}
+			}
+
+
 			// Calculate total sum
-			const totalSum = createReceiptDto.products.reduce(
+			let totalSum = createReceiptDto.products.reduce(
 				(sum, product) => sum + product.products_number * products.get(product.upc)[1], 0
 			);
+			const customerSale = (customerCard?.percent ? customerCard?.percent * 0.01 : 0) * totalSum;
+
+			totalSum -= customerSale;
 
 			// Insert receipt
 			const insertQuery = `
-			  INSERT INTO receipt (id_employee, card_number, sum_total)
-			  VALUES ($1, $2, $3)
+			  INSERT INTO receipt (id_employee, card_number, sum_total, vat)
+			  VALUES ($1, $2, $3, $4)
 			  RETURNING *;
 			`;
 			const values = [
 				employee.id_employee,
 				createReceiptDto.card_number,
-				totalSum,
+				totalSum * 1.2,
+				totalSum * 0.2
 			];
 			const result = await transactionClient.query<Receipt>(insertQuery, values);
 			const receipt = result.rows[0];
